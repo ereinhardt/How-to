@@ -113,8 +113,8 @@ async function convert_to_fs(
     "-profile:v baseline",
     "-start_number 0",
     "-level 6.0",
-    "-crf 32",
-    "-vf scale=1920:1080",
+    "-crf 30",
+    '-vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1"',
     "-g 1",
     "-hls_time 1",
     "-hls_list_size 0",
@@ -141,7 +141,12 @@ async function convert(): Promise<number> {
 
   console.log("Start Converting!");
 
-  const dir = readdirSync(path);
+  let dir = readdirSync(path);
+
+  console.log(dir);
+
+  //macOS legt auf nicht-APFS/HFS+-formatierten Laufwerken (wie FAT32, exFAT oder NTFS – z. B. auf USB-Sticks, externen SSDs) sogenannte AppleDouble-Dateien an.
+  dir = dir.filter((file) => !file.startsWith("._"));
 
   for (const video of dir) {
     const file_extension = parse_file_end(video);
@@ -169,8 +174,10 @@ async function convert(): Promise<number> {
 
     const newDirName = space_to_hyphen(remove_file_extension(video));
 
+    console.log(path);
+
     const newDirPath = p.join(path, newDirName);
-    console.log("made new dir at path: " + newDirName);
+    console.log("made new dir at path: " + newDirPath);
 
     mkdirSync(newDirPath);
 
