@@ -119,7 +119,7 @@ async function convert_to_fs(
     "-hls_time 1",
     "-hls_list_size 0",
     "-hls_segment_filename",
-    `${path}/${fileName}_%d.ts`,
+    `${path}/${fileName}__%d.ts`,
     `${path}/${fileName}_playlist.m3u8`,
   ];
 
