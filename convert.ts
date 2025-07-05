@@ -145,7 +145,11 @@ async function convert(): Promise<number> {
 
   console.log(dir);
 
-  //macOS legt auf nicht-APFS/HFS+-formatierten Laufwerken (wie FAT32, exFAT oder NTFS – z. B. auf USB-Sticks, externen SSDs) sogenannte AppleDouble-Dateien an.
+  /*
+  macOS legt auf nicht-APFS/HFS+-formatierten Laufwerken 
+  (wie FAT32, exFAT oder NTFS – z. B. auf USB-Sticks, externen SSDs) 
+  sogenannte AppleDouble-Dateien an.
+  */
   dir = dir.filter((file) => !file.startsWith("._"));
 
   for (const video of dir) {
