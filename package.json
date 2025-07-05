@@ -1,0 +1,19 @@
+{
+  "name": "howto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "convert": "node build/convert.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Finn, Erik Reinhardt",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.0.10"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}
