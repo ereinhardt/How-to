@@ -137,7 +137,10 @@ async function convert(): Promise<number> {
 
   const is_ffmpeg_installed = await check_ffmpeg_installation();
 
-  if (!is_ffmpeg_installed) console.log("could not find a ffmpeg instalition!");
+  if (!is_ffmpeg_installed)
+    console.log(
+      "could not find a ffmpeg installation please look at https://ffmpeg.org!"
+    );
 
   console.log("Start Converting!");
 
