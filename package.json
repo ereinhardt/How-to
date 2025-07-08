@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "start_backend": "tsc && node build/backend/server.js",
     "convert": "tsc && node build/converter/convert.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +15,9 @@
     "@types/node": "^24.0.10"
   },
   "dependencies": {
-    "fs": "^0.0.1-security"
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.8.1"
   }
 }
