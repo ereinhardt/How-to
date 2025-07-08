@@ -4,7 +4,7 @@ import { exec } from "child_process";
 
 import * as p from "path";
 import { argv, stdin, stdout } from "process";
-import create_question_index from "./create";
+import create_question_index from "./create_question_index";
 
 interface arg_state {
   dir: string;
