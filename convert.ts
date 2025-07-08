@@ -4,16 +4,22 @@ import { exec } from "child_process";
 
 import * as p from "path";
 import { argv, stdin, stdout } from "process";
+import create_question_index from "./create";
 
-const OPTS = ["dir"];
+interface arg_state {
+  dir: string;
+  question_index?: boolean;
+}
 
-function parse_args(): string | undefined {
+const OPTS = ["dir", "create_question_index"];
+
+function parse_args(): arg_state | undefined {
   const args = argv.slice(2);
 
-  if (args.length > 1) {
-    console.log("Too many arguments! Currently supported: dir");
-    return;
-  }
+  const state: arg_state = {
+    dir: "",
+    question_index: true,
+  };
 
   if (args.find((arg) => !arg.includes("="))) {
     console.log(
@@ -22,29 +28,44 @@ function parse_args(): string | undefined {
     return;
   }
 
-  const opt = args[0].split("=");
-  const optName = opt[0];
-  const optValue = opt[1];
+  for (const arg of args) {
+    const opt = arg.split("=");
+    const optName = opt[0];
+    const optValue = opt[1];
 
-  if (!OPTS.includes(optName)) {
-    console.log("unkown option!");
-    return;
+    if (!OPTS.includes(optName)) {
+      console.log("unkown option!");
+      return;
+    }
+
+    switch (optName) {
+      case "dir":
+        const path = lstatSync(optValue);
+
+        if (!path.isDirectory()) {
+          console.log("dir path is not a Dir!");
+          return;
+        }
+
+        state.dir = optValue;
+
+        break;
+
+      case "create_question_index":
+        if (optValue != "true" && optValue != "false") {
+          console.log("expected a boolean for create_question_index");
+          return;
+        }
+
+        state.question_index = optValue == "true" ? true : false;
+
+        break;
+      default:
+        throw Error("UNREACHABLE!");
+    }
   }
 
-  switch (optName) {
-    case "dir":
-      const path = lstatSync(optValue);
-
-      if (!path.isDirectory()) {
-        console.log("dir path is not a Dir!");
-        return;
-      }
-
-      return optValue;
-
-    default:
-      throw Error("UNREACHABLE!");
-  }
+  return state;
 }
 
 function parse_file_end(fileName: string): string {
@@ -132,8 +153,8 @@ async function convert_to_fs(
 }
 
 async function convert(): Promise<number> {
-  const path = parse_args();
-  if (!path) return -1;
+  const state = parse_args();
+  if (!state) return -1;
 
   const is_ffmpeg_installed = await check_ffmpeg_installation();
 
@@ -144,7 +165,7 @@ async function convert(): Promise<number> {
 
   console.log("Start Converting!");
 
-  let dir = readdirSync(path);
+  let dir = readdirSync(state.dir);
 
   /*
   macOS legt auf nicht-APFS/HFS+-formatierten Laufwerken 
@@ -152,6 +173,8 @@ async function convert(): Promise<number> {
   sogenannte AppleDouble-Dateien an.
   */
   dir = dir.filter((file) => !file.startsWith("._"));
+
+  let is_first_video = true;
 
   for (const video of dir) {
     const file_extension = parse_file_end(video);
@@ -168,7 +191,7 @@ async function convert(): Promise<number> {
       continue;
     }
 
-    const not_allready_created_dir = has_not_dir(video, path);
+    const not_allready_created_dir = has_not_dir(video, state.dir);
 
     if (!not_allready_created_dir) {
       console.log(
@@ -179,14 +202,14 @@ async function convert(): Promise<number> {
 
     const newDirName = space_to_hyphen(remove_file_extension(video));
 
-    console.log(path);
+    console.log(state.dir);
 
-    const newDirPath = p.join(path, newDirName);
+    const newDirPath = p.join(state.dir, newDirName);
     console.log("made new dir at path: " + newDirPath);
 
     mkdirSync(newDirPath);
 
-    const old_path = p.join(path, video);
+    const old_path = p.join(state.dir, video);
     const new_path = p.join(newDirPath, space_to_hyphen(video));
 
     console.log(`start moving file from ${old_path} to ${newDirPath}`);
@@ -204,6 +227,12 @@ async function convert(): Promise<number> {
     console.log(
       "sucessfull converting file to m3u8 hls stream! FileName: " + newDirName
     );
+
+    if (state.question_index) {
+      await create_question_index(state.dir, newDirName, is_first_video);
+    }
+
+    is_first_video = false;
   }
 
   return 0;
