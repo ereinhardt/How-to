@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "convert": "node build/convert.js",
+    "convert": "tsc && node build/converter/convert.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Finn, Erik Reinhardt",
