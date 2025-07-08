@@ -2,3 +2,5 @@ build/
 videos/
 node_modules/
 users/
+.DS_STORE
+.env
