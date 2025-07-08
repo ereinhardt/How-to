@@ -15,6 +15,7 @@ export default async function create_question_index(
 
   if (file_exits && is_first_video) {
     writeFileSync(file_path, "");
+  } else if (!file_exits && is_first_video) {
     appendFileSync(file_path, csv_header);
   }
 
