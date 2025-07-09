@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How To?</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.js" integrity="sha512-YR4vWgTmC0QwRfYKWTy1eTMvBYpmAsSGP76is/15Uxqfa3N/qYRZKFE8pf66GsfSrFksaJkNmbTS2BcdLamZoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<style>
+
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  
+  .main{
+    position: absolute;
+    margin: auto;
+    z-index: 1000;
+    max-width: 177.78vh;
+    max-height: 100vh;
+    width: 100vw;
+    height: calc(100vw / 1.7778);
+    overflow-x: hidden;
+  }
+  .Video{
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: -10000000000;
+    overflow-x: hidden;
+  }
+  
+  .Search{
+    height: 30px;
+    margin-left: -8px;
+    width: 217px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  
+  .Search input{
+    width: 100px;
+    height: 14px;
+    overflow-x: hidden;
+  }
+  .Search span {
+    cursor: pointer;
+    overflow-x: hidden;
+  }
+  
+  .Stamps {
+    height: calc(50% - 31px);
+    overflow-y: auto;
+    width: 100%;
+    margin-left: 8px;
+    overflow-x: hidden;
+  }
+  #active {
+    color: red;
+  }
+
+</style>
+
+<body>
+    <div class="main">
+        <div class="Search">
+          <span> How to&nbsp;</span>
+          <input type="text"  name="" value="">
+          <span id="search_span"><button id="search_button">?</button></span>
+        </div>
+        <div class="Stamps">
+        </div>
+        <div class="Video">
+         <video src="" style="display: none; width: 100%; height: auto;" autoplay controls style="height: 100%; width: 100%">
+    
+         </video>
+        </div>
+      </div>
+<script>
+    //TODO: check if you need a port!
+    const socket = io();
+    let currentTimestamps = 0;
+    let timeStamps = [];
+
+    let num_of_videos = 0;
+    let search_value = "";
+    
+    let hls_context;
+
+    let is_searching = false;
+
+    document.getElementById("search_span").addEventListener("click", () => {
+    start_search(); 
+    });
+
+    function start_search(){
+        num_of_videos = 0;
+        currentTimestamps = 0;
+        let current_value = document.getElementsByTagName("input")[0].value;
+        
+        search_value = `How to ${current_value}`;
+
+        document.getElementById("search_button").disabled = true;
+        socket.disconnect();
+        socket.connect();
+
+        socket.emit("NEW_SEARCH", {search: search_value, is_first: true});
+       
+        destroy_hls_context();
+
+        socket.on("START_STREAM", (source_url) => {
+            console.log("start Hls Stream! with url: " + source_url);
+            start_hls();
+        })
+
+
+
+        
+    }
+
+    function destroy_hls_context() {
+        if(hls_context) {
+            hls_context.destory();
+            hls_context = null;
+        }
+    }
+
+    function start_hls(source_url) {
+       
+        const video = document.getElementsByTagName("video")[0];
+        if(!Hls.isSupported()){
+            alert("L in chat für den User der kein HLS abspielen kann!");
+        }
+
+        hls_context = new Hls({
+            levelLoadingTimeOut: 1000000,
+            manifestLoadingTimeOut: 1000,
+            levelLoadingMaxRetryTimeout: 1000,
+            levelLoadingMaxRetry: 2,
+            autoStartLoad : true, 
+            debug: false,
+            liveDurationInfinity: false, 
+            maxBufferLength: 10,
+            backBufferLength: 10, 
+        });
+
+        hls_context.loadSource(source_url);
+        hls_context.attachMedia(video);
+    }
+
+
+
+</script>
+</body>
+</html>

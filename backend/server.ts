@@ -4,9 +4,10 @@ import { Server } from "socket.io";
 import start_socket_server from "./socket_server";
 import "dotenv/config";
 import start_http_server from "./http_server";
+import { save_accesing_env_field } from "../util/util";
 
-const port = 3000;
-const host = "localhost";
+const port = save_accesing_env_field("SERVER_PORT");
+const host = save_accesing_env_field("SERVER_HOST");
 
 const app = express();
 const server = createServer(app);

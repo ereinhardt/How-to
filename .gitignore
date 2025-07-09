@@ -4,3 +4,4 @@ node_modules/
 users/
 .DS_STORE
 .env
+user_question_index.txt
