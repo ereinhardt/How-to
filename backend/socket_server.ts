@@ -49,7 +49,7 @@ export default async function start_socket_server(io: Server) {
       if (save_accesing_env_field("DEBUG_SERVER") == "1") {
         const dummy_id = save_accesing_env_field("DUMMY_ID");
 
-        const first_segment = find_next_segment_path(dummy_id, 0);
+        const first_segment = find_next_segment_path(dummy_id, 0, socket.id);
 
         const segment_length = 1.0;
 

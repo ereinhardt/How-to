@@ -8,11 +8,11 @@ import {
 } from "fs";
 import * as p from "path";
 import { save_accesing_env_field } from "./util";
+import assert from "assert";
 
 const M3U8_HEADER: string[] = [
   "#EXTM3U",
   "#EXT-X-PLAYLIST-TYPE: EVENT",
-  "#EXT-X-INDEPENDET-SEGMENTS",
   "#EXT-X-VERSION: 4",
 ];
 
@@ -20,10 +20,9 @@ export function create_user_m3u8(id: string, user_path: string): string {
   const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
   const stream_file_path = p.join(user_path, id + stream_file_ending + ".m3u8");
 
-  console.log(stream_file_path);
   writeFileSync(stream_file_path, M3U8_HEADER.join("\n") + "\n", { flag: "w" });
 
-  return stream_file_path;
+  return p.join(id, id + stream_file_ending + ".m3u8");
 }
 
 export function add_segment(id: string, segment: string, length: number) {
@@ -37,7 +36,8 @@ export function add_segment(id: string, segment: string, length: number) {
 
 export function find_next_segment_path(
   video_id: string,
-  new_segment: number
+  new_segment: number,
+  user_id: string
 ): string {
   const video_path = save_accesing_env_field("VIDEOS_PATH");
 
@@ -47,8 +47,7 @@ export function find_next_segment_path(
   let current_video_path = "";
 
   for (const video of dir) {
-    const id_regex = /([^.]+\?)_([^.]+)/;
-
+    const id_regex = /([^.]+)_([^.]+)/;
     const parsed_video_title = video.match(id_regex);
 
     if (parsed_video_title == null) continue;
@@ -68,7 +67,7 @@ export function find_next_segment_path(
   const video_id_path = p.join(
     video_path,
     current_video_path,
-    "ts_stream_convert"
+    save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
   );
 
   const video_stream_files = readdirSync(video_id_path);
@@ -79,5 +78,25 @@ export function find_next_segment_path(
 
   if (new_segment > video_segment_files.length) return "";
 
-  return p.join(video_id_path, video_segment_files[new_segment]);
+  const host = save_accesing_env_field("SERVER_HOST");
+  const port = save_accesing_env_field("SERVER_PORT");
+
+  //video_id/user_id/fileName.ts
+  return (
+    `http://${host}:${port}/` +
+    p.join(current_video_id, user_id, video_segment_files[new_segment])
+  );
+}
+
+export function extract_ts_segment_number(filename: string): number {
+  assert(filename.includes("ts"), "could not extract ts Segment Number");
+
+  const segment_number_regex = /(.+)__(\d+)\.ts/;
+
+  const match = filename.match(segment_number_regex);
+
+  assert(match, "could not found a segment number");
+  const segment_number = match![2];
+
+  return Number(segment_number);
 }

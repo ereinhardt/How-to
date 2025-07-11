@@ -116,6 +116,10 @@ function space_to_hyphen(str: string): string {
   return str.replace(/\s/g, "-");
 }
 
+function remove_question_marks(str: string): string {
+  return str.replace(/\?/g, "");
+}
+
 async function check_ffmpeg_installation(): Promise<boolean> {
   return new Promise((resolve) => {
     exec("ffmpeg -version", (error) => {
@@ -132,7 +136,7 @@ async function convert_to_fs(
   const opts = [
     `-i ${input_path}`,
     "-profile:v baseline",
-    "-filter:v fps=25",
+    "-filter:v fps=30",
     "-start_number 0",
     "-level 6.0",
     "-crf 30",
@@ -201,7 +205,9 @@ async function convert(): Promise<number> {
       continue;
     }
 
-    const newDirName = space_to_hyphen(remove_file_extension(video));
+    const newDirName = remove_question_marks(
+      space_to_hyphen(remove_file_extension(video))
+    );
 
     console.log(state.dir);
 
@@ -211,7 +217,10 @@ async function convert(): Promise<number> {
     mkdirSync(newDirPath);
 
     const old_path = p.join(state.dir, video);
-    const new_path = p.join(newDirPath, space_to_hyphen(video));
+    const new_path = p.join(
+      newDirPath,
+      remove_question_marks(space_to_hyphen(video))
+    );
 
     console.log(`start moving file from ${old_path} to ${newDirPath}`);
     await rename(old_path, new_path);

@@ -19,7 +19,7 @@ export default async function create_question_index(
     appendFileSync(file_path, csv_header);
   }
 
-  const id_regex = /([^.]+\?)_([^.]+)/;
+  const id_regex = /([^.]+)_([^.]+)/;
 
   const parsed_file_name = video_file_name.match(id_regex);
 
