@@ -10,6 +10,11 @@ npm run build
 npm run convert dir=<dirname>
 ```
 
+## Start Backend
+```bash 
+npm run start_backend
+```
+
 
 ## Config 
 For the config you need a .env file following fields: 
