@@ -136,7 +136,7 @@ async function convert_to_fs(
   const opts = [
     `-i ${input_path}`,
     "-profile:v baseline",
-    "-filter:v fps=30",
+    "-filter:v fps=25",
     "-start_number 0",
     "-level 6.0",
     "-crf 30",

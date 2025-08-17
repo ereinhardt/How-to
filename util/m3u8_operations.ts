@@ -12,9 +12,20 @@ import assert from "assert";
 
 const M3U8_HEADER: string[] = [
   "#EXTM3U",
-  "#EXT-X-PLAYLIST-TYPE: EVENT",
-  "#EXT-X-VERSION: 4",
+  "#EXT-X-PLAYLIST-TYPE:EVENT",
+  "#EXT-X-VERSION:7>",
+  "#EXT-X-MEDIA-SEQUENCE:0",
+  "#EXT-X-TARGETDURATION:1",
+  "#EXT-X-DISCONTINUITY-SEQUENCE:0",
 ];
+
+function sortFilePathsByNumber(paths: string[]): string[] {
+  return paths.sort((a, b) => {
+    const numA = extract_ts_segment_number(a);
+    const numB = extract_ts_segment_number(b);
+    return numA - numB;
+  });
+}
 
 export function create_user_m3u8(id: string, user_path: string): string {
   const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
@@ -47,6 +58,8 @@ export function find_next_segment_path(
   let current_video_path = "";
 
   for (const video of dir) {
+    if (!lstatSync(p.join(video_path, video)).isDirectory()) continue;
+
     const id_regex = /([^.]+)_([^.]+)/;
     const parsed_video_title = video.match(id_regex);
 
@@ -72,14 +85,16 @@ export function find_next_segment_path(
 
   const video_stream_files = readdirSync(video_id_path);
 
-  const video_segment_files = video_stream_files.filter((f) =>
-    f.includes(".ts")
+  const video_segment_files = sortFilePathsByNumber(
+    video_stream_files.filter((f) => f.includes(".ts"))
   );
 
   if (new_segment > video_segment_files.length) return "";
 
   const host = save_accesing_env_field("SERVER_HOST");
   const port = save_accesing_env_field("SERVER_PORT");
+
+  console.log("found ts FILE", video_segment_files[new_segment], new_segment);
 
   //video_id/user_id/fileName.ts
   return (
