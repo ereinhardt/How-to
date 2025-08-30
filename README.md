@@ -35,5 +35,5 @@ DEBUG = <> //flag "1" or "0" to enable DEBUG
 create manually question-index.csv for specific directory: 
 
 ```bash
-npm run convert dir=<dirname>
+npm run create_question-index dir=<dirname>
 ```
