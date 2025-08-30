@@ -149,11 +149,19 @@ async function convert_to_fs(
     `${path}/${fileName}_playlist.m3u8`,
   ];
 
-  return new Promise((resolve) => {
-    exec("ffmpeg " + opts.join(" "), (e, stdout, stderr) => {
-      if (!e) resolve();
-      if (e) console.log(e);
-    });
+  return new Promise((resolve, reject) => {
+    exec(
+      "ffmpeg " + opts.join(" "),
+      { maxBuffer: 1024 * 1024 * 1024 }, // (cuurent 1 GB) Set a larger buffer size here
+      (e, stdout, stderr) => {
+        if (!e) {
+          resolve();
+        } else {
+          console.error("FFmpeg conversion error:", e);
+          reject(e);
+        }
+      }
+    );
   });
 }
 
