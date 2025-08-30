@@ -29,3 +29,9 @@ USER_STREAM_FILE_ENDING=<> //extra name of user stream file eg. <id>USER_STREAM_
 DUMMY_ID=<> //id for DUMMY for debug 
 DEBUG = <> //flag "1" or "0" to enable DEBUG
 ```
+
+## Debug-Tools 
+
+```bash
+npm run convert dir=<dirname>
+```
