@@ -32,6 +32,8 @@ DEBUG = <> //flag "1" or "0" to enable DEBUG
 
 ## Debug-Tools 
 
+create manually question-index.csv for specific directory: 
+
 ```bash
 npm run convert dir=<dirname>
 ```
