@@ -117,7 +117,7 @@ function space_to_hyphen(str: string): string {
 }
 
 function remove_question_marks(str: string): string {
-  return str.replace(/\?/g, "");
+  return str.replace(/[\?\uF025]/g, "");
 }
 
 async function check_ffmpeg_installation(): Promise<boolean> {
