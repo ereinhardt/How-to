@@ -6,7 +6,8 @@
     "build": "tsc",
     "start_backend": "tsc && node build/backend/server.js",
     "convert": "tsc && node build/converter/convert.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create_question-index": "npx ts-node --project tsconfig.json tools/debug/manual_create_question_index.ts"
   },
   "author": "Finn, Erik Reinhardt",
   "license": "MIT",

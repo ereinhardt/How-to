@@ -1,40 +1,75 @@
-import { appendFileSync, existsSync, writeFileSync } from "fs";
-import * as p from "path";
+import { existsSync, readdirSync, writeFileSync, lstatSync, mkdirSync } from "fs";
+import { copyFile, rename } from "fs/promises";
+import { exec } from "child_process";
 
-export default async function create_question_index(
-  base_path: string,
-  video_file_name: string,
-  is_first_video: boolean
-): Promise<void> {
+import * as p from "path";
+import { argv, stdin, stdout } from "process";
+
+/**
+ * A standalone script to generate a `question_index.csv` file.
+ * It reads all video filenames from a specified directory, extracts
+ * the video title and ID from each filename, and writes them to a CSV file.
+ *
+ * Usage:
+ * ts-node manual_create_question_index.ts dir=<directory_path>
+ */
+function createQuestionIndex() {
+  const args = argv;
+  let basePath: string | undefined;
+
+  // Find the 'dir' argument from command line
+  for (const arg of args) {
+    if (arg.startsWith("dir=")) {
+      basePath = arg.split("=")[1];
+      break;
+    }
+  }
+
+  if (!basePath) {
+    console.error("Error: Missing required argument 'dir'.");
+    console.error("Usage: ts-node manual_create_question_index.ts dir=<directory_path>");
+    return;
+  }
+
+  if (!existsSync(basePath)) {
+    console.error(`Error: The directory '${basePath}' does not exist.`);
+    return;
+  }
+
   const file_name = "question_index.csv";
   const csv_header = '"video_title";"video_id"\n';
-
-  const file_path = p.join(base_path, file_name);
-
-  const file_exits = existsSync(file_path);
-
-  if (file_exits && is_first_video) {
-    writeFileSync(file_path, "");
-  } else if (!file_exits && is_first_video) {
-    appendFileSync(file_path, csv_header);
-  }
+  const file_path = p.join(basePath, file_name);
 
   const id_regex = /^(.*?)_(.*)/;
 
-  const parsed_file_name = video_file_name.match(id_regex);
+  try {
+    const files = readdirSync(basePath);
+    let csvContent = csv_header;
 
-  if (!parsed_file_name)
-    return console.log("provided a Filename without a id!");
+    console.log(`Scanning directory: ${basePath}`);
 
-  const video_id = parsed_file_name[2];
-  const video_name = parsed_file_name[1];
+    for (const videoFileName of files) {
+      const parsed_file_name = videoFileName.match(id_regex);
 
-  console.log("ID ", video_id, "NAME ", video_name);
+      if (parsed_file_name && parsed_file_name.length === 3) {
+        const video_name = parsed_file_name[1];
+        const video_id = parsed_file_name[2];
 
-  const row = `"${video_name}";"${video_id}"\n`;
+        console.log(`Found video: ID=${video_id}, Name=${video_name}`);
 
-  appendFileSync(file_path, row);
-  console.log(`add video ${video_name} to question_index.txt`);
+        const row = `"${video_name}";"${video_id}"\n`;
+        csvContent += row;
+      }
+    }
 
-  return;
+    writeFileSync(file_path, csvContent, { encoding: "utf-8" });
+    console.log(`Successfully created and wrote to ${file_path}`);
+    
+  } catch (error) {
+    console.error("An error occurred during file processing:");
+    console.error(error);
+  }
 }
+
+// Execute the main function
+createQuestionIndex();
