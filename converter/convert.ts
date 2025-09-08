@@ -142,6 +142,7 @@ async function convert_to_fs(
     "-crf 30",
     '-vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1"',
     "-g 1",
+    "-ac 2", 
     "-hls_time 1",
     "-hls_list_size 0",
     "-hls_segment_filename",
