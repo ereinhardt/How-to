@@ -36,7 +36,7 @@ def download_youtube_video_as_mp4(video_url, cookies_file_path=None):
                 command.extend(['--cookies', cookies_file_path])
                 print(f"Verwende Cookies aus: {cookies_file_path}")
             else:
-                print(f"⚠️ Cookie-Datei nicht gefunden unter: {cookies_file_path}. Fahre ohne Cookies fort.")
+                print(f"Cookie-Datei nicht gefunden unter: {cookies_file_path}. Fahre ohne Cookies fort.")
         
         command.append(video_url)
 
@@ -82,7 +82,7 @@ def download_youtube_video_as_mp4(video_url, cookies_file_path=None):
                 print(f"Angenommener absoluter Pfad: {final_filename}")
 
             if not os.path.exists(final_filename):
-                print(f"❌ Fehler: Die heruntergeladene Datei {final_filename} wurde nicht gefunden. Überprüfe den Pfad.")
+                print(f"Fehler: Die heruntergeladene Datei {final_filename} wurde nicht gefunden. Überprüfe den Pfad.")
                 return
 
             base, ext = os.path.splitext(final_filename)
@@ -104,16 +104,16 @@ def download_youtube_video_as_mp4(video_url, cookies_file_path=None):
                 print(f"Führe ffmpeg-Befehl aus: {' '.join(shlex.quote(arg) for arg in ffmpeg_command)}")
                 # Run ffmpeg and let its output go to the console
                 subprocess.run(ffmpeg_command, check=True) 
-                print(f"✅ Umwandlung erfolgreich! Datei gespeichert unter: {converted_filename}")
-                # Optionally remove the original file
-                # try:
-                #     os.remove(final_filename)
-                #     print(f"Originaldatei {final_filename} gelöscht.")
-                # except OSError as e:
-                #     print(f"Fehler beim Löschen der Originaldatei {final_filename}: {e}")
+                print(f"Umwandlung erfolgreich! Datei gespeichert unter: {converted_filename}")
+                # Remove the original file after successful conversion
+                try:
+                    os.remove(final_filename)
+                    print(f"Originaldatei {final_filename} gelöscht.")
+                except OSError as e:
+                    print(f"Fehler beim Löschen der Originaldatei {final_filename}: {e}")
 
             except subprocess.CalledProcessError as e:
-                print(f"\n❌ Fehler bei der Umwandlung mit ffmpeg:")
+                print(f"\nFehler bei der Umwandlung mit ffmpeg:")
                 print(f"Command: {' '.join(shlex.quote(arg) for arg in e.cmd)}")
                 print(f"Return code: {e.returncode}")
                 # ffmpeg's direct error output should have appeared above in the console.
@@ -121,9 +121,9 @@ def download_youtube_video_as_mp4(video_url, cookies_file_path=None):
                 print("Stellen Sie sicher, dass ffmpeg korrekt installiert ist und die Eingabedatei gültig ist.")
 
         elif process.returncode != 0:
-            print(f"\n❌ Fehler beim Download (yt-dlp exit code: {process.returncode}).")
+            print(f"\nFehler beim Download (yt-dlp exit code: {process.returncode}).")
         else:
-            print("\n❌ Download abgeschlossen, aber der Dateiname konnte nicht ermittelt werden für die Konvertierung.")
+            print("\nDownload abgeschlossen, aber der Dateiname konnte nicht ermittelt werden für die Konvertierung.")
 
     except FileNotFoundError as e:
         print(f"\nFehler: {e}")
@@ -144,4 +144,4 @@ if __name__ == "__main__":
         
         download_youtube_video_as_mp4(video_url_input, cookie_path_input)
     else:
-        print("❗ Keine URL eingegeben.")
+        print("Keine URL eingegeben.")
