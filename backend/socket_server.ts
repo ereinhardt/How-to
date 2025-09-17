@@ -7,10 +7,12 @@ import {
   create_user_m3u8,
   find_next_segment_path,
 } from "../util/m3u8_operations";
+import User, { get_user_by_id, remove_user_by_id } from "./users";
 
-export default async function start_socket_server(io: Server) {
+export default async function start_socket_server(io: Server, users: User[]) {
   io.on("connection", (socket) => {
     console.log("socket id connected: ", socket.id);
+    users.push(new User(socket.id));
 
     const base_path = save_accesing_env_field("USERS_FOLDER");
 
@@ -27,18 +29,23 @@ export default async function start_socket_server(io: Server) {
     socket.on("disconnect", (_) => {
       rmdirSync(user_folder, { recursive: true });
       console.log("Client disconnected:", socket.id);
+      remove_user_by_id(users, socket.id);
     });
 
-    socket.on("NEW_SEARCH", (user_data) => {
+    socket.on("NEW_SEARCH", async (user_data) => {
       const { search, is_first } = user_data;
 
       const user_question_index_path = save_accesing_env_field(
         "USER_QUESTION_INDEX"
       );
 
+      const user = get_user_by_id(users, socket.id);
+      await user.generateUpcommingQuestions(search);
+
+      console.log(user);
+
       appendFileSync(user_question_index_path, search + "\n");
 
-      //TODO ADD AI LAYER
       //const dummy = "How to fold!";
       const stream_file_path = create_user_m3u8(id, user_folder);
 

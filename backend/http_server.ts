@@ -14,9 +14,10 @@ import User, { get_user_by_id, user_allready_saved } from "./users";
 
 const html_name = "frontend/index.html";
 
-const users: User[] = [];
-
-export default async function start_http_server(server: Express) {
+export default async function start_http_server(
+  server: Express,
+  users: User[]
+) {
   server.get("/", (req, res) => {
     res.sendFile(p.join(__dirname, `../../${html_name}`));
   });

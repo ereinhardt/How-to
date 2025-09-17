@@ -2,6 +2,29 @@ import { assert } from "console";
 import { lstatSync, readdirSync } from "fs";
 import * as p from "path";
 
+export function parse_ai_response(json_markdown_string: string) {
+  const match = json_markdown_string.match(/\[[\s\S]*]/gm);
+
+  if (!match) return null;
+
+  try {
+    const parsed = JSON.parse(match[0]);
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function check_if_ids_exists(response_json: any, csv: string): boolean {
+  var i = 1;
+
+  for (const q of response_json) {
+    if (!csv.includes(q[`video_id_${i}`])) return false;
+    i++;
+  }
+  return true;
+}
+
 export function save_accesing_env_field(field: string) {
   if (process.env[field]) return process.env[field]!;
 

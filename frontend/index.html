@@ -110,6 +110,12 @@ body {
         currentTimestamps = 0;
         let current_value = document.getElementsByTagName("input")[0].value;
         
+        document.body.style.cursor = "wait";
+
+        const video = document.getElementsByTagName("video")[0];
+        video.style.display = "none";
+        document.body.style.backgroundColor = "white";
+
         search_value = `How to ${current_value}`;
 
         document.getElementById("search_button").disabled = true;
@@ -121,8 +127,12 @@ body {
         destroy_hls_context();
 
         socket.on("START_STREAM", (source_url) => {
+
             console.log("start Hls Stream! with url: " + source_url);
+            document.body.style.cursor = "auto";
+            document.getElementById("search_button").disabled = false;
             start_hls(source_url);
+
         })
 
 
@@ -159,7 +169,9 @@ body {
 
         hls_context.loadSource(source_url);
         hls_context.attachMedia(video);
-    }
+        document.body.style.backgroundColor = "black";
+
+      }
 
 
 
