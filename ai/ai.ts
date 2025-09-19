@@ -9,31 +9,27 @@ import { GoogleGenAI } from "@google/genai";
 
 function generatePrompt(initial_question: string): string {
   return `
-  **TASK**: Create a chain of 30 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
+  **TASK**: Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
 
   **REQUIREMENTS**:
   1. **Question Chain**: Start with "${initial_question}?" and create 29 additional questions
   2. **Step-Ahead Logic**: Each new question must describe a necessary step that comes BEFORE the previous question (prerequisite)
-  3. **Skill Balance**: Alternate between hard skills (technical/practical) and soft skills (personal/social)
-  4. **Question Style**: Keep questions simple, clear, and under 10 words
-  5. **Source**: All questions and video IDs must be selected from the provided 'question_index.csv' file
+  3. **Source**: All questions and video IDs must be selected from the provided 'question_index.csv' file
 
   **STEP-AHEAD EXAMPLES**:
-  - How to cut potatoes → How to sharpen a knife (prerequisite step)
-  - How to fold clothes → How to wash clothes → How to sort laundry → How to choose detergent
-  - How to build a house → How to lay foundation → How to prepare building site → How to get building permit → How to find architect
-
-  **TRANSITION EXAMPLES**:
-  - Chain 1: 'How to fold? → How to wash clothes?' → 'How to sort laundry?' → 'How to choose detergent?' → 'How to read labels?'
-  - Chain 2: 'How to build a house?' → 'How to get building permit?' → 'How to find architect?' → 'How to plan budget?' → 'How to save money?'
+  - 'How to cut potatoes?' → 'How to sharpen a knife? (prerequisite step)
+  - 'How to fold clothes?' → 'How to wash clothes?' → 'How to sort laundry?' → 'How to choose detergent?'
+  - 'How to build a house?' → 'How to lay foundation?' → 'How to prepare building site?' → 'How to get building permit?' → 'How to find architect?'
+  - 'How to fold?' → 'How to wash clothes?' → 'How to sort laundry?' → 'How to choose detergent?' → 'How to read labels?'
+  - 'How to build a house?' → 'How to get building permit?' → 'How to find architect?' → 'How to plan budget?' → 'How to save money?'
 
   **INITIAL QUESTION**: "${initial_question}?"
 
   **DATA SOURCE INSTRUCTIONS**:
   - For question 1: Find a matching video title for "How to fold?" in 'question_index.csv' and provide only the 'video_id_1'
-  - For questions 2-30: Select appropriate video titles and IDs from the dataset that match your question chain
+  - For questions 2-50: Select appropriate video titles and IDs from the dataset that match your question chain
 
-  **OUTPUT FORMAT**: Provide exactly 30 questions in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
+  **OUTPUT FORMAT**: Provide exactly 50 questions in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
 
   [
       {
@@ -155,6 +151,86 @@ function generatePrompt(initial_question: string): string {
       {
           "video_title_30": "",
           "video_id_30": ""
+      },
+      {
+          "video_title_31": "",
+          "video_id_31": ""
+      },
+      {
+          "video_title_32": "",
+          "video_id_32": ""
+      },
+      {
+          "video_title_33": "",
+          "video_id_33": ""
+      },
+      {
+          "video_title_34": "",
+          "video_id_34": ""
+      },
+      {
+          "video_title_35": "",
+          "video_id_35": ""
+      },
+      {
+          "video_title_36": "",
+          "video_id_36": ""
+      },
+      {
+          "video_title_37": "",
+          "video_id_37": ""
+      },
+      {
+          "video_title_38": "",
+          "video_id_38": ""
+      },
+      {
+          "video_title_39": "",
+          "video_id_39": ""
+      },
+      {
+          "video_title_40": "",
+          "video_id_40": ""
+      },
+      {
+          "video_title_41": "",
+          "video_id_41": ""
+      },
+      {
+          "video_title_42": "",
+          "video_id_42": ""
+      },
+      {
+          "video_title_43": "",
+          "video_id_43": ""
+      },
+      {
+          "video_title_44": "",
+          "video_id_44": ""
+      },
+      {
+          "video_title_45": "",
+          "video_id_45": ""
+      },
+      {
+          "video_title_46": "",
+          "video_id_46": ""
+      },
+      {
+          "video_title_47": "",
+          "video_id_47": ""
+      },
+      {
+          "video_title_48": "",
+          "video_id_48": ""
+      },
+      {
+          "video_title_49": "",
+          "video_id_49": ""
+      },
+      {
+          "video_title_50": "",
+          "video_id_50": ""
       }
   ]
     
