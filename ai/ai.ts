@@ -241,7 +241,7 @@ export default async function generate_question(start_question: string) {
   const video_folder = save_accesing_env_field("VIDEOS_PATH");
   const api_key = save_accesing_env_field("GEMINI_API_KEY");
 
-  const model = "gemini-2.5-flash";
+  const model = "gemini-2.5-flash-lite";
 
   const users_questions_path = p.join(
     __dirname,
