@@ -16,7 +16,7 @@ function generatePrompt(initial_question: string): string {
   2. **Step-Ahead Logic**: Each new question must describe a necessary step that comes BEFORE the previous question (prerequisite)
   3. **Source**: All questions and video IDs must be selected from the provided 'question_index.csv' file
 
-  **STEP-AHEAD EXAMPLES**:
+  **EXAMPLES**:
   - 'How to cut potatoes?' → 'How to sharpen a knife? (prerequisite step)
   - 'How to fold clothes?' → 'How to wash clothes?' → 'How to sort laundry?' → 'How to choose detergent?'
   - 'How to build a house?' → 'How to lay foundation?' → 'How to prepare building site?' → 'How to get building permit?' → 'How to find architect?'
@@ -258,6 +258,7 @@ export default async function generate_question(start_question: string) {
     config: {
       contents: users_csv,
     },
+    ttlSeconds: 60, // Minimum TTL - expires after 1 minute
   });
 
   const response = await ai.models.generateContent({
