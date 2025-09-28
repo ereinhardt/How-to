@@ -1,4 +1,5 @@
 import generate_question from "../ai/ai";
+import { extractDurationInSec } from "../util/m3u8_operations";
 
 enum UserState {
   Unset,
@@ -9,11 +10,21 @@ class Question {
   public index: number;
   public question: string;
   public id: string;
+  public durationInSec: number;
+  public startTimeInSec: number;
 
-  constructor(i: number, q: string, id: string) {
+  constructor(
+    i: number,
+    q: string,
+    id: string,
+    durationInSec: number,
+    startTimeInSec: number
+  ) {
     this.index = i;
     this.question = q;
     this.id = id;
+    this.durationInSec = durationInSec;
+    this.startTimeInSec = startTimeInSec;
   }
 }
 
@@ -40,24 +51,28 @@ export default class User {
     const questions = await generate_question(start_question);
     let i = 1;
 
+    let startTime = 0;
+
     for (const q of questions) {
       const question = q[`video_title_${i}`];
       const id = q[`video_id_${i}`];
-      this.questions.push(new Question(i, question, id));
+      const durationInSec = extractDurationInSec(id);
+      this.questions.push(
+        new Question(i, question, id, durationInSec, startTime)
+      );
+      startTime += durationInSec;
       i++;
     }
+  }
+
+  getCurrentQuestion(): Question {
+    return this.questions[this.current_question_index];
   }
 
   getNewQuestion() {
     this.current_question_index += 1;
 
-    if (this.current_question_index > this.questions.length) {
-      this.current_question_index = 0;
-      const last_question = this.questions[this.questions.length - 1].question;
-      this.resetQuestions();
-      this.generateUpcommingQuestions(last_question);
-      return this.questions[0];
-    }
+    if (this.current_question_index >= this.questions.length) return null;
 
     return this.questions[this.current_question_index];
   }

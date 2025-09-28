@@ -36,12 +36,79 @@ export function create_user_m3u8(id: string, user_path: string): string {
   return p.join(id, id + stream_file_ending + ".m3u8");
 }
 
+export function extractDurationInSec(video_id: string): number {
+  const video_path = save_accesing_env_field("VIDEOS_PATH");
+
+  const dir = readdirSync(video_path);
+
+  let current_video_id = "";
+  let current_video_path = "";
+
+  for (const video of dir) {
+    if (!lstatSync(p.join(video_path, video)).isDirectory()) continue;
+
+    const id_regex = /([^.]+)_([^.]+)/;
+    const parsed_video_title = video.match(id_regex);
+
+    if (parsed_video_title == null) continue;
+
+    current_video_id = parsed_video_title[2];
+    current_video_path = video;
+
+    if (current_video_id == video_id) {
+      break;
+    }
+  }
+
+  if (!current_video_id) {
+    return -1;
+  }
+
+  const video_id_path = p.join(
+    video_path,
+    current_video_path,
+    save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
+  );
+
+  const video_stream_files = readdirSync(video_id_path);
+
+  const video_segment_files = sortFilePathsByNumber(
+    video_stream_files.filter((f) => f.includes(".ts"))
+  );
+
+  return video_segment_files.length;
+}
+
 export function add_segment(id: string, segment: string, length: number) {
   const base_path = save_accesing_env_field("USERS_FOLDER");
   const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
   const m3u8_path = p.join(base_path, id, id + stream_file_ending + ".m3u8");
 
   const newLine = [`#EXTINF:${length}`, segment];
+  appendFileSync(m3u8_path, newLine.join("\n") + "\n");
+}
+
+export function addStreamEnding(user_id: string) {
+  const base_path = save_accesing_env_field("USERS_FOLDER");
+  const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
+  const m3u8_path = p.join(
+    base_path,
+    user_id,
+    user_id + stream_file_ending + ".m3u8"
+  );
+  const newLine = [`#EXT-X-ENDLIST`];
+  appendFileSync(m3u8_path, newLine.join("\n") + "\n");
+}
+
+export function addDiscontinuity(user_id: string) {
+  const base_path = save_accesing_env_field("USERS_FOLDER");
+  const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
+  const m3u8_path = p.join(
+    base_path,
+    user_id,
+    user_id + stream_file_ending + ".m3u8"
+  );
+  const newLine = [`#EXT-X-DISCONTINUITY`];
   appendFileSync(m3u8_path, newLine.join("\n") + "\n");
 }
 
@@ -89,7 +156,7 @@ export function find_next_segment_path(
     video_stream_files.filter((f) => f.includes(".ts"))
   );
 
-  if (new_segment > video_segment_files.length) return "";
+  if (new_segment >= video_segment_files.length) return "ENDING";
 
   const host = save_accesing_env_field("SERVER_HOST");
   const port = save_accesing_env_field("SERVER_PORT");

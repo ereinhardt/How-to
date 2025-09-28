@@ -83,7 +83,7 @@ body {
         <div class="Stamps">
         </div>
         <div class="Video">
-         <video src="" controlsList="nofullscreen" style="display: none; width: 100%; height: auto;" autoplay controls style="height: 100%; width: 100%">
+         <video src="" controls controlslist="noplaybackrate nodownload nofullscreen" autoplay style="display: none; width: 100%; height: auto;" style="height: 100%; width: 100%">
     
          </video>
         </div>
@@ -102,10 +102,13 @@ body {
     let is_searching = false;
 
     document.getElementById("search_span").addEventListener("click", () => {
-    start_search(); 
+      start_search(); 
     });
 
     function start_search(){
+
+
+        deleteAllTimestamps();
         num_of_videos = 0;
         currentTimestamps = 0;
         let current_value = document.getElementsByTagName("input")[0].value;
@@ -126,13 +129,14 @@ body {
        
         destroy_hls_context();
 
-        socket.on("START_STREAM", (source_url) => {
+        socket.on("START_STREAM", (source_url, user) => {
 
             console.log("start Hls Stream! with url: " + source_url);
             document.body.style.cursor = "auto";
             document.getElementById("search_button").disabled = false;
             start_hls(source_url);
-
+            generatingTimestamps(user.questions);
+            console.log(user.questions);
         })
 
 
@@ -143,12 +147,16 @@ body {
     function destroy_hls_context() {
         if(hls_context) {
             hls_context.destroy();
+            hls_context.detachMedia();
+            
             hls_context = null;
         }
     }
 
     function start_hls(source_url) {
          
+
+       
         const video = document.getElementsByTagName("video")[0];
         video.style.display = "block";
         if(!Hls.isSupported()){
@@ -161,7 +169,7 @@ body {
             levelLoadingMaxRetryTimeout: 1000,
             levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
-            debug: true,
+            debug: false,
             liveDurationInfinity: false, 
             maxBufferLength: 10,
             backBufferLength: 10, 
@@ -171,8 +179,78 @@ body {
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
 
+        video.addEventListener("ended", () => {
+          console.log("Stream has Ended! (#EXT-X-ENDLIST)");
+          destroy_hls_context();
+          video.style.display = "none";
+          document.getElementsByTagName("input")[0].value = "";
+          document.body.style.backgroundColor = "white";
+          deleteAllTimestamps();
+        })
       }
 
+      function deleteAllTimestamps() {
+        document.querySelectorAll(".Stamps a").forEach(a => a.remove());
+      }
+
+
+    let timeupdateHandler = null;
+
+    function generatingTimestamps(questions) {
+      const vid = document.getElementsByTagName("video")[0];
+      let currentIndex = 1;
+
+      // falls schon ein alter Handler existiert → entfernen
+      if (timeupdateHandler) {
+        vid.removeEventListener("timeupdate", timeupdateHandler);
+      }
+
+      // neuen Handler definieren
+      timeupdateHandler = () => {
+        const time = vid.currentTime;
+        if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
+          generateTimeStamp(questions[currentIndex]);
+          currentIndex++;
+        }
+      };
+
+      // neuen Handler anhängen
+      vid.addEventListener("timeupdate", timeupdateHandler);
+    }
+
+      function generateTimeStamp(question) {
+        generateTimeStampsDOM(question.question, question.startTimeInSec)
+      }
+
+      function generateTimeStampsDOM(title, time){
+        var wrapper = document.createElement("div");
+        wrapper.className = title;
+        var link = document.createElement("a");
+        link.href = "#";
+        link.id = "active";
+        link.innerText = title;
+        setActiveLink(link);
+        
+        link.onclick = (e)=>{
+          Jumpto(time, e);
+          setActiveLink(e.target);
+        }
+        wrapper.appendChild(link);
+        document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
+      }
+
+
+      function Jumpto(value, e){
+        e.preventDefault();
+        return document.getElementsByTagName("video")[0].currentTime = value;
+      }
+
+      function setActiveLink(linkElem) {
+        // alle bisherigen aktiven Links deaktivieren
+        document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
+        // den geklickten aktiv setzen
+        linkElem.id = "active";
+      }
 
 
 </script>

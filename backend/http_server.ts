@@ -7,6 +7,8 @@ import {
 } from "../util/util";
 import {
   add_segment,
+  addDiscontinuity,
+  addStreamEnding,
   extract_ts_segment_number,
   find_next_segment_path,
 } from "../util/m3u8_operations";
@@ -62,6 +64,21 @@ export default async function start_http_server(
     if (current_user.highestRequestedFile <= segment) {
       current_user.highestRequestedFile = segment;
       let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
+
+      if (next_segment == "ENDING") {
+        current_user.highestRequestedFile = 0;
+        const newQuestion = current_user.getNewQuestion();
+
+        if (!newQuestion) {
+          console.log("Stream from ", user_id, "has Ended!");
+          addStreamEnding(user_id);
+        } else {
+          addDiscontinuity(user_id);
+          console.log("NEW QUESTION ID!", newQuestion);
+          next_segment = find_next_segment_path(newQuestion.id, 0, user_id);
+        }
+      }
+
       add_segment(user_id, next_segment, 1.0);
     }
     const requested_file = get_ts_file_by_video_id(video_id, segment);

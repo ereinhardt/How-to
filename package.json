@@ -16,8 +16,10 @@
     "@types/node": "^24.0.10"
   },
   "dependencies": {
-    "@google/genai": "^1.14.0",
+    "@google/genai": "^1.21.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.1.0",
     "express": "^5.1.0",
     "fs": "^0.0.1-security",

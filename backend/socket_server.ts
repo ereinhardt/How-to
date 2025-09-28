@@ -61,9 +61,20 @@ export default async function start_socket_server(io: Server, users: User[]) {
         const segment_length = 1.0;
 
         add_segment(socket.id, first_segment, segment_length);
+      } else if (save_accesing_env_field("DEBUG_SERVER") == "0") {
+        const currentQuestion = user.getCurrentQuestion();
+
+        const first_segment = find_next_segment_path(
+          currentQuestion.id,
+          0,
+          socket.id
+        );
+
+        const segment_length = 1.0;
+        add_segment(socket.id, first_segment, segment_length);
       }
 
-      socket.emit("START_STREAM", user_stream_file_url);
+      socket.emit("START_STREAM", user_stream_file_url, user);
     });
   });
 }

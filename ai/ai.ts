@@ -241,7 +241,7 @@ export default async function generate_question(start_question: string) {
   const video_folder = save_accesing_env_field("VIDEOS_PATH");
   const api_key = save_accesing_env_field("GEMINI_API_KEY");
 
-  const model = "gemini-2.5-flash-lite";
+  const model = "gemini-2.5-flash";
 
   const users_questions_path = p.join(
     __dirname,
@@ -257,8 +257,8 @@ export default async function generate_question(start_question: string) {
     model: model,
     config: {
       contents: users_csv,
+      ttl: "60.0s",
     },
-    ttlSeconds: 60, // Minimum TTL - expires after 1 minute
   });
 
   const response = await ai.models.generateContent({
@@ -271,6 +271,9 @@ export default async function generate_question(start_question: string) {
       cachedContent: cache.name,
     },
   });
+
+  await ai.caches.delete({ name: cache.name! });
+  console.log("Delete Cache!");
 
   if (!response.text) {
     console.log("got no response text!");
