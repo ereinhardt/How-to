@@ -243,12 +243,7 @@ export default async function generate_question(start_question: string) {
 
   const model = "gemini-2.5-flash";
 
-  const users_questions_path = p.join(
-    __dirname,
-    "../../",
-    video_folder,
-    "question_index.csv"
-  );
+  const users_questions_path = p.join(video_folder, "question_index.csv");
 
   const users_csv = readFileSync(users_questions_path, { encoding: "utf8" });
   const ai = new GoogleGenAI({ apiKey: api_key });
