@@ -85,6 +85,7 @@ export default async function start_http_server(
       add_segment(user_id, next_segment, 1.0);
     }
     const requested_file = get_ts_file_by_video_id(video_id, segment);
+    console.log(requested_file);
     res.sendFile(p.join(requested_file));
   });
 }

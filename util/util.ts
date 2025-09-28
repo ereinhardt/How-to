@@ -64,7 +64,7 @@ export function get_ts_file_by_video_id(video_id: string, segment: number) {
 
   const ts_files = readdirSync(video_path);
 
-  const ts_file = ts_files.find((t) => t.match(`__${segment}`)); //TODO CHANGE ME BUG
+  const ts_file = ts_files.find((t) => t.match(`__${segment}.ts`)); //TODO CHANGE ME BUG
 
   assert(ts_file, "could not find ts File for segment " + segment);
 

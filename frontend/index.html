@@ -169,10 +169,14 @@ body {
             levelLoadingMaxRetryTimeout: 1000,
             levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
-            debug: false,
-            liveDurationInfinity: false, 
-            maxBufferLength: 10,
-            backBufferLength: 10, 
+            debug: true,
+            liveDurationInfinity: false,
+            maxBufferLength: 20,
+            liveSyncDurationCount: 5,
+            backBufferLength: 20, 
+            adjustTs: true,
+            forceKeyFrameOnDiscontinuity: true, 
+            makSeekHole: 1
         });
 
         hls_context.loadSource(source_url);
