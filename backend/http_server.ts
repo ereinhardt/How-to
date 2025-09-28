@@ -61,7 +61,10 @@ export default async function start_http_server(
       res.status(404).send("User not found!");
     }
 
-    if (current_user.highestRequestedFile <= segment) {
+    if (
+      current_user.highestRequestedFile <= segment &&
+      current_user.getCurrentQuestion().id == video_id
+    ) {
       current_user.highestRequestedFile = segment;
       let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
 

@@ -127,7 +127,7 @@ export function find_next_segment_path(
   for (const video of dir) {
     if (!lstatSync(p.join(video_path, video)).isDirectory()) continue;
 
-    const id_regex = /([^.]+)_([^.]+)/;
+    const id_regex = /^([^_]+)_(.+)$/;
     const parsed_video_title = video.match(id_regex);
 
     if (parsed_video_title == null) continue;
