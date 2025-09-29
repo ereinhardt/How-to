@@ -206,12 +206,18 @@ body {
             capLevelToPlayerSize: false,
             maxMaxBufferLength: 120, // Allow larger buffer
             // Better seeking behavior for early positions
-            nudgeOffset: 0.1,
-            nudgeMaxRetry: 3, // Reduced from 10 to avoid excessive retries
-            maxBufferHole: 2.0, // Allow larger holes in buffer
-            // Seek behavior
-            seekHoleNudgeDuration: 0.01,
-            maxSeekHole: 2.0
+            nudgeOffset: 0.01, // Smaller nudge for early positions
+            nudgeMaxRetry: 1, // Reduced retries to prevent loops
+            maxBufferHole: 3.0, // Allow larger holes in buffer for early seeks
+            // Seek behavior optimized for early positions
+            seekHoleNudgeDuration: 0.001, // Very small nudge duration
+            maxSeekHole: 3.0, // Larger hole tolerance for early seeks
+            // Fragment retry settings for early segments
+            fragLoadingTimeOut: 8000, // Longer timeout for early fragments
+            fragLoadingMaxRetry: 2, // Allow more retries for early fragments
+            // Prevent buffer stalling on early seeks
+            highBufferWatchdogPeriod: 1, // More frequent buffer checks
+            lowBufferWatchdogPeriod: 0.25 // Faster response to low buffer
         });
 
         hls_context.loadSource(source_url);
@@ -237,6 +243,18 @@ body {
         // Monitor fragment loading to ensure early segments load
         hls_context.on(Hls.Events.FRAG_LOADING, function (event, data) {
             console.log(`Loading fragment: ${data.frag.sn} (${data.frag.start}s - ${data.frag.end}s)`);
+        });
+
+        // Monitor level switching to prevent issues with early seeks
+        hls_context.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+            console.log(`Level switched to: ${data.level}`);
+        });
+
+        // Monitor buffering progress for early positions
+        hls_context.on(Hls.Events.BUFFER_APPENDED, function (event, data) {
+            if (data.timeRanges && data.timeRanges.start && data.timeRanges.start(0) < 10) {
+                console.log(`Early buffer appended: ${data.timeRanges.start(0)}s - ${data.timeRanges.end(0)}s`);
+            }
         });
 
         // Listen for stream end events
@@ -490,10 +508,10 @@ body {
         
         console.log(`Manual timeline seek to ${value}`);
         
-        // For very early positions (< 5 seconds), use simple seek
-        if (value < 5) {
-          console.log(`Early position detected (${value}s), using simple seek`);
-          return simpleSeek(value);
+        // For very early positions (< 10 seconds), use enhanced early seek
+        if (value < 10) {
+          console.log(`Early position detected (${value}s), using enhanced early seek`);
+          return enhancedEarlySeek(value);
         }
         
         // For other positions, try intelligent seeking but with fallback
@@ -536,6 +554,55 @@ body {
         video.addEventListener('seeked', handleSeeked);
         
         return value;
+      }
+
+      // Enhanced early seek function for positions < 10 seconds
+      function enhancedEarlySeek(targetTime) {
+        const video = document.getElementsByTagName("video")[0];
+        console.log(`Enhanced early seek to ${targetTime}`);
+        
+        const wasPaused = video.paused;
+        
+        // Clear any existing buffers and force HLS to reload from target position
+        if (hls_context && hls_context.media) {
+          console.log('Clearing HLS buffers for early seek');
+          // Stop loading and clear buffers
+          hls_context.stopLoad();
+          
+          // Small delay to ensure buffers are cleared
+          setTimeout(() => {
+            // Set the current time and restart loading
+            video.currentTime = targetTime;
+            hls_context.startLoad(targetTime);
+            
+            // Force play after seek completes
+            const handleEarlySeek = () => {
+              video.removeEventListener('seeked', handleEarlySeek);
+              console.log(`Enhanced early seek completed to ${video.currentTime}`);
+              
+              // Update active link
+              if (window.currentQuestions) {
+                updateActiveLinkByTime(video.currentTime, window.currentQuestions);
+              }
+              
+              // Ensure playback continues from early position
+              if (!wasPaused) {
+                video.play().then(() => {
+                  console.log('Playback restarted after early seek');
+                }).catch(err => {
+                  console.log('Auto-play failed after early seek:', err);
+                });
+              }
+            };
+            
+            video.addEventListener('seeked', handleEarlySeek);
+          }, 100);
+        } else {
+          // Fallback to simple seek if HLS context not available
+          simpleSeek(targetTime);
+        }
+        
+        return targetTime;
       }
 
       // Simple seek function for title clicks - always works immediately
