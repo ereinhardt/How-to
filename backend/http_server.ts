@@ -18,13 +18,14 @@ const html_name = "frontend/index.html";
 
 // Global request deduplication cache
 const requestCache = new Map();
-const REQUEST_DEBOUNCE_TIME = 150; // ms
+const REQUEST_DEBOUNCE_TIME = 50; // Reduced from 150ms to 50ms
 
 function isDuplicateRequest(userId: string, requestType: string): boolean {
   const key = `${userId}_${requestType}`;
   const now = Date.now();
   const lastRequest = requestCache.get(key);
   
+  // Only block if it's truly a duplicate (very short time span)
   if (lastRequest && (now - lastRequest) < REQUEST_DEBOUNCE_TIME) {
     console.log(`Blocking duplicate ${requestType} request for user ${userId}`);
     return true;
@@ -54,10 +55,10 @@ export default async function start_http_server(
       return;
     }
 
-    // Check if this is an M3U8 manifest request and apply deduplication
+    // For M3U8 files, only block if it's a truly rapid duplicate (within 50ms)
     if (filename.endsWith('.m3u8')) {
       if (isDuplicateRequest(id, 'M3U8')) {
-        // Return cached response without processing
+        // Return cached response for truly duplicate requests
         const file_path = p.join(
           __dirname,
           "../../",
@@ -69,11 +70,7 @@ export default async function start_http_server(
         return;
       }
       
-      // Update user's last request time for M3U8 requests
-      let current_user = get_user_by_id(users, id);
-      if (current_user) {
-        current_user.lastRequestTime = Date.now();
-      }
+      console.log("Processing M3U8 request for user:", id);
     }
 
     const file_path = p.join(
@@ -90,15 +87,6 @@ export default async function start_http_server(
     const { video_id, filename, user_id } = req.params;
     const segment = extract_ts_segment_number(filename);
 
-    // Check for duplicate TS requests
-    if (isDuplicateRequest(user_id, `TS_${segment}`)) {
-      // Just serve the file without updating segments
-      const requested_file = get_ts_file_by_video_id(video_id, segment);
-      console.log("Serving cached TS file:", requested_file);
-      res.sendFile(p.join(requested_file));
-      return;
-    }
-
     let current_user;
 
     if (!user_allready_saved(users, user_id)) {
@@ -113,16 +101,15 @@ export default async function start_http_server(
       return;
     }
 
-    // More robust logic for segment progression
+    // More conservative logic - only update segments for genuine forward progress
     const isForwardProgress = current_user.highestRequestedFile < segment;
-    const isSignificantJumpBack = current_user.highestRequestedFile - segment > 10; // Increased threshold
     const isCorrectVideo = current_user.getCurrentQuestion().id == video_id;
     const now = Date.now();
     const timeSinceLastRequest = now - current_user.lastRequestTime;
     
-    // Only process segment updates if this is genuine progression or a significant jump
-    if (isCorrectVideo && (isForwardProgress || (isSignificantJumpBack && timeSinceLastRequest > 500))) {
-      console.log(`Processing segment update: ${segment}, user: ${user_id}, forward: ${isForwardProgress}, jump: ${isSignificantJumpBack}`);
+    // Only process segment updates for forward progress with reasonable time gap
+    if (isCorrectVideo && isForwardProgress && timeSinceLastRequest > 100) {
+      console.log(`Processing segment update: ${segment}, user: ${user_id}`);
       
       current_user.highestRequestedFile = segment;
       current_user.lastRequestTime = now;
@@ -153,12 +140,16 @@ export default async function start_http_server(
       }
 
       add_segment(user_id, next_segment, 1.0);
+    } else if (!isCorrectVideo) {
+      console.log(`Skipping segment update: wrong video ${video_id} for user ${user_id}`);
+    } else if (!isForwardProgress) {
+      console.log(`Skipping segment update: not forward progress ${segment} for user ${user_id}`);
     } else {
-      console.log(`Skipping segment update: ${segment}, user: ${user_id}, reason: not forward progress or too soon`);
+      console.log(`Skipping segment update: too soon (${timeSinceLastRequest}ms) for user ${user_id}`);
     }
     
     const requested_file = get_ts_file_by_video_id(video_id, segment);
-    console.log(requested_file);
+    console.log("Serving TS file:", requested_file);
     res.sendFile(p.join(requested_file));
   });
 }

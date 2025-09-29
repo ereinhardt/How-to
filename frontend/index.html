@@ -178,28 +178,28 @@ body {
 
         hls_context = new Hls({
             levelLoadingTimeOut: 1000000,
-            manifestLoadingTimeOut: 2000, // Increased timeout
-            levelLoadingMaxRetryTimeout: 2000,
-            levelLoadingMaxRetry: 1, // Reduced retries
+            manifestLoadingTimeOut: 1500, // Slightly reduced
+            levelLoadingMaxRetryTimeout: 1500,
+            levelLoadingMaxRetry: 2, // Restored retries for reliability
             autoStartLoad : true, 
-            debug: false, // Disabled debug to reduce noise
+            debug: false, 
             liveDurationInfinity: false,
-            maxBufferLength: 30, // Increased buffer
-            liveSyncDurationCount: 3, // Reduced sync count
-            backBufferLength: 10, // Reduced back buffer
+            maxBufferLength: 25, // Slightly reduced buffer
+            liveSyncDurationCount: 3, 
+            backBufferLength: 15, // Balanced back buffer
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 1,
-            // Prevent excessive manifest reloads
+            // Balanced settings for reliability vs performance
             enableWorker: false,
             lowLatencyMode: false,
-            // Reduce manifest reload frequency significantly
-            manifestLoadingRetryDelay: 1000, // Increased delay
-            manifestLoadingMaxRetry: 1, // Single retry only
-            // Additional optimizations
-            maxBufferSize: 60 * 1000 * 1000, // 60MB buffer
+            // Moderate manifest reload settings
+            manifestLoadingRetryDelay: 500, // Moderate delay
+            manifestLoadingMaxRetry: 2, // Allow some retries
+            // Reasonable buffer settings
+            maxBufferSize: 40 * 1000 * 1000, // 40MB buffer
             maxBufferHole: 0.5,
-            highBufferWatchdogPeriod: 3,
+            highBufferWatchdogPeriod: 2,
             nudgeOffset: 0.1,
             nudgeMaxRetry: 3
         });        hls_context.loadSource(source_url);
@@ -240,28 +240,22 @@ body {
             }
         });
 
-        // Throttle manifest reloads during rapid seeking with stronger controls
+        // Light throttling for manifest reloads - only prevent rapid duplicates
         let manifestReloadThrottle = null;
         let lastManifestLoad = 0;
-        const MANIFEST_THROTTLE_DELAY = 300; // Increased delay
+        const MANIFEST_THROTTLE_DELAY = 100; // Reduced from 300ms to 100ms
         
         hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
             const now = Date.now();
             
-            // If we just loaded a manifest recently, cancel this one
+            // Only throttle if requests are extremely rapid (< 100ms apart)
             if (now - lastManifestLoad < MANIFEST_THROTTLE_DELAY) {
-                console.log("Throttling manifest reload - too soon");
+                console.log("Throttling rapid manifest reload");
                 return;
             }
             
-            if (manifestReloadThrottle) {
-                clearTimeout(manifestReloadThrottle);
-            }
-            
-            manifestReloadThrottle = setTimeout(() => {
-                manifestReloadThrottle = null;
-                lastManifestLoad = Date.now();
-            }, MANIFEST_THROTTLE_DELAY);
+            lastManifestLoad = now;
+            console.log("Loading manifest at:", now);
         });
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
