@@ -178,27 +178,31 @@ body {
 
         hls_context = new Hls({
             levelLoadingTimeOut: 1000000,
-            manifestLoadingTimeOut: 1000,
-            levelLoadingMaxRetryTimeout: 1000,
-            levelLoadingMaxRetry: 2,
+            manifestLoadingTimeOut: 2000, // Increased timeout
+            levelLoadingMaxRetryTimeout: 2000,
+            levelLoadingMaxRetry: 1, // Reduced retries
             autoStartLoad : true, 
-            debug: true,
+            debug: false, // Disabled debug to reduce noise
             liveDurationInfinity: false,
-            maxBufferLength: 20,
-            liveSyncDurationCount: 5,
-            backBufferLength: 20, 
+            maxBufferLength: 30, // Increased buffer
+            liveSyncDurationCount: 3, // Reduced sync count
+            backBufferLength: 10, // Reduced back buffer
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 1,
-            // Prevent excessive manifest reloads during seeking
+            // Prevent excessive manifest reloads
             enableWorker: false,
             lowLatencyMode: false,
-            // Reduce manifest reload frequency
-            manifestLoadingRetryDelay: 500,
-            manifestLoadingMaxRetry: 1
-        });
-
-        hls_context.loadSource(source_url);
+            // Reduce manifest reload frequency significantly
+            manifestLoadingRetryDelay: 1000, // Increased delay
+            manifestLoadingMaxRetry: 1, // Single retry only
+            // Additional optimizations
+            maxBufferSize: 60 * 1000 * 1000, // 60MB buffer
+            maxBufferHole: 0.5,
+            highBufferWatchdogPeriod: 3,
+            nudgeOffset: 0.1,
+            nudgeMaxRetry: 3
+        });        hls_context.loadSource(source_url);
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
 
@@ -236,15 +240,28 @@ body {
             }
         });
 
-        // Throttle manifest reloads during rapid seeking
+        // Throttle manifest reloads during rapid seeking with stronger controls
         let manifestReloadThrottle = null;
+        let lastManifestLoad = 0;
+        const MANIFEST_THROTTLE_DELAY = 300; // Increased delay
+        
         hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
+            const now = Date.now();
+            
+            // If we just loaded a manifest recently, cancel this one
+            if (now - lastManifestLoad < MANIFEST_THROTTLE_DELAY) {
+                console.log("Throttling manifest reload - too soon");
+                return;
+            }
+            
             if (manifestReloadThrottle) {
                 clearTimeout(manifestReloadThrottle);
             }
+            
             manifestReloadThrottle = setTimeout(() => {
                 manifestReloadThrottle = null;
-            }, 100);
+                lastManifestLoad = Date.now();
+            }, MANIFEST_THROTTLE_DELAY);
         });
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
@@ -329,9 +346,9 @@ body {
       // Store questions globally for active link detection
       window.currentQuestions = questions;
 
-      // Generate the first timestamp immediately (index 0)
+      // Generate the first timestamp immediately (index 0) - but without showing timestamp
       if (questions.length > 0) {
-        generateTimeStamp(questions[0]);
+        generateTimeStamp(questions[0], true); // true = hide timestamp for first question
       }
 
       // neuen Handler definieren
@@ -374,16 +391,26 @@ body {
       });
     }
 
-      function generateTimeStamp(question) {
-        generateTimeStampsDOM(question.question, question.startTimeInSec)
+      function generateTimeStamp(question, hideTimestamp = false) {
+        generateTimeStampsDOM(question.question, question.startTimeInSec, hideTimestamp)
       }
 
-      function generateTimeStampsDOM(title, time){
+      function generateTimeStampsDOM(title, time, hideTimestamp = false){
         var wrapper = document.createElement("div");
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        link.innerText = title;
+        
+        // Show title with or without timestamp
+        if (hideTimestamp || time === 0) {
+          link.innerText = title;
+        } else {
+          // Convert seconds to mm:ss format
+          const minutes = Math.floor(time / 60);
+          const seconds = Math.floor(time % 60);
+          const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          link.innerText = `${timeString} - ${title}`;
+        }
         
         // Only set as active if this is the first question (time = 0) or if no other link is active
         const existingActiveLinks = document.querySelectorAll(".Stamps a[id='active']");

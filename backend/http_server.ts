@@ -16,6 +16,24 @@ import User, { get_user_by_id, user_allready_saved } from "./users";
 
 const html_name = "frontend/index.html";
 
+// Global request deduplication cache
+const requestCache = new Map();
+const REQUEST_DEBOUNCE_TIME = 150; // ms
+
+function isDuplicateRequest(userId: string, requestType: string): boolean {
+  const key = `${userId}_${requestType}`;
+  const now = Date.now();
+  const lastRequest = requestCache.get(key);
+  
+  if (lastRequest && (now - lastRequest) < REQUEST_DEBOUNCE_TIME) {
+    console.log(`Blocking duplicate ${requestType} request for user ${userId}`);
+    return true;
+  }
+  
+  requestCache.set(key, now);
+  return false;
+}
+
 export default async function start_http_server(
   server: Express,
   users: User[],
@@ -36,17 +54,25 @@ export default async function start_http_server(
       return;
     }
 
-    // Check if this is an M3U8 manifest request
+    // Check if this is an M3U8 manifest request and apply deduplication
     if (filename.endsWith('.m3u8')) {
-      // Add rate limiting for M3U8 requests to prevent duplicate processing
-      let current_user = get_user_by_id(users, id);
-      const now = Date.now();
+      if (isDuplicateRequest(id, 'M3U8')) {
+        // Return cached response without processing
+        const file_path = p.join(
+          __dirname,
+          "../../",
+          save_accesing_env_field("USERS_FOLDER"),
+          id,
+          filename
+        );
+        res.status(200).sendFile(file_path);
+        return;
+      }
       
-      // If last request was less than 100ms ago, it's likely a duplicate
-      if (current_user && now - current_user.lastRequestTime < 100) {
-        console.log("Skipping duplicate M3U8 request for user:", id);
-      } else if (current_user) {
-        current_user.lastRequestTime = now;
+      // Update user's last request time for M3U8 requests
+      let current_user = get_user_by_id(users, id);
+      if (current_user) {
+        current_user.lastRequestTime = Date.now();
       }
     }
 
@@ -64,6 +90,15 @@ export default async function start_http_server(
     const { video_id, filename, user_id } = req.params;
     const segment = extract_ts_segment_number(filename);
 
+    // Check for duplicate TS requests
+    if (isDuplicateRequest(user_id, `TS_${segment}`)) {
+      // Just serve the file without updating segments
+      const requested_file = get_ts_file_by_video_id(video_id, segment);
+      console.log("Serving cached TS file:", requested_file);
+      res.sendFile(p.join(requested_file));
+      return;
+    }
+
     let current_user;
 
     if (!user_allready_saved(users, user_id)) {
@@ -78,48 +113,48 @@ export default async function start_http_server(
       return;
     }
 
-    // Only update segment tracking if this is forward progress or a significant jump back
-    const isForwardProgress = current_user.highestRequestedFile <= segment;
-    const isSignificantJumpBack = current_user.highestRequestedFile - segment > 5;
+    // More robust logic for segment progression
+    const isForwardProgress = current_user.highestRequestedFile < segment;
+    const isSignificantJumpBack = current_user.highestRequestedFile - segment > 10; // Increased threshold
     const isCorrectVideo = current_user.getCurrentQuestion().id == video_id;
+    const now = Date.now();
+    const timeSinceLastRequest = now - current_user.lastRequestTime;
     
-    if ((isForwardProgress || isSignificantJumpBack) && isCorrectVideo) {
-      // Only update if not seeking or if this is a significant change
-      const now = Date.now();
-      const timeSinceLastRequest = now - current_user.lastRequestTime;
+    // Only process segment updates if this is genuine progression or a significant jump
+    if (isCorrectVideo && (isForwardProgress || (isSignificantJumpBack && timeSinceLastRequest > 500))) {
+      console.log(`Processing segment update: ${segment}, user: ${user_id}, forward: ${isForwardProgress}, jump: ${isSignificantJumpBack}`);
       
-      // If multiple requests come in quick succession, it's likely seeking behavior
-      if (timeSinceLastRequest > 200 || isForwardProgress) {
-        current_user.highestRequestedFile = segment;
-        current_user.lastRequestTime = now;
-        
-        let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
+      current_user.highestRequestedFile = segment;
+      current_user.lastRequestTime = now;
+      
+      let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
 
-        if (next_segment == "ENDING") {
-          current_user.highestRequestedFile = 0;
-          const newQuestion = current_user.getNewQuestion();
+      if (next_segment == "ENDING") {
+        current_user.highestRequestedFile = 0;
+        const newQuestion = current_user.getNewQuestion();
 
-          if (!newQuestion) {
-            console.log("Stream from ", user_id, "has Ended!");
-            addStreamEnding(user_id);
-            
-            // Notify frontend via socket if io is available
-            if (io) {
-              io.to(user_id).emit("STREAM_ENDED");
-            }
-            
-            // Return 404 for ENDING requests to properly signal stream end
-            res.status(404).send("Stream ended");
-            return;
-          } else {
-            addDiscontinuity(user_id);
-            console.log("NEW QUESTION ID!", newQuestion);
-            next_segment = find_next_segment_path(newQuestion.id, 0, user_id);
+        if (!newQuestion) {
+          console.log("Stream from ", user_id, "has Ended!");
+          addStreamEnding(user_id);
+          
+          // Notify frontend via socket if io is available
+          if (io) {
+            io.to(user_id).emit("STREAM_ENDED");
           }
+          
+          // Return 404 for ENDING requests to properly signal stream end
+          res.status(404).send("Stream ended");
+          return;
+        } else {
+          addDiscontinuity(user_id);
+          console.log("NEW QUESTION ID!", newQuestion);
+          next_segment = find_next_segment_path(newQuestion.id, 0, user_id);
         }
-
-        add_segment(user_id, next_segment, 1.0);
       }
+
+      add_segment(user_id, next_segment, 1.0);
+    } else {
+      console.log(`Skipping segment update: ${segment}, user: ${user_id}, reason: not forward progress or too soon`);
     }
     
     const requested_file = get_ts_file_by_video_id(video_id, segment);
