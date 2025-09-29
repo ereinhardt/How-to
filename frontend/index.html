@@ -312,16 +312,7 @@ body {
 
       function Jumpto(value, e){
         e.preventDefault();
-        const video = document.getElementsByTagName("video")[0];
-        
-        // Wenn zum frühesten Punkt gesprungen wird, gehe 10 Sekunden zurück
-        // um Probleme zu vermeiden
-        if (value === 0 || value <= 10) {
-          const adjustedTime = Math.max(0, value - 10);
-          return video.currentTime = adjustedTime;
-        }
-        
-        return video.currentTime = value;
+        return document.getElementsByTagName("video")[0].currentTime = value;
       }
 
       function setActiveLink(linkElem) {
