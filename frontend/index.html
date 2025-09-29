@@ -184,8 +184,8 @@ body {
             autoStartLoad : true, 
             debug: false, // Reduce debug logs
             liveDurationInfinity: true, // Allow seeking anywhere in the stream
-            maxBufferLength: 60, // Increased buffer length
-            backBufferLength: 60, // Increased back buffer for seeking backwards
+            maxBufferLength: 20, // Reduced buffer for early positions
+            backBufferLength: 10, // Reduced back buffer to prevent stalling
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 0.1, // Allow small seeks over holes
@@ -204,7 +204,7 @@ body {
             // Additional settings to prevent automatic seeking to live edge
             startLevel: -1,
             capLevelToPlayerSize: false,
-            maxMaxBufferLength: 120, // Allow larger buffer
+            maxMaxBufferLength: 30, // Reduced max buffer
             // Better seeking behavior for early positions
             nudgeOffset: 0.01, // Smaller nudge for early positions
             nudgeMaxRetry: 1, // Reduced retries to prevent loops
@@ -213,11 +213,11 @@ body {
             seekHoleNudgeDuration: 0.001, // Very small nudge duration
             maxSeekHole: 3.0, // Larger hole tolerance for early seeks
             // Fragment retry settings for early segments
-            fragLoadingTimeOut: 8000, // Longer timeout for early fragments
+            fragLoadingTimeOut: 6000, // Reduced timeout
             fragLoadingMaxRetry: 2, // Allow more retries for early fragments
-            // Prevent buffer stalling on early seeks
-            highBufferWatchdogPeriod: 1, // More frequent buffer checks
-            lowBufferWatchdogPeriod: 0.25 // Faster response to low buffer
+            // Prevent buffer stalling on early seeks - reduced values
+            highBufferWatchdogPeriod: 0.5, // More frequent buffer checks
+            lowBufferWatchdogPeriod: 0.1 // Faster response to low buffer
         });
 
         hls_context.loadSource(source_url);
@@ -254,6 +254,29 @@ body {
         hls_context.on(Hls.Events.BUFFER_APPENDED, function (event, data) {
             if (data.timeRanges && data.timeRanges.start && data.timeRanges.start(0) < 10) {
                 console.log(`Early buffer appended: ${data.timeRanges.start(0)}s - ${data.timeRanges.end(0)}s`);
+                
+                // Force play if video should be playing but is paused
+                const video = document.getElementsByTagName("video")[0];
+                if (video && video.paused && video.readyState >= 2) {
+                    console.log('Forcing play after early buffer append');
+                    video.play().then(() => {
+                        console.log('✓ Forced play after buffer append successful');
+                    }).catch(err => {
+                        console.log('✗ Forced play after buffer append failed:', err);
+                    });
+                }
+            }
+        });
+
+        // Monitor when HLS is ready to play and force playback for early positions  
+        hls_context.on(Hls.Events.BUFFER_EOS, function (event, data) {
+            console.log('Buffer End of Stream event');
+            const video = document.getElementsByTagName("video")[0];
+            if (video && video.paused && video.currentTime < 10 && video.readyState >= 2) {
+                console.log('Forcing play at early position after buffer EOS');
+                video.play().catch(err => {
+                    console.log('✗ EOS forced play failed:', err);
+                });
             }
         });
 
@@ -562,6 +585,7 @@ body {
         console.log(`Enhanced early seek to ${targetTime}`);
         
         const wasPaused = video.paused;
+        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before seek`);
         
         // Clear any existing buffers and force HLS to reload from target position
         if (hls_context && hls_context.media) {
@@ -569,14 +593,22 @@ body {
           // Stop loading and clear buffers
           hls_context.stopLoad();
           
-          // Small delay to ensure buffers are cleared
+          // Set the current time immediately
+          video.currentTime = targetTime;
+          
+          // Small delay to ensure buffers are cleared, then restart
           setTimeout(() => {
-            // Set the current time and restart loading
-            video.currentTime = targetTime;
+            console.log('Restarting HLS load from position:', targetTime);
             hls_context.startLoad(targetTime);
             
-            // Force play after seek completes
+            // Multiple strategies to ensure playback continues
+            let seekHandled = false;
+            let playbackMonitor = null;
+            
             const handleEarlySeek = () => {
+              if (seekHandled) return;
+              seekHandled = true;
+              
               video.removeEventListener('seeked', handleEarlySeek);
               console.log(`Enhanced early seek completed to ${video.currentTime}`);
               
@@ -585,24 +617,104 @@ body {
                 updateActiveLinkByTime(video.currentTime, window.currentQuestions);
               }
               
-              // Ensure playback continues from early position
+              // Force play if video was playing before
               if (!wasPaused) {
+                console.log('Attempting to resume playback after early seek');
                 video.play().then(() => {
-                  console.log('Playback restarted after early seek');
+                  console.log('✓ Playback successfully restarted after early seek');
+                  
+                  // Start monitoring playback for early positions
+                  startEarlyPositionPlaybackMonitor(video);
+                  
                 }).catch(err => {
-                  console.log('Auto-play failed after early seek:', err);
+                  console.log('✗ Auto-play failed after early seek:', err);
+                  // Fallback: try again after a short delay
+                  setTimeout(() => {
+                    video.play().then(() => {
+                      console.log('✓ Delayed playback restart successful');
+                      startEarlyPositionPlaybackMonitor(video);
+                    }).catch(err2 => {
+                      console.log('✗ Delayed playback restart also failed:', err2);
+                    });
+                  }, 500);
                 });
               }
             };
             
             video.addEventListener('seeked', handleEarlySeek);
-          }, 100);
+            
+            // Backup: if seeked event doesn't fire within 3 seconds, force play anyway
+            setTimeout(() => {
+              if (!seekHandled && !wasPaused) {
+                console.log('Seeked event timeout - forcing play anyway');
+                video.play().then(() => {
+                  console.log('✓ Timeout-triggered playback successful');
+                  startEarlyPositionPlaybackMonitor(video);
+                }).catch(err => {
+                  console.log('✗ Timeout-triggered playback failed:', err);
+                });
+              }
+            }, 3000);
+            
+          }, 150); // Slightly longer delay to ensure buffer clearing
         } else {
           // Fallback to simple seek if HLS context not available
+          console.log('HLS context not available, using simple seek fallback');
           simpleSeek(targetTime);
         }
         
         return targetTime;
+      }
+
+      // Monitor playback for early positions to ensure continuous play
+      function startEarlyPositionPlaybackMonitor(video) {
+        if (video.currentTime >= 10) return; // Only for early positions
+        
+        console.log('Starting early position playback monitor');
+        
+        let stuckCount = 0;
+        let lastTime = video.currentTime;
+        
+        const monitor = setInterval(() => {
+          if (video.currentTime >= 10) {
+            console.log('Early position monitor: reached 10s, stopping monitor');
+            clearInterval(monitor);
+            return;
+          }
+          
+          if (video.paused) {
+            console.log('Early position monitor: video is paused, stopping monitor');
+            clearInterval(monitor);
+            return;
+          }
+          
+          // Check if playback is stuck
+          if (Math.abs(video.currentTime - lastTime) < 0.1) {
+            stuckCount++;
+            console.log(`Early position monitor: playback seems stuck (${stuckCount}/3)`);
+            
+            if (stuckCount >= 3) {
+              console.log('Early position monitor: forcing play due to stuck playback');
+              video.play().then(() => {
+                console.log('✓ Monitor forced play successful');
+                stuckCount = 0;
+              }).catch(err => {
+                console.log('✗ Monitor forced play failed:', err);
+                clearInterval(monitor);
+              });
+            }
+          } else {
+            stuckCount = 0; // Reset counter if playback is progressing
+          }
+          
+          lastTime = video.currentTime;
+        }, 1000); // Check every second
+        
+        // Stop monitoring after 30 seconds max
+        setTimeout(() => {
+          clearInterval(monitor);
+          console.log('Early position monitor: stopped after 30s timeout');
+        }, 30000);
       }
 
       // Simple seek function for title clicks - always works immediately
@@ -611,6 +723,8 @@ body {
         console.log(`Simple seek to ${targetTime}`);
         
         const wasPaused = video.paused;
+        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before simple seek`);
+        
         video.pause();
         video.currentTime = targetTime;
         
@@ -623,12 +737,34 @@ body {
             updateActiveLinkByTime(targetTime, window.currentQuestions);
           }
           
+          // Resume playback if it was playing before
           if (!wasPaused) {
-            video.play();
+            console.log('Resuming playback after simple seek');
+            video.play().then(() => {
+              console.log('✓ Simple seek playback resumed successfully');
+            }).catch(err => {
+              console.log('✗ Simple seek playback resume failed:', err);
+              // Try again after a brief delay
+              setTimeout(() => {
+                video.play().catch(err2 => {
+                  console.log('✗ Delayed simple seek playback also failed:', err2);
+                });
+              }, 250);
+            });
           }
         };
         
         video.addEventListener('seeked', handleSeeked);
+        
+        // Backup timeout in case seeked event doesn't fire
+        setTimeout(() => {
+          if (!wasPaused && video.paused) {
+            console.log('Simple seek timeout - forcing play');
+            video.play().catch(err => {
+              console.log('✗ Timeout simple seek play failed:', err);
+            });
+          }
+        }, 2000);
         
         return targetTime;
       }
