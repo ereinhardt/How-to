@@ -35,8 +35,6 @@ export default class User {
   public state = UserState.Unset;
   public questions: Question[] = [];
   public current_question_index = 0;
-  public lastRequestTime = 0;
-  public isSeekingInProgress = false;
 
   constructor(id: string) {
     this.id = id;

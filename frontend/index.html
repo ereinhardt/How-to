@@ -178,86 +178,25 @@ body {
 
         hls_context = new Hls({
             levelLoadingTimeOut: 1000000,
-            manifestLoadingTimeOut: 1500, // Slightly reduced
-            levelLoadingMaxRetryTimeout: 1500,
-            levelLoadingMaxRetry: 2, // Restored retries for reliability
+            manifestLoadingTimeOut: 1000,
+            levelLoadingMaxRetryTimeout: 1000,
+            levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
-            debug: false, 
+            debug: true,
             liveDurationInfinity: false,
-            maxBufferLength: 25, // Slightly reduced buffer
-            liveSyncDurationCount: 3, 
-            backBufferLength: 15, // Balanced back buffer
+            maxBufferLength: 20,
+            liveSyncDurationCount: 5,
+            backBufferLength: 20, 
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
-            makSeekHole: 1,
-            // Balanced settings for reliability vs performance
-            enableWorker: false,
-            lowLatencyMode: false,
-            // Moderate manifest reload settings
-            manifestLoadingRetryDelay: 500, // Moderate delay
-            manifestLoadingMaxRetry: 2, // Allow some retries
-            // Reasonable buffer settings
-            maxBufferSize: 40 * 1000 * 1000, // 40MB buffer
-            maxBufferHole: 0.5,
-            highBufferWatchdogPeriod: 2,
-            nudgeOffset: 0.1,
-            nudgeMaxRetry: 3
-        });        hls_context.loadSource(source_url);
+            makSeekHole: 1
+        });
+
+        hls_context.loadSource(source_url);
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
 
         // Listen for stream end events
-        hls_context.on(Hls.Events.ERROR, function (event, data) {
-            if (data.fatal) {
-                switch(data.type) {
-                    case Hls.ErrorTypes.NETWORK_ERROR:
-                        console.log('Fatal network error, stream might have ended');
-                        if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR || 
-                            data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
-                            resetToInitialState();
-                        }
-                        break;
-                    case Hls.ErrorTypes.MEDIA_ERROR:
-                        console.log('Fatal media error');
-                        break;
-                    default:
-                        console.log('Fatal error');
-                        break;
-                }
-            }
-        });
-
-        // Add seeking event handlers to manage HLS behavior during seeks
-        video.addEventListener("seeking", () => {
-            console.log("Video seeking started");
-        });
-
-        video.addEventListener("seeked", () => {
-            console.log("Video seeking completed");
-            // Update active link when user manually seeks in timeline
-            if (window.currentQuestions) {
-                updateActiveLinkByTime(video.currentTime, window.currentQuestions);
-            }
-        });
-
-        // Light throttling for manifest reloads - only prevent rapid duplicates
-        let manifestReloadThrottle = null;
-        let lastManifestLoad = 0;
-        const MANIFEST_THROTTLE_DELAY = 100; // Reduced from 300ms to 100ms
-        
-        hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
-            const now = Date.now();
-            
-            // Only throttle if requests are extremely rapid (< 100ms apart)
-            if (now - lastManifestLoad < MANIFEST_THROTTLE_DELAY) {
-                console.log("Throttling rapid manifest reload");
-                return;
-            }
-            
-            lastManifestLoad = now;
-            console.log("Loading manifest at:", now);
-        });
-
         hls_context.on(Hls.Events.ERROR, function (event, data) {
             if (data.fatal) {
                 switch(data.type) {
@@ -318,7 +257,6 @@ body {
         num_of_videos = 0;
         search_value = "";
         is_searching = false;
-        window.currentQuestions = null;
         
         // Enable search button
         document.getElementById("search_button").disabled = false;
@@ -337,80 +275,31 @@ body {
         vid.removeEventListener("timeupdate", timeupdateHandler);
       }
 
-      // Store questions globally for active link detection
-      window.currentQuestions = questions;
-
-      // Generate the first timestamp immediately (index 0) - but without showing timestamp
-      if (questions.length > 0) {
-        generateTimeStamp(questions[0], true); // true = hide timestamp for first question
-      }
-
       // neuen Handler definieren
       timeupdateHandler = () => {
         const time = vid.currentTime;
-        
-        // Generate new timestamps when needed
         if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
           generateTimeStamp(questions[currentIndex]);
           currentIndex++;
         }
-        
-        // Update active link based on current time
-        updateActiveLinkByTime(time, questions);
       };
 
       // neuen Handler anhängen
       vid.addEventListener("timeupdate", timeupdateHandler);
     }
 
-    function updateActiveLinkByTime(currentTime, questions) {
-      // Find which question/video is currently active based on time
-      let activeQuestionIndex = 0;
-      
-      for (let i = questions.length - 1; i >= 0; i--) {
-        if (currentTime >= questions[i].startTimeInSec) {
-          activeQuestionIndex = i;
-          break;
-        }
-      }
-      
-      const activeQuestion = questions[activeQuestionIndex];
-      
-      // Find and set the active link
-      const links = document.querySelectorAll(".Stamps a");
-      links.forEach(link => {
-        if (link.innerText === activeQuestion.question) {
-          setActiveLink(link);
-        }
-      });
-    }
-
-      function generateTimeStamp(question, hideTimestamp = false) {
-        generateTimeStampsDOM(question.question, question.startTimeInSec, hideTimestamp)
+      function generateTimeStamp(question) {
+        generateTimeStampsDOM(question.question, question.startTimeInSec)
       }
 
-      function generateTimeStampsDOM(title, time, hideTimestamp = false){
+      function generateTimeStampsDOM(title, time){
         var wrapper = document.createElement("div");
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        
-        // Show title with or without timestamp
-        if (hideTimestamp || time === 0) {
-          link.innerText = title;
-        } else {
-          // Convert seconds to mm:ss format
-          const minutes = Math.floor(time / 60);
-          const seconds = Math.floor(time % 60);
-          const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-          link.innerText = `${timeString} - ${title}`;
-        }
-        
-        // Only set as active if this is the first question (time = 0) or if no other link is active
-        const existingActiveLinks = document.querySelectorAll(".Stamps a[id='active']");
-        if (time === 0 || existingActiveLinks.length === 0) {
-          link.id = "active";
-        }
+        link.id = "active";
+        link.innerText = title;
+        setActiveLink(link);
         
         link.onclick = (e)=>{
           Jumpto(time, e);
@@ -423,32 +312,7 @@ body {
 
       function Jumpto(value, e){
         e.preventDefault();
-        const video = document.getElementsByTagName("video")[0];
-        
-        // Pause video during seeking to prevent race conditions
-        const wasPaused = video.paused;
-        video.pause();
-        
-        // Set the current time
-        video.currentTime = value;
-        
-        // Wait for seeking to complete before resuming playback
-        const handleSeeked = () => {
-          video.removeEventListener('seeked', handleSeeked);
-          
-          // Update active link based on the new time
-          if (window.currentQuestions) {
-            updateActiveLinkByTime(value, window.currentQuestions);
-          }
-          
-          if (!wasPaused) {
-            video.play();
-          }
-        };
-        
-        video.addEventListener('seeked', handleSeeked);
-        
-        return value;
+        return document.getElementsByTagName("video")[0].currentTime = value;
       }
 
       function setActiveLink(linkElem) {
