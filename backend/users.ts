@@ -31,6 +31,7 @@ class Question {
 export default class User {
   public id: string;
   public highestRequestedFile = 0;
+  public highestAddedToPlaylist = -1; // Track highest segment added to M3U8 playlist
   public generatedFollowingQuestions = false;
   public state = UserState.Unset;
   public questions: Question[] = [];
