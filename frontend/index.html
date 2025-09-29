@@ -177,121 +177,30 @@ body {
         }
 
         hls_context = new Hls({
-            levelLoadingTimeOut: 10000,
-            manifestLoadingTimeOut: 5000,
-            levelLoadingMaxRetryTimeout: 2000,
-            levelLoadingMaxRetry: 1,
+            levelLoadingTimeOut: 1000000,
+            manifestLoadingTimeOut: 1000,
+            levelLoadingMaxRetryTimeout: 1000,
+            levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
-            debug: false, // Reduce debug logs
-            liveDurationInfinity: true, // Allow seeking anywhere in the stream
-            maxBufferLength: 30, // Balanced buffer for A/V sync
-            backBufferLength: 15, // Sufficient back buffer for sync
-            adjustTs: true, // Critical for A/V sync
+            debug: true,
+            liveDurationInfinity: false,
+            maxBufferLength: 20,
+            liveSyncDurationCount: 5,
+            backBufferLength: 20, 
+            adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
-            makSeekHole: 0.1, // Allow small seeks over holes
-            // Prevent excessive manifest reloads
+            makSeekHole: 1,
+            // Prevent excessive manifest reloads during seeking
             enableWorker: false,
             lowLatencyMode: false,
-            // Audio-Video sync optimization
-            audioCodec: undefined, // Let HLS.js auto-detect
-            videoCodec: undefined, // Let HLS.js auto-detect
-            // Significantly reduce manifest reload frequency
-            manifestLoadingRetryDelay: 2000,
-            manifestLoadingMaxRetry: 1,
-            // Remove live sync constraints to allow free seeking
-            // liveSyncDuration: 3,
-            // liveMaxLatencyDuration: 10,
-            // Reduce playlist reload frequency
-            playlistLoadingMaxRetry: 1,
-            playlistLoadingRetryDelay: 2000,
-            // Additional settings to prevent automatic seeking to live edge
-            startLevel: -1,
-            capLevelToPlayerSize: false,
-            maxMaxBufferLength: 60, // Larger buffer for better sync
-            // Better seeking behavior for early positions - sync-friendly
-            nudgeOffset: 0.1, // Larger nudge for better sync
-            nudgeMaxRetry: 2, // Allow some retries for sync correction
-            maxBufferHole: 2.0, // Moderate hole tolerance
-            // Seek behavior optimized for A/V sync
-            seekHoleNudgeDuration: 0.1, // Moderate nudge duration
-            maxSeekHole: 2.0, // Moderate hole tolerance
-            // Fragment retry settings
-            fragLoadingTimeOut: 8000, // Longer timeout for reliable loading
-            fragLoadingMaxRetry: 2,
-            // Buffer watchdog - balanced for sync
-            highBufferWatchdogPeriod: 2, // Less aggressive buffer checks
-            lowBufferWatchdogPeriod: 0.5,
-            // A/V sync specific settings
-            maxAudioFramesDrift: 1, // Limit audio drift
-            appendErrorMaxRetry: 3, // Allow retries for sync recovery
-            // Prevent too aggressive adaptation that breaks sync
-            abrEwmaFastLive: 5.0,
-            abrEwmaSlowLive: 9.0
+            // Reduce manifest reload frequency
+            manifestLoadingRetryDelay: 500,
+            manifestLoadingMaxRetry: 1
         });
 
         hls_context.loadSource(source_url);
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
-
-        // Prevent automatic seeking to live edge
-        hls_context.on(Hls.Events.FRAG_LOADED, function (event, data) {
-            // Don't auto-seek when user has manually positioned the video
-            if (Math.abs(video.currentTime - data.frag.start) > 2) {
-                console.log("Preventing auto-seek to live edge");
-            }
-        });
-
-        // Prevent HLS from blocking seeks to early positions
-        hls_context.on(Hls.Events.ERROR, function (event, data) {
-            if (data.type === Hls.ErrorTypes.MEDIA_ERROR && data.details === Hls.ErrorDetails.BUFFER_SEEK_OVER_HOLE) {
-                console.log("Buffer seek over hole detected, allowing seek anyway");
-                // Don't prevent the seek, just log it
-            }
-        });
-
-        // Monitor fragment loading to ensure early segments load
-        hls_context.on(Hls.Events.FRAG_LOADING, function (event, data) {
-            console.log(`Loading fragment: ${data.frag.sn} (${data.frag.start}s - ${data.frag.end}s)`);
-        });
-
-        // Monitor level switching to prevent issues with early seeks
-        hls_context.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-            console.log(`Level switched to: ${data.level}`);
-        });
-
-        // Monitor buffering progress for early positions - gentle approach
-        hls_context.on(Hls.Events.BUFFER_APPENDED, function (event, data) {
-            if (data.timeRanges && data.timeRanges.start && data.timeRanges.start(0) < 10) {
-                console.log(`Early buffer appended: ${data.timeRanges.start(0)}s - ${data.timeRanges.end(0)}s`);
-                
-                // Gentle play attempt that preserves A/V sync
-                const video = document.getElementsByTagName("video")[0];
-                if (video && video.paused && video.readyState >= 3) { // Require HAVE_FUTURE_DATA
-                    console.log('Gentle play after early buffer append');
-                    
-                    // Single attempt with delay to preserve sync
-                    setTimeout(() => {
-                        video.play().then(() => {
-                            console.log('✓ Gentle buffer append play successful');
-                        }).catch(err => {
-                            console.log('✗ Gentle buffer append play failed:', err);
-                        });
-                    }, 200); // Delay to let A/V sync settle
-                }
-            }
-        });
-
-        // Monitor when HLS encounters media errors that might affect sync
-        hls_context.on(Hls.Events.ERROR, function (event, data) {
-            if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-                if (data.details === Hls.ErrorDetails.BUFFER_APPEND_ERROR) {
-                    console.log('Buffer append error - might affect A/V sync');
-                } else if (data.details === Hls.ErrorDetails.BUFFER_SEEK_OVER_HOLE) {
-                    console.log('Buffer seek over hole - preserving A/V sync');
-                    // Don't intervene - let HLS handle it naturally
-                }
-            }
-        });
 
         // Listen for stream end events
         hls_context.on(Hls.Events.ERROR, function (event, data) {
@@ -316,67 +225,26 @@ body {
 
         // Add seeking event handlers to manage HLS behavior during seeks
         video.addEventListener("seeking", () => {
-            console.log("Video seeking started at", video.currentTime);
-            // Show buffering indicator or similar feedback
+            console.log("Video seeking started");
         });
 
         video.addEventListener("seeked", () => {
-            console.log("Video seeking completed at", video.currentTime);
+            console.log("Video seeking completed");
             // Update active link when user manually seeks in timeline
             if (window.currentQuestions) {
                 updateActiveLinkByTime(video.currentTime, window.currentQuestions);
             }
         });
 
-        // Add buffering event handlers to provide feedback during seeking
-        video.addEventListener("waiting", () => {
-            console.log("Video is waiting for data (buffering)");
-        });
-
-        video.addEventListener("canplay", () => {
-            console.log("Video can start playing");
-        });
-
-        video.addEventListener("canplaythrough", () => {
-            console.log("Video can play through without stopping");
-        });
-
-        // Monitor buffer changes
-        video.addEventListener("progress", () => {
-            if (video.buffered.length > 0) {
-                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-                const bufferedStart = video.buffered.start(0);
-                console.log(`Buffer range: ${bufferedStart.toFixed(2)}s - ${bufferedEnd.toFixed(2)}s`);
-            }
-        });
-
-        // Throttle manifest reloads during rapid seeking with more aggressive caching
+        // Throttle manifest reloads during rapid seeking
         let manifestReloadThrottle = null;
-        let lastManifestLoadTime = 0;
-        
         hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
-            const now = Date.now();
-            
-            // If manifest was loaded less than 1.5 seconds ago, try to prevent the reload
-            if (now - lastManifestLoadTime < 1500) {
-                console.log("Preventing frequent manifest reload, last load was", now - lastManifestLoadTime, "ms ago");
-                return;
-            }
-            
             if (manifestReloadThrottle) {
                 clearTimeout(manifestReloadThrottle);
             }
-            
             manifestReloadThrottle = setTimeout(() => {
                 manifestReloadThrottle = null;
-                lastManifestLoadTime = Date.now();
-            }, 200);
-        });
-
-        // Track successful manifest loads
-        hls_context.on(Hls.Events.MANIFEST_LOADED, function (event, data) {
-            lastManifestLoadTime = Date.now();
-            console.log("Manifest successfully loaded at", lastManifestLoadTime);
+            }, 100);
         });
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
@@ -524,13 +392,7 @@ body {
         }
         
         link.onclick = (e)=>{
-          e.preventDefault();
-          console.log(`Title clicked: ${title} at time ${time}`);
-          
-          // Use unified seek for title clicks to prevent conflicts
-          unifiedSeek(time, 'title');
-          
-          // Update active link immediately
+          Jumpto(time, e);
           setActiveLink(e.target);
         }
         wrapper.appendChild(link);
@@ -542,165 +404,30 @@ body {
         e.preventDefault();
         const video = document.getElementsByTagName("video")[0];
         
-        console.log(`Timeline seek to ${value} (unified strategy)`);
-        
-        // Use unified seek strategy for all positions to avoid conflicts
-        return unifiedSeek(value, 'timeline');
-      }
-
-      // Unified seek function that handles all seeking consistently
-      function unifiedSeek(targetTime, source) {
-        const video = document.getElementsByTagName("video")[0];
-        console.log(`Unified seek to ${targetTime} (source: ${source})`);
-        
+        // Pause video during seeking to prevent race conditions
         const wasPaused = video.paused;
-        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before unified seek`);
-        
-        // Clear any existing monitoring to prevent conflicts
-        clearExistingSeekMonitoring();
-        
-        // Pause video during seek
         video.pause();
         
-        // Perform the seek
-        video.currentTime = targetTime;
+        // Set the current time
+        video.currentTime = value;
         
-        // Set up unified monitoring
-        setupUnifiedSeekMonitoring(video, targetTime, wasPaused, source);
-        
-        return targetTime;
-      }
-      
-      // Clear any existing seek monitoring to prevent conflicts
-      let activeSeekMonitoring = null;
-      
-      function clearExistingSeekMonitoring() {
-        if (activeSeekMonitoring) {
-          console.log('Clearing existing seek monitoring');
-          const video = document.getElementsByTagName("video")[0];
-          video.removeEventListener('seeked', activeSeekMonitoring.seekedHandler);
-          if (activeSeekMonitoring.timeout) {
-            clearTimeout(activeSeekMonitoring.timeout);
-          }
-          activeSeekMonitoring = null;
-        }
-      }
-      
-      // Unified seek monitoring that prevents conflicts
-      function setupUnifiedSeekMonitoring(video, targetTime, shouldPlay, source) {
-        console.log(`Setting up unified seek monitoring for ${source} seek to ${targetTime}`);
-        
-        let seekCompleted = false;
-        
-        const seekedHandler = () => {
-          if (seekCompleted) return;
-          seekCompleted = true;
+        // Wait for seeking to complete before resuming playback
+        const handleSeeked = () => {
+          video.removeEventListener('seeked', handleSeeked);
           
-          console.log(`Unified seek completed to ${video.currentTime} (target was ${targetTime}, source: ${source})`);
-          
-          // Update active link
+          // Update active link based on the new time
           if (window.currentQuestions) {
-            updateActiveLinkByTime(video.currentTime, window.currentQuestions);
+            updateActiveLinkByTime(value, window.currentQuestions);
           }
           
-          // Resume playback if needed
-          if (shouldPlay) {
-            console.log(`Resuming playback after ${source} seek`);
-            video.play().then(() => {
-              console.log(`✓ Unified seek playback resumed successfully (${source})`);
-            }).catch(err => {
-              console.log(`✗ Unified seek playback resume failed (${source}):`, err);
-              // Single retry after delay
-              setTimeout(() => {
-                video.play().catch(err2 => {
-                  console.log(`✗ Delayed unified seek playback also failed (${source}):`, err2);
-                });
-              }, 300);
-            });
+          if (!wasPaused) {
+            video.play();
           }
-          
-          // Cleanup
-          clearExistingSeekMonitoring();
         };
         
-        // Set up timeout fallback
-        const timeoutHandler = setTimeout(() => {
-          if (!seekCompleted) {
-            console.log(`Unified seek timeout for ${source} seek to ${targetTime}`);
-            if (shouldPlay && video.paused) {
-              video.play().catch(err => {
-                console.log(`✗ Timeout unified seek play failed (${source}):`, err);
-              });
-            }
-            clearExistingSeekMonitoring();
-          }
-        }, 3000);
+        video.addEventListener('seeked', handleSeeked);
         
-        // Store monitoring info for cleanup
-        activeSeekMonitoring = {
-          seekedHandler: seekedHandler,
-          timeout: timeoutHandler
-        };
-        
-        video.addEventListener('seeked', seekedHandler);
-      }
-
-      // Monitor playback for early positions to ensure continuous play
-      function startEarlyPositionPlaybackMonitor(video) {
-        if (video.currentTime >= 10) return; // Only for early positions
-        
-        console.log('Starting early position playback monitor');
-        
-        let stuckCount = 0;
-        let lastTime = video.currentTime;
-        
-        const monitor = setInterval(() => {
-          if (video.currentTime >= 10) {
-            console.log('Early position monitor: reached 10s, stopping monitor');
-            clearInterval(monitor);
-            return;
-          }
-          
-          if (video.paused) {
-            console.log('Early position monitor: video is paused, stopping monitor');
-            clearInterval(monitor);
-            return;
-          }
-          
-          // Check if playback is stuck
-          if (Math.abs(video.currentTime - lastTime) < 0.1) {
-            stuckCount++;
-            console.log(`Early position monitor: playback seems stuck (${stuckCount}/3)`);
-            
-            if (stuckCount >= 3) {
-              console.log('Early position monitor: forcing play due to stuck playback');
-              video.play().then(() => {
-                console.log('✓ Monitor forced play successful');
-                stuckCount = 0;
-              }).catch(err => {
-                console.log('✗ Monitor forced play failed:', err);
-                clearInterval(monitor);
-              });
-            }
-          } else {
-            stuckCount = 0; // Reset counter if playback is progressing
-          }
-          
-          lastTime = video.currentTime;
-        }, 1000); // Check every second
-        
-        // Stop monitoring after 30 seconds max
-        setTimeout(() => {
-          clearInterval(monitor);
-          console.log('Early position monitor: stopped after 30s timeout');
-        }, 30000);
-      }
-
-      // Legacy simple seek function - now replaced by unifiedSeek
-      // Kept for compatibility but should not be used for new implementations
-      function simpleSeek(targetTime) {
-        console.log(`Legacy simpleSeek called - redirecting to unifiedSeek`);
-        return unifiedSeek(targetTime, 'legacy');
+        return value;
       }
 
       function setActiveLink(linkElem) {

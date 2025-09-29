@@ -25,9 +25,6 @@ export default async function start_http_server(
     res.sendFile(p.join(__dirname, `../../${html_name}`));
   });
 
-  // Global cache for M3U8 requests to prevent excessive reloads
-  const m3u8Cache = new Map();
-  
   server.get("/:id/:filename", async (req, res) => {
     console.log("Requested File:", req.params.filename);
 
@@ -39,19 +36,17 @@ export default async function start_http_server(
       return;
     }
 
-    // Aggressive rate limiting for M3U8 manifest requests
+    // Check if this is an M3U8 manifest request
     if (filename.endsWith('.m3u8')) {
-      const cacheKey = `${id}_${filename}`;
+      // Add rate limiting for M3U8 requests to prevent duplicate processing
+      let current_user = get_user_by_id(users, id);
       const now = Date.now();
-      const lastRequest = m3u8Cache.get(cacheKey);
       
-      // Allow M3U8 requests only every 800ms minimum
-      if (lastRequest && now - lastRequest < 800) {
-        console.log(`Rate limiting M3U8 request for ${id}, last request was ${now - lastRequest}ms ago`);
-        // Return the same file but don't update cache timestamp
-      } else {
-        m3u8Cache.set(cacheKey, now);
-        console.log(`Allowing M3U8 request for ${id}`);
+      // If last request was less than 100ms ago, it's likely a duplicate
+      if (current_user && now - current_user.lastRequestTime < 100) {
+        console.log("Skipping duplicate M3U8 request for user:", id);
+      } else if (current_user) {
+        current_user.lastRequestTime = now;
       }
     }
 
@@ -65,9 +60,6 @@ export default async function start_http_server(
     res.status(200).sendFile(file_path);
   });
 
-  // Cache for TS segment requests to prevent duplicate processing
-  const tsSegmentCache = new Map();
-  
   server.get(`/:video_id/:user_id/:filename`, (req, res) => {
     const { video_id, filename, user_id } = req.params;
     const segment = extract_ts_segment_number(filename);
@@ -86,30 +78,20 @@ export default async function start_http_server(
       return;
     }
 
-    // Create unique key for this segment request
-    const segmentKey = `${user_id}_${video_id}_${segment}`;
-    const now = Date.now();
-    const lastSegmentRequest = tsSegmentCache.get(segmentKey);
-    
-    // Prevent duplicate segment processing within 500ms
-    const shouldProcessSegment = !lastSegmentRequest || (now - lastSegmentRequest) > 500;
-    
     // Only update segment tracking if this is forward progress or a significant jump back
     const isForwardProgress = current_user.highestRequestedFile <= segment;
-    const isSignificantJumpBack = current_user.highestRequestedFile - segment > 10;
+    const isSignificantJumpBack = current_user.highestRequestedFile - segment > 5;
     const isCorrectVideo = current_user.getCurrentQuestion().id == video_id;
     
-    if (shouldProcessSegment && (isForwardProgress || isSignificantJumpBack) && isCorrectVideo) {
+    if ((isForwardProgress || isSignificantJumpBack) && isCorrectVideo) {
       // Only update if not seeking or if this is a significant change
-      const timeSinceLastUserRequest = now - current_user.lastRequestTime;
+      const now = Date.now();
+      const timeSinceLastRequest = now - current_user.lastRequestTime;
       
-      // More strict timing - only process if 1 second has passed or it's genuine forward progress
-      if (timeSinceLastUserRequest > 1000 || (isForwardProgress && segment > current_user.highestRequestedFile)) {
-        console.log(`Processing segment ${segment} for user ${user_id}`);
-        
+      // If multiple requests come in quick succession, it's likely seeking behavior
+      if (timeSinceLastRequest > 200 || isForwardProgress) {
         current_user.highestRequestedFile = segment;
         current_user.lastRequestTime = now;
-        tsSegmentCache.set(segmentKey, now);
         
         let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
 
@@ -137,11 +119,7 @@ export default async function start_http_server(
         }
 
         add_segment(user_id, next_segment, 1.0);
-      } else {
-        console.log(`Skipping duplicate segment processing for ${segment}, user ${user_id}`);
       }
-    } else if (!shouldProcessSegment) {
-      console.log(`Rate limiting segment ${segment} for user ${user_id}`);
     }
     
     const requested_file = get_ts_file_by_video_id(video_id, segment);

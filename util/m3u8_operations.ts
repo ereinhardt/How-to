@@ -79,32 +79,13 @@ export function extractDurationInSec(video_id: string): number {
   return video_segment_files.length;
 }
 
-// Cache für die letzten hinzugefügten Segmente pro User
-const lastAddedSegments = new Map<string, { segment: string; timestamp: number }>();
-// Cache für Logging Rate Limiting
-const lastLoggedSegments = new Map<string, number>();
-
 export function add_segment(id: string, segment: string, length: number) {
   const base_path = save_accesing_env_field("USERS_FOLDER");
   const stream_file_ending = save_accesing_env_field("USER_STREAM_FILE_ENDING");
   const m3u8_path = p.join(base_path, id, id + stream_file_ending + ".m3u8");
 
-  // Prevent duplicate segments within 1 second
-  const cacheKey = id;
-  const now = Date.now();
-  const lastSegment = lastAddedSegments.get(cacheKey);
-  
-  if (lastSegment && lastSegment.segment === segment && (now - lastSegment.timestamp) < 1000) {
-    console.log(`Preventing duplicate segment: ${segment} for user ${id}`);
-    return;
-  }
-
   const newLine = [`#EXTINF:${length}`, segment];
   appendFileSync(m3u8_path, newLine.join("\n") + "\n");
-  
-  // Update cache
-  lastAddedSegments.set(cacheKey, { segment, timestamp: now });
-  console.log(`Added segment: ${segment} for user ${id}`);
 }
 
 export function addStreamEnding(user_id: string) {
@@ -180,13 +161,7 @@ export function find_next_segment_path(
   const host = save_accesing_env_field("SERVER_HOST");
   const port = save_accesing_env_field("SERVER_PORT");
 
-  // More detailed logging with rate limiting
-  const logKey = `${current_video_id}_${new_segment}`;
-  const logNow = Date.now();
-  if (!lastLoggedSegments.has(logKey) || (logNow - lastLoggedSegments.get(logKey)!) > 2000) {
-    console.log("found ts FILE", video_segment_files[new_segment], new_segment);
-    lastLoggedSegments.set(logKey, logNow);
-  }
+  console.log("found ts FILE", video_segment_files[new_segment], new_segment);
 
   //video_id/user_id/fileName.ts
   return (
