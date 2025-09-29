@@ -188,7 +188,7 @@ body {
             backBufferLength: 60, // Increased back buffer for seeking backwards
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
-            makSeekHole: 1,
+            makSeekHole: 0.1, // Allow small seeks over holes
             // Prevent excessive manifest reloads
             enableWorker: false,
             lowLatencyMode: false,
@@ -205,10 +205,13 @@ body {
             startLevel: -1,
             capLevelToPlayerSize: false,
             maxMaxBufferLength: 120, // Allow larger buffer
-            // Better seeking behavior
+            // Better seeking behavior for early positions
             nudgeOffset: 0.1,
-            nudgeMaxRetry: 10,
-            maxBufferHole: 0.5
+            nudgeMaxRetry: 3, // Reduced from 10 to avoid excessive retries
+            maxBufferHole: 2.0, // Allow larger holes in buffer
+            // Seek behavior
+            seekHoleNudgeDuration: 0.01,
+            maxSeekHole: 2.0
         });
 
         hls_context.loadSource(source_url);
@@ -221,6 +224,19 @@ body {
             if (Math.abs(video.currentTime - data.frag.start) > 2) {
                 console.log("Preventing auto-seek to live edge");
             }
+        });
+
+        // Prevent HLS from blocking seeks to early positions
+        hls_context.on(Hls.Events.ERROR, function (event, data) {
+            if (data.type === Hls.ErrorTypes.MEDIA_ERROR && data.details === Hls.ErrorDetails.BUFFER_SEEK_OVER_HOLE) {
+                console.log("Buffer seek over hole detected, allowing seek anyway");
+                // Don't prevent the seek, just log it
+            }
+        });
+
+        // Monitor fragment loading to ensure early segments load
+        hls_context.on(Hls.Events.FRAG_LOADING, function (event, data) {
+            console.log(`Loading fragment: ${data.frag.sn} (${data.frag.start}s - ${data.frag.end}s)`);
         });
 
         // Listen for stream end events
@@ -454,7 +470,13 @@ body {
         }
         
         link.onclick = (e)=>{
-          Jumpto(time, e);
+          e.preventDefault();
+          console.log(`Title clicked: ${title} at time ${time}`);
+          
+          // Use simple seek for title clicks - more reliable
+          simpleSeek(time);
+          
+          // Update active link immediately
           setActiveLink(e.target);
         }
         wrapper.appendChild(link);
@@ -466,86 +488,82 @@ body {
         e.preventDefault();
         const video = document.getElementsByTagName("video")[0];
         
-        console.log(`Attempting to seek to ${value}, current buffered ranges:`, video.buffered);
+        console.log(`Manual timeline seek to ${value}`);
         
-        // Check if the target time is already buffered
-        let isBuffered = false;
-        for (let i = 0; i < video.buffered.length; i++) {
-          if (value >= video.buffered.start(i) && value <= video.buffered.end(i)) {
-            isBuffered = true;
-            break;
+        // For very early positions (< 5 seconds), use simple seek
+        if (value < 5) {
+          console.log(`Early position detected (${value}s), using simple seek`);
+          return simpleSeek(value);
+        }
+        
+        // For other positions, try intelligent seeking but with fallback
+        const wasPaused = video.paused;
+        video.pause();
+        
+        // Store original position in case we need to fall back
+        const originalTime = video.currentTime;
+        
+        console.log(`Attempting seek from ${originalTime} to ${value}`);
+        
+        // Try the seek
+        video.currentTime = value;
+        
+        // Set up a timeout to detect if seek fails
+        const seekTimeout = setTimeout(() => {
+          console.log(`Seek to ${value} timed out, falling back to simple behavior`);
+          // If still not at target after 2 seconds, just accept where we are
+          if (Math.abs(video.currentTime - value) > 2) {
+            console.log(`Seek failed, current position: ${video.currentTime}`);
           }
-        }
+        }, 2000);
         
-        if (!isBuffered) {
-          console.log(`Target time ${value} is not buffered, forcing HLS to load it`);
+        const handleSeeked = () => {
+          video.removeEventListener('seeked', handleSeeked);
+          clearTimeout(seekTimeout);
           
-          // Force HLS to start loading from the target position
-          if (hls_context) {
-            // Stop current loading
-            hls_context.stopLoad();
-            
-            // Set the start position for loading
-            hls_context.startLoad(value);
-            
-            // Wait for buffering before seeking
-            const waitForBuffer = () => {
-              let targetBuffered = false;
-              for (let i = 0; i < video.buffered.length; i++) {
-                if (value >= video.buffered.start(i) && value <= video.buffered.end(i)) {
-                  targetBuffered = true;
-                  break;
-                }
-              }
-              
-              if (targetBuffered || video.buffered.length === 0) {
-                console.log(`Buffer ready for ${value}, seeking now`);
-                performSeek(value);
-              } else {
-                console.log(`Still buffering for ${value}, waiting...`);
-                setTimeout(waitForBuffer, 100);
-              }
-            };
-            
-            // Start monitoring buffer
-            setTimeout(waitForBuffer, 200);
-          } else {
-            // Fallback if HLS context is not available
-            performSeek(value);
+          console.log(`Manual seek completed to ${video.currentTime} (target was ${value})`);
+          
+          // Update active link based on actual current time
+          if (window.currentQuestions) {
+            updateActiveLinkByTime(video.currentTime, window.currentQuestions);
           }
-        } else {
-          console.log(`Target time ${value} is already buffered, seeking immediately`);
-          performSeek(value);
-        }
+          
+          if (!wasPaused) {
+            video.play();
+          }
+        };
         
-        function performSeek(targetTime) {
-          // Pause video during seeking to prevent race conditions
-          const wasPaused = video.paused;
-          video.pause();
-          
-          // Set the current time
-          video.currentTime = targetTime;
-          
-          // Wait for seeking to complete before resuming playback
-          const handleSeeked = () => {
-            video.removeEventListener('seeked', handleSeeked);
-            
-            console.log(`Seek completed to ${video.currentTime}`);
-            
-            // Update active link based on the new time
-            if (window.currentQuestions) {
-              updateActiveLinkByTime(targetTime, window.currentQuestions);
-            }
-            
-            if (!wasPaused) {
-              video.play();
-            }
-          };
-          
-          video.addEventListener('seeked', handleSeeked);
-        }
+        video.addEventListener('seeked', handleSeeked);
         
         return value;
+      }
+
+      // Simple seek function for title clicks - always works immediately
+      function simpleSeek(targetTime) {
+        const video = document.getElementsByTagName("video")[0];
+        console.log(`Simple seek to ${targetTime}`);
+        
+        const wasPaused = video.paused;
+        video.pause();
+        video.currentTime = targetTime;
+        
+        const handleSeeked = () => {
+          video.removeEventListener('seeked', handleSeeked);
+          console.log(`Simple seek completed to ${video.currentTime}`);
+          
+          // Update active link based on the new time
+          if (window.currentQuestions) {
+            updateActiveLinkByTime(targetTime, window.currentQuestions);
+          }
+          
+          if (!wasPaused) {
+            video.play();
+          }
+        };
+        
+        video.addEventListener('seeked', handleSeeked);
+        
+        return targetTime;
       }
 
       function setActiveLink(linkElem) {
