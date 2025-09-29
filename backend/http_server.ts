@@ -62,10 +62,10 @@ export default async function start_http_server(
       res.status(404).send("User not found!");
     }
 
-    // Only add next segment if this is actually the next sequential segment
-    // This prevents duplicate requests when seeking backwards
+    // Add next segment only when progressing forward in the stream
+    // This prevents duplicate segments when seeking backwards
     if (
-      segment === current_user.highestRequestedFile + 1 &&
+      segment >= current_user.highestRequestedFile &&
       current_user.getCurrentQuestion().id == video_id
     ) {
       current_user.highestRequestedFile = segment;
@@ -95,10 +95,6 @@ export default async function start_http_server(
       }
 
       add_segment(user_id, next_segment, 1.0);
-    } else if (segment > current_user.highestRequestedFile && current_user.getCurrentQuestion().id == video_id) {
-      // If seeking forward beyond current position, update highest requested but don't add segments
-      // This handles cases where user seeks forward significantly
-      current_user.highestRequestedFile = segment;
     }
     const requested_file = get_ts_file_by_video_id(video_id, segment);
     console.log(requested_file);
