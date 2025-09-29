@@ -185,7 +185,6 @@ body {
             debug: false, // Reduce debug logs
             liveDurationInfinity: false,
             maxBufferLength: 30,
-            liveSyncDurationCount: 3,
             backBufferLength: 30, 
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
@@ -196,7 +195,7 @@ body {
             // Significantly reduce manifest reload frequency
             manifestLoadingRetryDelay: 2000,
             manifestLoadingMaxRetry: 1,
-            // Key settings to reduce M3U8 reloads
+            // Use only the new duration-based parameters (not count-based)
             liveSyncDuration: 3,
             liveMaxLatencyDuration: 10,
             // Reduce playlist reload frequency
