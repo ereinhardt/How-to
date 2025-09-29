@@ -177,25 +177,31 @@ body {
         }
 
         hls_context = new Hls({
-            levelLoadingTimeOut: 1000000,
-            manifestLoadingTimeOut: 1000,
-            levelLoadingMaxRetryTimeout: 1000,
-            levelLoadingMaxRetry: 2,
+            levelLoadingTimeOut: 10000,
+            manifestLoadingTimeOut: 5000,
+            levelLoadingMaxRetryTimeout: 2000,
+            levelLoadingMaxRetry: 1,
             autoStartLoad : true, 
-            debug: true,
+            debug: false, // Reduce debug logs
             liveDurationInfinity: false,
-            maxBufferLength: 20,
-            liveSyncDurationCount: 5,
-            backBufferLength: 20, 
+            maxBufferLength: 30,
+            liveSyncDurationCount: 3,
+            backBufferLength: 30, 
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 1,
-            // Prevent excessive manifest reloads during seeking
+            // Prevent excessive manifest reloads
             enableWorker: false,
             lowLatencyMode: false,
-            // Reduce manifest reload frequency
-            manifestLoadingRetryDelay: 500,
-            manifestLoadingMaxRetry: 1
+            // Significantly reduce manifest reload frequency
+            manifestLoadingRetryDelay: 2000,
+            manifestLoadingMaxRetry: 1,
+            // Key settings to reduce M3U8 reloads
+            liveSyncDuration: 3,
+            liveMaxLatencyDuration: 10,
+            // Reduce playlist reload frequency
+            playlistLoadingMaxRetry: 1,
+            playlistLoadingRetryDelay: 2000
         });
 
         hls_context.loadSource(source_url);
@@ -236,15 +242,33 @@ body {
             }
         });
 
-        // Throttle manifest reloads during rapid seeking
+        // Throttle manifest reloads during rapid seeking with more aggressive caching
         let manifestReloadThrottle = null;
+        let lastManifestLoadTime = 0;
+        
         hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
+            const now = Date.now();
+            
+            // If manifest was loaded less than 1.5 seconds ago, try to prevent the reload
+            if (now - lastManifestLoadTime < 1500) {
+                console.log("Preventing frequent manifest reload, last load was", now - lastManifestLoadTime, "ms ago");
+                return;
+            }
+            
             if (manifestReloadThrottle) {
                 clearTimeout(manifestReloadThrottle);
             }
+            
             manifestReloadThrottle = setTimeout(() => {
                 manifestReloadThrottle = null;
-            }, 100);
+                lastManifestLoadTime = Date.now();
+            }, 200);
+        });
+
+        // Track successful manifest loads
+        hls_context.on(Hls.Events.MANIFEST_LOADED, function (event, data) {
+            lastManifestLoadTime = Date.now();
+            console.log("Manifest successfully loaded at", lastManifestLoadTime);
         });
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
