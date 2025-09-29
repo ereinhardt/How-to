@@ -527,8 +527,8 @@ body {
           e.preventDefault();
           console.log(`Title clicked: ${title} at time ${time}`);
           
-          // Use simple seek for title clicks - more reliable
-          simpleSeek(time);
+          // Use unified seek for title clicks to prevent conflicts
+          unifiedSeek(time, 'title');
           
           // Update active link immediately
           setActiveLink(e.target);
@@ -542,139 +542,107 @@ body {
         e.preventDefault();
         const video = document.getElementsByTagName("video")[0];
         
-        console.log(`Manual timeline seek to ${value}`);
+        console.log(`Timeline seek to ${value} (unified strategy)`);
         
-        // For very early positions (< 10 seconds), use enhanced early seek
-        if (value < 10) {
-          console.log(`Early position detected (${value}s), using enhanced early seek`);
-          return enhancedEarlySeek(value);
-        }
+        // Use unified seek strategy for all positions to avoid conflicts
+        return unifiedSeek(value, 'timeline');
+      }
+
+      // Unified seek function that handles all seeking consistently
+      function unifiedSeek(targetTime, source) {
+        const video = document.getElementsByTagName("video")[0];
+        console.log(`Unified seek to ${targetTime} (source: ${source})`);
         
-        // For other positions, try intelligent seeking but with fallback
         const wasPaused = video.paused;
+        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before unified seek`);
+        
+        // Clear any existing monitoring to prevent conflicts
+        clearExistingSeekMonitoring();
+        
+        // Pause video during seek
         video.pause();
         
-        // Store original position in case we need to fall back
-        const originalTime = video.currentTime;
+        // Perform the seek
+        video.currentTime = targetTime;
         
-        console.log(`Attempting seek from ${originalTime} to ${value}`);
+        // Set up unified monitoring
+        setupUnifiedSeekMonitoring(video, targetTime, wasPaused, source);
         
-        // Try the seek
-        video.currentTime = value;
-        
-        // Set up a timeout to detect if seek fails
-        const seekTimeout = setTimeout(() => {
-          console.log(`Seek to ${value} timed out, falling back to simple behavior`);
-          // If still not at target after 2 seconds, just accept where we are
-          if (Math.abs(video.currentTime - value) > 2) {
-            console.log(`Seek failed, current position: ${video.currentTime}`);
+        return targetTime;
+      }
+      
+      // Clear any existing seek monitoring to prevent conflicts
+      let activeSeekMonitoring = null;
+      
+      function clearExistingSeekMonitoring() {
+        if (activeSeekMonitoring) {
+          console.log('Clearing existing seek monitoring');
+          const video = document.getElementsByTagName("video")[0];
+          video.removeEventListener('seeked', activeSeekMonitoring.seekedHandler);
+          if (activeSeekMonitoring.timeout) {
+            clearTimeout(activeSeekMonitoring.timeout);
           }
-        }, 2000);
+          activeSeekMonitoring = null;
+        }
+      }
+      
+      // Unified seek monitoring that prevents conflicts
+      function setupUnifiedSeekMonitoring(video, targetTime, shouldPlay, source) {
+        console.log(`Setting up unified seek monitoring for ${source} seek to ${targetTime}`);
         
-        const handleSeeked = () => {
-          video.removeEventListener('seeked', handleSeeked);
-          clearTimeout(seekTimeout);
+        let seekCompleted = false;
+        
+        const seekedHandler = () => {
+          if (seekCompleted) return;
+          seekCompleted = true;
           
-          console.log(`Manual seek completed to ${video.currentTime} (target was ${value})`);
+          console.log(`Unified seek completed to ${video.currentTime} (target was ${targetTime}, source: ${source})`);
           
-          // Update active link based on actual current time
+          // Update active link
           if (window.currentQuestions) {
             updateActiveLinkByTime(video.currentTime, window.currentQuestions);
           }
           
-          if (!wasPaused) {
-            video.play();
-          }
-        };
-        
-        video.addEventListener('seeked', handleSeeked);
-        
-        return value;
-      }
-
-      // Enhanced early seek function for positions < 10 seconds - A/V sync friendly
-      function enhancedEarlySeek(targetTime) {
-        const video = document.getElementsByTagName("video")[0];
-        console.log(`Enhanced early seek to ${targetTime} (A/V sync friendly)`);
-        
-        const wasPaused = video.paused;
-        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before seek`);
-        
-        // Use less aggressive approach to maintain A/V sync
-        if (hls_context && hls_context.media) {
-          console.log('Using A/V sync friendly early position strategy');
-          
-          // Don't stop/start HLS loading - this breaks A/V sync
-          // Instead, just seek and let HLS handle it naturally
-          video.currentTime = targetTime;
-          
-          // Set up gentle monitoring that doesn't interfere with sync
-          setupGentleVideoMonitoring(video, targetTime, wasPaused);
-          
-          // Update active link
-          if (window.currentQuestions) {
-            updateActiveLinkByTime(targetTime, window.currentQuestions);
-          }
-          
-        } else {
-          console.log('HLS context not available, using simple seek fallback');
-          simpleSeek(targetTime);
-        }
-        
-        return targetTime;
-      }
-
-      // Gentle video monitoring that preserves A/V sync
-      function setupGentleVideoMonitoring(video, targetTime, shouldPlay) {
-        console.log('Setting up gentle video monitoring for A/V sync preservation');
-        
-        let monitoringActive = true;
-        let playAttempts = 0;
-        const maxPlayAttempts = 3; // Reduced from 10
-        
-        const cleanup = () => {
-          monitoringActive = false;
-        };
-        
-        const gentlePlay = (reason) => {
-          if (!shouldPlay || !monitoringActive || playAttempts >= maxPlayAttempts) return;
-          
-          playAttempts++;
-          console.log(`Gentle play attempt ${playAttempts}/${maxPlayAttempts} (${reason})`);
-          
-          video.play().then(() => {
-            console.log(`✓ Gentle play successful on attempt ${playAttempts} (${reason})`);
-            cleanup();
-          }).catch(err => {
-            console.log(`✗ Gentle play attempt ${playAttempts} failed (${reason}):`, err);
-          });
-        };
-        
-        // Only use seeked event to trigger play - preserves sync
-        const seekedHandler = () => {
-          video.removeEventListener('seeked', seekedHandler);
-          console.log('Seeked event - attempting gentle play');
-          
+          // Resume playback if needed
           if (shouldPlay) {
-            // Small delay to let A/V sync settle
-            setTimeout(() => {
-              gentlePlay('after seeked');
-            }, 100);
+            console.log(`Resuming playback after ${source} seek`);
+            video.play().then(() => {
+              console.log(`✓ Unified seek playback resumed successfully (${source})`);
+            }).catch(err => {
+              console.log(`✗ Unified seek playback resume failed (${source}):`, err);
+              // Single retry after delay
+              setTimeout(() => {
+                video.play().catch(err2 => {
+                  console.log(`✗ Delayed unified seek playback also failed (${source}):`, err2);
+                });
+              }, 300);
+            });
           }
           
-          cleanup();
+          // Cleanup
+          clearExistingSeekMonitoring();
+        };
+        
+        // Set up timeout fallback
+        const timeoutHandler = setTimeout(() => {
+          if (!seekCompleted) {
+            console.log(`Unified seek timeout for ${source} seek to ${targetTime}`);
+            if (shouldPlay && video.paused) {
+              video.play().catch(err => {
+                console.log(`✗ Timeout unified seek play failed (${source}):`, err);
+              });
+            }
+            clearExistingSeekMonitoring();
+          }
+        }, 3000);
+        
+        // Store monitoring info for cleanup
+        activeSeekMonitoring = {
+          seekedHandler: seekedHandler,
+          timeout: timeoutHandler
         };
         
         video.addEventListener('seeked', seekedHandler);
-        
-        // Cleanup after 10 seconds
-        setTimeout(() => {
-          if (monitoringActive) {
-            video.removeEventListener('seeked', seekedHandler);
-            console.log('Gentle monitoring cleanup after 10s');
-            cleanup();
-          }
-        }, 10000);
       }
 
       // Monitor playback for early positions to ensure continuous play
@@ -728,56 +696,11 @@ body {
         }, 30000);
       }
 
-      // Simple seek function for title clicks - always works immediately
+      // Legacy simple seek function - now replaced by unifiedSeek
+      // Kept for compatibility but should not be used for new implementations
       function simpleSeek(targetTime) {
-        const video = document.getElementsByTagName("video")[0];
-        console.log(`Simple seek to ${targetTime}`);
-        
-        const wasPaused = video.paused;
-        console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before simple seek`);
-        
-        video.pause();
-        video.currentTime = targetTime;
-        
-        const handleSeeked = () => {
-          video.removeEventListener('seeked', handleSeeked);
-          console.log(`Simple seek completed to ${video.currentTime}`);
-          
-          // Update active link based on the new time
-          if (window.currentQuestions) {
-            updateActiveLinkByTime(targetTime, window.currentQuestions);
-          }
-          
-          // Resume playback if it was playing before
-          if (!wasPaused) {
-            console.log('Resuming playback after simple seek');
-            video.play().then(() => {
-              console.log('✓ Simple seek playback resumed successfully');
-            }).catch(err => {
-              console.log('✗ Simple seek playback resume failed:', err);
-              // Try again after a brief delay
-              setTimeout(() => {
-                video.play().catch(err2 => {
-                  console.log('✗ Delayed simple seek playback also failed:', err2);
-                });
-              }, 250);
-            });
-          }
-        };
-        
-        video.addEventListener('seeked', handleSeeked);
-        
-        // Backup timeout in case seeked event doesn't fire
-        setTimeout(() => {
-          if (!wasPaused && video.paused) {
-            console.log('Simple seek timeout - forcing play');
-            video.play().catch(err => {
-              console.log('✗ Timeout simple seek play failed:', err);
-            });
-          }
-        }, 2000);
-        
-        return targetTime;
+        console.log(`Legacy simpleSeek called - redirecting to unifiedSeek`);
+        return unifiedSeek(targetTime, 'legacy');
       }
 
       function setActiveLink(linkElem) {
