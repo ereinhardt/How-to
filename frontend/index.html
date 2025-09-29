@@ -189,7 +189,13 @@ body {
             backBufferLength: 20, 
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
-            makSeekHole: 1
+            makSeekHole: 1,
+            // Prevent excessive manifest reloads during seeking
+            enableWorker: false,
+            lowLatencyMode: false,
+            // Reduce manifest reload frequency
+            manifestLoadingRetryDelay: 500,
+            manifestLoadingMaxRetry: 1
         });
 
         hls_context.loadSource(source_url);
@@ -197,6 +203,50 @@ body {
         document.body.style.backgroundColor = "black";
 
         // Listen for stream end events
+        hls_context.on(Hls.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+                switch(data.type) {
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+                        console.log('Fatal network error, stream might have ended');
+                        if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR || 
+                            data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+                            resetToInitialState();
+                        }
+                        break;
+                    case Hls.ErrorTypes.MEDIA_ERROR:
+                        console.log('Fatal media error');
+                        break;
+                    default:
+                        console.log('Fatal error');
+                        break;
+                }
+            }
+        });
+
+        // Add seeking event handlers to manage HLS behavior during seeks
+        video.addEventListener("seeking", () => {
+            console.log("Video seeking started");
+        });
+
+        video.addEventListener("seeked", () => {
+            console.log("Video seeking completed");
+            // Update active link when user manually seeks in timeline
+            if (window.currentQuestions) {
+                updateActiveLinkByTime(video.currentTime, window.currentQuestions);
+            }
+        });
+
+        // Throttle manifest reloads during rapid seeking
+        let manifestReloadThrottle = null;
+        hls_context.on(Hls.Events.MANIFEST_LOADING, function (event, data) {
+            if (manifestReloadThrottle) {
+                clearTimeout(manifestReloadThrottle);
+            }
+            manifestReloadThrottle = setTimeout(() => {
+                manifestReloadThrottle = null;
+            }, 100);
+        });
+
         hls_context.on(Hls.Events.ERROR, function (event, data) {
             if (data.fatal) {
                 switch(data.type) {
@@ -257,6 +307,7 @@ body {
         num_of_videos = 0;
         search_value = "";
         is_searching = false;
+        window.currentQuestions = null;
         
         // Enable search button
         document.getElementById("search_button").disabled = false;
@@ -275,17 +326,52 @@ body {
         vid.removeEventListener("timeupdate", timeupdateHandler);
       }
 
+      // Store questions globally for active link detection
+      window.currentQuestions = questions;
+
+      // Generate the first timestamp immediately (index 0)
+      if (questions.length > 0) {
+        generateTimeStamp(questions[0]);
+      }
+
       // neuen Handler definieren
       timeupdateHandler = () => {
         const time = vid.currentTime;
+        
+        // Generate new timestamps when needed
         if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
           generateTimeStamp(questions[currentIndex]);
           currentIndex++;
         }
+        
+        // Update active link based on current time
+        updateActiveLinkByTime(time, questions);
       };
 
       // neuen Handler anhängen
       vid.addEventListener("timeupdate", timeupdateHandler);
+    }
+
+    function updateActiveLinkByTime(currentTime, questions) {
+      // Find which question/video is currently active based on time
+      let activeQuestionIndex = 0;
+      
+      for (let i = questions.length - 1; i >= 0; i--) {
+        if (currentTime >= questions[i].startTimeInSec) {
+          activeQuestionIndex = i;
+          break;
+        }
+      }
+      
+      const activeQuestion = questions[activeQuestionIndex];
+      
+      // Find and set the active link
+      const links = document.querySelectorAll(".Stamps a");
+      links.forEach(link => {
+        if (link.innerText === activeQuestion.question) {
+          setActiveLink(link);
+        }
+      });
     }
 
       function generateTimeStamp(question) {
@@ -297,9 +383,13 @@ body {
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        link.id = "active";
         link.innerText = title;
-        setActiveLink(link);
+        
+        // Only set as active if this is the first question (time = 0) or if no other link is active
+        const existingActiveLinks = document.querySelectorAll(".Stamps a[id='active']");
+        if (time === 0 || existingActiveLinks.length === 0) {
+          link.id = "active";
+        }
         
         link.onclick = (e)=>{
           Jumpto(time, e);
@@ -312,7 +402,32 @@ body {
 
       function Jumpto(value, e){
         e.preventDefault();
-        return document.getElementsByTagName("video")[0].currentTime = value;
+        const video = document.getElementsByTagName("video")[0];
+        
+        // Pause video during seeking to prevent race conditions
+        const wasPaused = video.paused;
+        video.pause();
+        
+        // Set the current time
+        video.currentTime = value;
+        
+        // Wait for seeking to complete before resuming playback
+        const handleSeeked = () => {
+          video.removeEventListener('seeked', handleSeeked);
+          
+          // Update active link based on the new time
+          if (window.currentQuestions) {
+            updateActiveLinkByTime(value, window.currentQuestions);
+          }
+          
+          if (!wasPaused) {
+            video.play();
+          }
+        };
+        
+        video.addEventListener('seeked', handleSeeked);
+        
+        return value;
       }
 
       function setActiveLink(linkElem) {
