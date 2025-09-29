@@ -1,0 +1,74 @@
+e: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1054.ts 1054
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1053.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1055.ts 1055
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1054.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1055.ts 1055
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1054.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1056.ts 1056
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1055.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1056.ts 1056
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1055.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1057.ts 1057
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1056.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1057.ts 1057
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1056.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1058.ts 1058
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1057.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1058.ts 1058
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1057.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1059.ts 1059
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1058.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1059.ts 1059
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1058.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1060.ts 1060
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1059.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1060.ts 1060
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1059.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1061.ts 1061
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1060.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1061.ts 1061
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1060.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1062.ts 1062
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1061.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1062.ts 1062
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1061.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1063.ts 1063
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1062.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1063.ts 1063
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1062.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1064.ts 1064
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1063.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1064.ts 1064
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1063.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1065.ts 1065
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1064.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1065.ts 1065
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1064.ts
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1066.ts 1066
+E:\video-data\How-to-wash-clothes_dlteGDtxsqs\ts_stream_convert\How-to-wash-clothes_dlteGDtxsqs__1065.ts
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+Requested File: wLUC9vSNVSbQeBZkAAAF_stream_file.m3u8
+found ts FILE How-to-wash-clothes_dlteGDtxsqs__1066.ts 1066
