@@ -18,7 +18,8 @@ const html_name = "frontend/index.html";
 
 export default async function start_http_server(
   server: Express,
-  users: User[]
+  users: User[],
+  io?: any
 ) {
   server.get("/", (req, res) => {
     res.sendFile(p.join(__dirname, `../../${html_name}`));
@@ -75,6 +76,15 @@ export default async function start_http_server(
         if (!newQuestion) {
           console.log("Stream from ", user_id, "has Ended!");
           addStreamEnding(user_id);
+          
+          // Notify frontend via socket if io is available
+          if (io) {
+            io.to(user_id).emit("STREAM_ENDED");
+          }
+          
+          // Return 404 for ENDING requests to properly signal stream end
+          res.status(404).send("Stream ended");
+          return;
         } else {
           addDiscontinuity(user_id);
           console.log("NEW QUESTION ID!", newQuestion);
