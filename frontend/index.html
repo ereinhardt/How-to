@@ -184,8 +184,8 @@ body {
             autoStartLoad : true, 
             debug: false, // Reduce debug logs
             liveDurationInfinity: true, // Allow seeking anywhere in the stream
-            maxBufferLength: 30,
-            backBufferLength: 30, 
+            maxBufferLength: 60, // Increased buffer length
+            backBufferLength: 60, // Increased back buffer for seeking backwards
             adjustTs: true,
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 1,
@@ -204,7 +204,11 @@ body {
             // Additional settings to prevent automatic seeking to live edge
             startLevel: -1,
             capLevelToPlayerSize: false,
-            maxMaxBufferLength: 60
+            maxMaxBufferLength: 120, // Allow larger buffer
+            // Better seeking behavior
+            nudgeOffset: 0.1,
+            nudgeMaxRetry: 10,
+            maxBufferHole: 0.5
         });
 
         hls_context.loadSource(source_url);
@@ -243,9 +247,7 @@ body {
         // Add seeking event handlers to manage HLS behavior during seeks
         video.addEventListener("seeking", () => {
             console.log("Video seeking started at", video.currentTime);
-            // Prevent HLS from auto-correcting the seek position
-            hls_context.config.liveSyncDuration = undefined;
-            hls_context.config.liveMaxLatencyDuration = undefined;
+            // Show buffering indicator or similar feedback
         });
 
         video.addEventListener("seeked", () => {
@@ -254,10 +256,28 @@ body {
             if (window.currentQuestions) {
                 updateActiveLinkByTime(video.currentTime, window.currentQuestions);
             }
-            
-            // Optionally re-enable live sync after seeking (commented out to prevent auto-jump)
-            // hls_context.config.liveSyncDuration = 3;
-            // hls_context.config.liveMaxLatencyDuration = 10;
+        });
+
+        // Add buffering event handlers to provide feedback during seeking
+        video.addEventListener("waiting", () => {
+            console.log("Video is waiting for data (buffering)");
+        });
+
+        video.addEventListener("canplay", () => {
+            console.log("Video can start playing");
+        });
+
+        video.addEventListener("canplaythrough", () => {
+            console.log("Video can play through without stopping");
+        });
+
+        // Monitor buffer changes
+        video.addEventListener("progress", () => {
+            if (video.buffered.length > 0) {
+                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+                const bufferedStart = video.buffered.start(0);
+                console.log(`Buffer range: ${bufferedStart.toFixed(2)}s - ${bufferedEnd.toFixed(2)}s`);
+            }
         });
 
         // Throttle manifest reloads during rapid seeking with more aggressive caching
@@ -446,28 +466,84 @@ body {
         e.preventDefault();
         const video = document.getElementsByTagName("video")[0];
         
-        // Pause video during seeking to prevent race conditions
-        const wasPaused = video.paused;
-        video.pause();
+        console.log(`Attempting to seek to ${value}, current buffered ranges:`, video.buffered);
         
-        // Set the current time
-        video.currentTime = value;
-        
-        // Wait for seeking to complete before resuming playback
-        const handleSeeked = () => {
-          video.removeEventListener('seeked', handleSeeked);
-          
-          // Update active link based on the new time
-          if (window.currentQuestions) {
-            updateActiveLinkByTime(value, window.currentQuestions);
+        // Check if the target time is already buffered
+        let isBuffered = false;
+        for (let i = 0; i < video.buffered.length; i++) {
+          if (value >= video.buffered.start(i) && value <= video.buffered.end(i)) {
+            isBuffered = true;
+            break;
           }
-          
-          if (!wasPaused) {
-            video.play();
-          }
-        };
+        }
         
-        video.addEventListener('seeked', handleSeeked);
+        if (!isBuffered) {
+          console.log(`Target time ${value} is not buffered, forcing HLS to load it`);
+          
+          // Force HLS to start loading from the target position
+          if (hls_context) {
+            // Stop current loading
+            hls_context.stopLoad();
+            
+            // Set the start position for loading
+            hls_context.startLoad(value);
+            
+            // Wait for buffering before seeking
+            const waitForBuffer = () => {
+              let targetBuffered = false;
+              for (let i = 0; i < video.buffered.length; i++) {
+                if (value >= video.buffered.start(i) && value <= video.buffered.end(i)) {
+                  targetBuffered = true;
+                  break;
+                }
+              }
+              
+              if (targetBuffered || video.buffered.length === 0) {
+                console.log(`Buffer ready for ${value}, seeking now`);
+                performSeek(value);
+              } else {
+                console.log(`Still buffering for ${value}, waiting...`);
+                setTimeout(waitForBuffer, 100);
+              }
+            };
+            
+            // Start monitoring buffer
+            setTimeout(waitForBuffer, 200);
+          } else {
+            // Fallback if HLS context is not available
+            performSeek(value);
+          }
+        } else {
+          console.log(`Target time ${value} is already buffered, seeking immediately`);
+          performSeek(value);
+        }
+        
+        function performSeek(targetTime) {
+          // Pause video during seeking to prevent race conditions
+          const wasPaused = video.paused;
+          video.pause();
+          
+          // Set the current time
+          video.currentTime = targetTime;
+          
+          // Wait for seeking to complete before resuming playback
+          const handleSeeked = () => {
+            video.removeEventListener('seeked', handleSeeked);
+            
+            console.log(`Seek completed to ${video.currentTime}`);
+            
+            // Update active link based on the new time
+            if (window.currentQuestions) {
+              updateActiveLinkByTime(targetTime, window.currentQuestions);
+            }
+            
+            if (!wasPaused) {
+              video.play();
+            }
+          };
+          
+          video.addEventListener('seeked', handleSeeked);
+        }
         
         return value;
       }
