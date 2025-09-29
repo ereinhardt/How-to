@@ -184,14 +184,17 @@ body {
             autoStartLoad : true, 
             debug: false, // Reduce debug logs
             liveDurationInfinity: true, // Allow seeking anywhere in the stream
-            maxBufferLength: 20, // Reduced buffer for early positions
-            backBufferLength: 10, // Reduced back buffer to prevent stalling
-            adjustTs: true,
+            maxBufferLength: 30, // Balanced buffer for A/V sync
+            backBufferLength: 15, // Sufficient back buffer for sync
+            adjustTs: true, // Critical for A/V sync
             forceKeyFrameOnDiscontinuity: true, 
             makSeekHole: 0.1, // Allow small seeks over holes
             // Prevent excessive manifest reloads
             enableWorker: false,
             lowLatencyMode: false,
+            // Audio-Video sync optimization
+            audioCodec: undefined, // Let HLS.js auto-detect
+            videoCodec: undefined, // Let HLS.js auto-detect
             // Significantly reduce manifest reload frequency
             manifestLoadingRetryDelay: 2000,
             manifestLoadingMaxRetry: 1,
@@ -204,20 +207,26 @@ body {
             // Additional settings to prevent automatic seeking to live edge
             startLevel: -1,
             capLevelToPlayerSize: false,
-            maxMaxBufferLength: 30, // Reduced max buffer
-            // Better seeking behavior for early positions
-            nudgeOffset: 0.01, // Smaller nudge for early positions
-            nudgeMaxRetry: 1, // Reduced retries to prevent loops
-            maxBufferHole: 3.0, // Allow larger holes in buffer for early seeks
-            // Seek behavior optimized for early positions
-            seekHoleNudgeDuration: 0.001, // Very small nudge duration
-            maxSeekHole: 3.0, // Larger hole tolerance for early seeks
-            // Fragment retry settings for early segments
-            fragLoadingTimeOut: 6000, // Reduced timeout
-            fragLoadingMaxRetry: 2, // Allow more retries for early fragments
-            // Prevent buffer stalling on early seeks - reduced values
-            highBufferWatchdogPeriod: 0.5, // More frequent buffer checks
-            lowBufferWatchdogPeriod: 0.1 // Faster response to low buffer
+            maxMaxBufferLength: 60, // Larger buffer for better sync
+            // Better seeking behavior for early positions - sync-friendly
+            nudgeOffset: 0.1, // Larger nudge for better sync
+            nudgeMaxRetry: 2, // Allow some retries for sync correction
+            maxBufferHole: 2.0, // Moderate hole tolerance
+            // Seek behavior optimized for A/V sync
+            seekHoleNudgeDuration: 0.1, // Moderate nudge duration
+            maxSeekHole: 2.0, // Moderate hole tolerance
+            // Fragment retry settings
+            fragLoadingTimeOut: 8000, // Longer timeout for reliable loading
+            fragLoadingMaxRetry: 2,
+            // Buffer watchdog - balanced for sync
+            highBufferWatchdogPeriod: 2, // Less aggressive buffer checks
+            lowBufferWatchdogPeriod: 0.5,
+            // A/V sync specific settings
+            maxAudioFramesDrift: 1, // Limit audio drift
+            appendErrorMaxRetry: 3, // Allow retries for sync recovery
+            // Prevent too aggressive adaptation that breaks sync
+            abrEwmaFastLive: 5.0,
+            abrEwmaSlowLive: 9.0
         });
 
         hls_context.loadSource(source_url);
@@ -250,33 +259,37 @@ body {
             console.log(`Level switched to: ${data.level}`);
         });
 
-        // Monitor buffering progress for early positions
+        // Monitor buffering progress for early positions - gentle approach
         hls_context.on(Hls.Events.BUFFER_APPENDED, function (event, data) {
             if (data.timeRanges && data.timeRanges.start && data.timeRanges.start(0) < 10) {
                 console.log(`Early buffer appended: ${data.timeRanges.start(0)}s - ${data.timeRanges.end(0)}s`);
                 
-                // Force play if video should be playing but is paused
+                // Gentle play attempt that preserves A/V sync
                 const video = document.getElementsByTagName("video")[0];
-                if (video && video.paused && video.readyState >= 2) {
-                    console.log('Forcing play after early buffer append');
-                    video.play().then(() => {
-                        console.log('✓ Forced play after buffer append successful');
-                    }).catch(err => {
-                        console.log('✗ Forced play after buffer append failed:', err);
-                    });
+                if (video && video.paused && video.readyState >= 3) { // Require HAVE_FUTURE_DATA
+                    console.log('Gentle play after early buffer append');
+                    
+                    // Single attempt with delay to preserve sync
+                    setTimeout(() => {
+                        video.play().then(() => {
+                            console.log('✓ Gentle buffer append play successful');
+                        }).catch(err => {
+                            console.log('✗ Gentle buffer append play failed:', err);
+                        });
+                    }, 200); // Delay to let A/V sync settle
                 }
             }
         });
 
-        // Monitor when HLS is ready to play and force playback for early positions  
-        hls_context.on(Hls.Events.BUFFER_EOS, function (event, data) {
-            console.log('Buffer End of Stream event');
-            const video = document.getElementsByTagName("video")[0];
-            if (video && video.paused && video.currentTime < 10 && video.readyState >= 2) {
-                console.log('Forcing play at early position after buffer EOS');
-                video.play().catch(err => {
-                    console.log('✗ EOS forced play failed:', err);
-                });
+        // Monitor when HLS encounters media errors that might affect sync
+        hls_context.on(Hls.Events.ERROR, function (event, data) {
+            if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                if (data.details === Hls.ErrorDetails.BUFFER_APPEND_ERROR) {
+                    console.log('Buffer append error - might affect A/V sync');
+                } else if (data.details === Hls.ErrorDetails.BUFFER_SEEK_OVER_HOLE) {
+                    console.log('Buffer seek over hole - preserving A/V sync');
+                    // Don't intervene - let HLS handle it naturally
+                }
             }
         });
 
@@ -579,91 +592,89 @@ body {
         return value;
       }
 
-      // Enhanced early seek function for positions < 10 seconds
+      // Enhanced early seek function for positions < 10 seconds - A/V sync friendly
       function enhancedEarlySeek(targetTime) {
         const video = document.getElementsByTagName("video")[0];
-        console.log(`Enhanced early seek to ${targetTime}`);
+        console.log(`Enhanced early seek to ${targetTime} (A/V sync friendly)`);
         
         const wasPaused = video.paused;
         console.log(`Video was ${wasPaused ? 'paused' : 'playing'} before seek`);
         
-        // Clear any existing buffers and force HLS to reload from target position
+        // Use less aggressive approach to maintain A/V sync
         if (hls_context && hls_context.media) {
-          console.log('Clearing HLS buffers for early seek');
-          // Stop loading and clear buffers
-          hls_context.stopLoad();
+          console.log('Using A/V sync friendly early position strategy');
           
-          // Set the current time immediately
+          // Don't stop/start HLS loading - this breaks A/V sync
+          // Instead, just seek and let HLS handle it naturally
           video.currentTime = targetTime;
           
-          // Small delay to ensure buffers are cleared, then restart
-          setTimeout(() => {
-            console.log('Restarting HLS load from position:', targetTime);
-            hls_context.startLoad(targetTime);
-            
-            // Multiple strategies to ensure playback continues
-            let seekHandled = false;
-            let playbackMonitor = null;
-            
-            const handleEarlySeek = () => {
-              if (seekHandled) return;
-              seekHandled = true;
-              
-              video.removeEventListener('seeked', handleEarlySeek);
-              console.log(`Enhanced early seek completed to ${video.currentTime}`);
-              
-              // Update active link
-              if (window.currentQuestions) {
-                updateActiveLinkByTime(video.currentTime, window.currentQuestions);
-              }
-              
-              // Force play if video was playing before
-              if (!wasPaused) {
-                console.log('Attempting to resume playback after early seek');
-                video.play().then(() => {
-                  console.log('✓ Playback successfully restarted after early seek');
-                  
-                  // Start monitoring playback for early positions
-                  startEarlyPositionPlaybackMonitor(video);
-                  
-                }).catch(err => {
-                  console.log('✗ Auto-play failed after early seek:', err);
-                  // Fallback: try again after a short delay
-                  setTimeout(() => {
-                    video.play().then(() => {
-                      console.log('✓ Delayed playback restart successful');
-                      startEarlyPositionPlaybackMonitor(video);
-                    }).catch(err2 => {
-                      console.log('✗ Delayed playback restart also failed:', err2);
-                    });
-                  }, 500);
-                });
-              }
-            };
-            
-            video.addEventListener('seeked', handleEarlySeek);
-            
-            // Backup: if seeked event doesn't fire within 3 seconds, force play anyway
-            setTimeout(() => {
-              if (!seekHandled && !wasPaused) {
-                console.log('Seeked event timeout - forcing play anyway');
-                video.play().then(() => {
-                  console.log('✓ Timeout-triggered playback successful');
-                  startEarlyPositionPlaybackMonitor(video);
-                }).catch(err => {
-                  console.log('✗ Timeout-triggered playback failed:', err);
-                });
-              }
-            }, 3000);
-            
-          }, 150); // Slightly longer delay to ensure buffer clearing
+          // Set up gentle monitoring that doesn't interfere with sync
+          setupGentleVideoMonitoring(video, targetTime, wasPaused);
+          
+          // Update active link
+          if (window.currentQuestions) {
+            updateActiveLinkByTime(targetTime, window.currentQuestions);
+          }
+          
         } else {
-          // Fallback to simple seek if HLS context not available
           console.log('HLS context not available, using simple seek fallback');
           simpleSeek(targetTime);
         }
         
         return targetTime;
+      }
+
+      // Gentle video monitoring that preserves A/V sync
+      function setupGentleVideoMonitoring(video, targetTime, shouldPlay) {
+        console.log('Setting up gentle video monitoring for A/V sync preservation');
+        
+        let monitoringActive = true;
+        let playAttempts = 0;
+        const maxPlayAttempts = 3; // Reduced from 10
+        
+        const cleanup = () => {
+          monitoringActive = false;
+        };
+        
+        const gentlePlay = (reason) => {
+          if (!shouldPlay || !monitoringActive || playAttempts >= maxPlayAttempts) return;
+          
+          playAttempts++;
+          console.log(`Gentle play attempt ${playAttempts}/${maxPlayAttempts} (${reason})`);
+          
+          video.play().then(() => {
+            console.log(`✓ Gentle play successful on attempt ${playAttempts} (${reason})`);
+            cleanup();
+          }).catch(err => {
+            console.log(`✗ Gentle play attempt ${playAttempts} failed (${reason}):`, err);
+          });
+        };
+        
+        // Only use seeked event to trigger play - preserves sync
+        const seekedHandler = () => {
+          video.removeEventListener('seeked', seekedHandler);
+          console.log('Seeked event - attempting gentle play');
+          
+          if (shouldPlay) {
+            // Small delay to let A/V sync settle
+            setTimeout(() => {
+              gentlePlay('after seeked');
+            }, 100);
+          }
+          
+          cleanup();
+        };
+        
+        video.addEventListener('seeked', seekedHandler);
+        
+        // Cleanup after 10 seconds
+        setTimeout(() => {
+          if (monitoringActive) {
+            video.removeEventListener('seeked', seekedHandler);
+            console.log('Gentle monitoring cleanup after 10s');
+            cleanup();
+          }
+        }, 10000);
       }
 
       // Monitor playback for early positions to ensure continuous play
