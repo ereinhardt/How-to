@@ -29,7 +29,7 @@ python ytdl-downloader.py
 **Note**: 
 1. Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
 2. Check back regularly for new ytdl updates.
-3. Only tested on macOS.
+3. The ytdl-Download-Tool was only tested on macOS.
 
 ---
 
@@ -65,7 +65,7 @@ SERVER_PORT="" // Port of file server, e.g., 5001
 USERS_FOLDER="users" // Path to folder which saves the user stream files based on their IDs
 USER_STREAM_FILE_ENDING="_stream_file" // Extra name of user stream file, e.g., <id>USER_STREAM_FILE_ENDING.m3u8
 DUMMY_ID="" // ID for DUMMY for debug (ignor)
-VIDEOS_PATH="" // e.g., "E:\video-data"
+VIDEOS_PATH="" // e.g. "E:\video-data"
 DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
