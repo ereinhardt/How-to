@@ -18,7 +18,7 @@ Example: How to fold? (ByKmsHdhra8)
 ## Tools
 
 
-1. **ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
+**ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
 
 ```bash
 python ytdl-downloader.py
@@ -36,7 +36,7 @@ npm run convert dir=<dirname>
 Example: npm run convert dir=E:\video-data
 ```
 
-3. **Manual-Question-Index-Tool**: Manually create question-index.csv for specific directory (use only if needed):
+**Manual-Question-Index-Tool**: Manually create question-index.csv for specific directory (use only if needed):
 
 ```bash
 npm run create_question-index dir=<dirname>
