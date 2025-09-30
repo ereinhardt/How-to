@@ -5,7 +5,7 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 **Pre-Setup (Checklist)**
 
 1. Before using the software, install FFMPEG!
-2. Check if the video data folder is called `video-data`.
+2. Create a video data folder which is called `video-data` (you need a lot of storage).
 
 ## Filename Structure Before Convert
 
