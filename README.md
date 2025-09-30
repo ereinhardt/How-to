@@ -26,7 +26,7 @@ python ytdl-downloader.py
 
 **Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
 
-2. **Convert-Tool**: Convert the raw YouTube video downlaod into folders with m3u8-playlists and ts-stream-seqments (these video-folders need to be located in the `video-data` folder:
+2. **Convert-Tool**: Convert the raw YouTube video downlaod into folders with m3u8-playlists and ts-stream-seqments (these convert-video-folders need to be later located in the `video-data` folder:
 
 ```bash
 npm i
