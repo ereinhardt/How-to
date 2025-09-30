@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How To?</title>
+    <title>How to?</title>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.js" integrity="sha512-YR4vWgTmC0QwRfYKWTy1eTMvBYpmAsSGP76is/15Uxqfa3N/qYRZKFE8pf66GsfSrFksaJkNmbTS2BcdLamZoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -105,6 +105,13 @@ body {
       start_search(); 
     });
 
+    // Add Enter key support for the input field
+    document.getElementsByTagName("input")[0].addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        start_search();
+      }
+    });
+
     function start_search(){
 
 
@@ -137,7 +144,13 @@ body {
             start_hls(source_url);
             generatingTimestamps(user.questions);
             console.log(user.questions);
-        })
+        });
+
+        // Listen for stream end event from server
+        socket.on("STREAM_ENDED", () => {
+            console.log("Received STREAM_ENDED event from server");
+            resetToInitialState();
+        });
 
 
 
@@ -169,7 +182,7 @@ body {
             levelLoadingMaxRetryTimeout: 1000,
             levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
-            debug: true,
+            debug: false,
             liveDurationInfinity: false,
             maxBufferLength: 20,
             liveSyncDurationCount: 5,
@@ -183,18 +196,71 @@ body {
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
 
+        // Listen for stream end events
+        hls_context.on(Hls.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+                switch(data.type) {
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+                        console.log('Fatal network error, stream might have ended');
+                        if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR || 
+                            data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+                            resetToInitialState();
+                        }
+                        break;
+                    case Hls.ErrorTypes.MEDIA_ERROR:
+                        console.log('Fatal media error');
+                        break;
+                    default:
+                        console.log('Fatal error');
+                        break;
+                }
+            }
+        });
+
         video.addEventListener("ended", () => {
           console.log("Stream has Ended! (#EXT-X-ENDLIST)");
-          destroy_hls_context();
-          video.style.display = "none";
-          document.getElementsByTagName("input")[0].value = "";
-          document.body.style.backgroundColor = "white";
-          deleteAllTimestamps();
-        })
+          resetToInitialState();
+        });
+
+        // Additional listener for when stream reaches end
+        hls_context.on(Hls.Events.LEVEL_UPDATED, function (event, data) {
+            if (data.details && data.details.endOfStream) {
+                console.log("Stream end detected via level update");
+                resetToInitialState();
+            }
+        });
       }
 
       function deleteAllTimestamps() {
         document.querySelectorAll(".Stamps a").forEach(a => a.remove());
+      }
+
+      function resetToInitialState() {
+        console.log("Resetting to initial state");
+        destroy_hls_context();
+        const video = document.getElementsByTagName("video")[0];
+        video.style.display = "none";
+        video.src = "";
+        document.getElementsByTagName("input")[0].value = "";
+        document.body.style.backgroundColor = "white";
+        deleteAllTimestamps();
+        
+        // Remove any timeupdate handlers
+        if (timeupdateHandler) {
+          video.removeEventListener("timeupdate", timeupdateHandler);
+          timeupdateHandler = null;
+        }
+        
+        // Reset state variables
+        currentTimestamps = 0;
+        timeStamps = [];
+        num_of_videos = 0;
+        search_value = "";
+        is_searching = false;
+        
+        // Enable search button
+        document.getElementById("search_button").disabled = false;
+        document.body.style.cursor = "auto";
       }
 
 
@@ -212,14 +278,45 @@ body {
       // neuen Handler definieren
       timeupdateHandler = () => {
         const time = vid.currentTime;
+        
+        // Generate new timestamps as they reach their start time
         if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
           generateTimeStamp(questions[currentIndex]);
           currentIndex++;
         }
+        
+        // Update active timestamp based on current video time
+        updateActiveTimestamp(time, questions);
       };
 
       // neuen Handler anhängen
       vid.addEventListener("timeupdate", timeupdateHandler);
+    }
+
+    function updateActiveTimestamp(currentTime, questions) {
+      // Find which timestamp should be active based on current time
+      let activeQuestionIndex = 0;
+      
+      for (let i = questions.length - 1; i >= 0; i--) {
+        if (currentTime >= questions[i].startTimeInSec) {
+          activeQuestionIndex = i;
+          break;
+        }
+      }
+      
+      // Find the corresponding DOM element and set it as active
+      const allLinks = document.querySelectorAll(".Stamps a");
+      allLinks.forEach(link => link.id = ""); // Remove active from all
+      
+      // Find and activate the correct timestamp
+      const activeQuestion = questions[activeQuestionIndex];
+      if (activeQuestion) {
+        allLinks.forEach(link => {
+          if (link.innerText === activeQuestion.question) {
+            link.id = "active";
+          }
+        });
+      }
     }
 
       function generateTimeStamp(question) {
@@ -231,9 +328,8 @@ body {
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        link.id = "active";
+        // Don't automatically set as active - let updateActiveTimestamp handle it
         link.innerText = title;
-        setActiveLink(link);
         
         link.onclick = (e)=>{
           Jumpto(time, e);

@@ -19,8 +19,10 @@ const server = createServer(app);
 
 const users: User[] = [];
 
-start_http_server(app, users);
-start_socket_server(new Server(server), users);
+const io = new Server(server);
+
+start_http_server(app, users, io);
+start_socket_server(io, users);
 
 server.listen(port, async () => {
   console.log(`server running at http://${host}:${port}`);

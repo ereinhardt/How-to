@@ -18,7 +18,8 @@ const html_name = "frontend/index.html";
 
 export default async function start_http_server(
   server: Express,
-  users: User[]
+  users: User[],
+  io?: any
 ) {
   server.get("/", (req, res) => {
     res.sendFile(p.join(__dirname, `../../${html_name}`));
@@ -61,20 +62,35 @@ export default async function start_http_server(
       res.status(404).send("User not found!");
     }
 
+    // Add next segment only when progressing forward AND it hasn't been added to playlist yet
+    // This prevents duplicate segments when seeking to unbuffered areas
     if (
-      current_user.highestRequestedFile <= segment &&
-      current_user.getCurrentQuestion().id == video_id
+      segment >= current_user.highestRequestedFile &&
+      current_user.getCurrentQuestion().id == video_id &&
+      segment > current_user.highestAddedToPlaylist
     ) {
       current_user.highestRequestedFile = segment;
+      current_user.highestAddedToPlaylist = segment;
+      
       let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
 
       if (next_segment == "ENDING") {
         current_user.highestRequestedFile = 0;
+        current_user.highestAddedToPlaylist = -1; // Reset for new question
         const newQuestion = current_user.getNewQuestion();
 
         if (!newQuestion) {
           console.log("Stream from ", user_id, "has Ended!");
           addStreamEnding(user_id);
+          
+          // Notify frontend via socket if io is available
+          if (io) {
+            io.to(user_id).emit("STREAM_ENDED");
+          }
+          
+          // Return 404 for ENDING requests to properly signal stream end
+          res.status(404).send("Stream ended");
+          return;
         } else {
           addDiscontinuity(user_id);
           console.log("NEW QUESTION ID!", newQuestion);
@@ -83,6 +99,9 @@ export default async function start_http_server(
       }
 
       add_segment(user_id, next_segment, 1.0);
+    } else if (segment > current_user.highestRequestedFile && current_user.getCurrentQuestion().id == video_id) {
+      // Update highest requested when seeking forward, but don't add segments to avoid duplicates
+      current_user.highestRequestedFile = segment;
     }
     const requested_file = get_ts_file_by_video_id(video_id, segment);
     console.log(requested_file);

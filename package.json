@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create_question-index": "npx ts-node --project tsconfig.json tools/debug/manual_create_question_index.ts"
   },
-  "author": "Finn, Erik Reinhardt",
+  "author": "Erik Anton Reinhardt, Finn Jakob Reinhardt",
   "license": "MIT",
   "description": "",
   "devDependencies": {
