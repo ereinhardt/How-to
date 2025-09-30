@@ -29,6 +29,7 @@ python ytdl-downloader.py
 **Note**: 
 1. Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
 2. Check back regularly for new ytdl updates.
+3. Only tested on macOS.
 
 ---
 
