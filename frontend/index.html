@@ -278,14 +278,45 @@ body {
       // neuen Handler definieren
       timeupdateHandler = () => {
         const time = vid.currentTime;
+        
+        // Generate new timestamps as they reach their start time
         if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
           generateTimeStamp(questions[currentIndex]);
           currentIndex++;
         }
+        
+        // Update active timestamp based on current video time
+        updateActiveTimestamp(time, questions);
       };
 
       // neuen Handler anhängen
       vid.addEventListener("timeupdate", timeupdateHandler);
+    }
+
+    function updateActiveTimestamp(currentTime, questions) {
+      // Find which timestamp should be active based on current time
+      let activeQuestionIndex = 0;
+      
+      for (let i = questions.length - 1; i >= 0; i--) {
+        if (currentTime >= questions[i].startTimeInSec) {
+          activeQuestionIndex = i;
+          break;
+        }
+      }
+      
+      // Find the corresponding DOM element and set it as active
+      const allLinks = document.querySelectorAll(".Stamps a");
+      allLinks.forEach(link => link.id = ""); // Remove active from all
+      
+      // Find and activate the correct timestamp
+      const activeQuestion = questions[activeQuestionIndex];
+      if (activeQuestion) {
+        allLinks.forEach(link => {
+          if (link.innerText === activeQuestion.question) {
+            link.id = "active";
+          }
+        });
+      }
     }
 
       function generateTimeStamp(question) {
@@ -297,9 +328,8 @@ body {
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        link.id = "active";
+        // Don't automatically set as active - let updateActiveTimestamp handle it
         link.innerText = title;
-        setActiveLink(link);
         
         link.onclick = (e)=>{
           Jumpto(time, e);
