@@ -61,7 +61,7 @@ VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
 **Note**: Delete all the // comments from the `.env`.
 
-## Start the Software
+## Start (How to?) Software
 ```bash 
 npm i
 npm run start_backend
