@@ -82,4 +82,4 @@ npm run start_backend
 ```
 
 ## Known Bugs (TODO):
-- Parsing Error with some videoIDs
+- Rare parsing error with certain video IDs.
