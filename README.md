@@ -57,6 +57,7 @@ VIDEOS_PATH=<> // e.g., "E:\video-data"
 DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
+**Note**: Delete all the //Comments from the `.env`.
 
 ## Start Software
 ```bash 
