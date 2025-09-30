@@ -43,7 +43,7 @@ Example: npm run convert dir=E:\video-data
 ```
 ---
 
-### Manual-Question-Index-Tool:<br> 
+### (Optional) Manual-Question-Index-Tool:<br> 
 Manually create question-index.csv for specific directory (use only if needed):
 
 ```bash
