@@ -26,14 +26,14 @@ python ytdl-downloader.py
 
 **Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
 
-2. **Convert-Tool**: Convert the raw YouTube video downlaod into folders with m3u8-playlists and ts-stream-seqments (these convert-video-folders need to be later located in the `video-data` folder:
+2. **Convert-Tool**: Convert the raw YouTube video download into folders with m3u8-playlists and ts-stream-segments (these convert-video-folders need to be located later in the `video-data` folder):
 
 ```bash
 npm i
 npm run convert dir=<dirname>
 ```
 
-3. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory (use just if needed):
+3. **Manual-Question-Index-Tool**: Manually create question-index.csv for specific directory (use only if needed):
 
 ```bash
 npm run create_question-index dir=<dirname>
@@ -57,9 +57,9 @@ VIDEOS_PATH=<> // e.g., "E:\video-data"
 DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
-**Note**: Delete all the //Comments from the `.env`.
+**Note**: Delete all the // comments from the `.env`.
 
-## Start (How to?) Software
+## Start the Software
 ```bash 
 npm i
 npm run start_backend
