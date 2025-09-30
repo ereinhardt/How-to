@@ -9,9 +9,10 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
 ## Filename Structure Before Convert
 
-After the Download of the raw YouTube Video rename it to following Structure – Example: How to fold? (ByKmsHdhra8)
+After the Download of the raw YouTube Video rename it to following Structure:
 ```bash
 How to XXX? (<ID>)
+Example: How to fold? (ByKmsHdhra8)
 ```
 
 ## Tools
