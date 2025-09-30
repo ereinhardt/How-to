@@ -62,5 +62,4 @@ VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 npm i
 npm run start_backend
 ```
-```
 
