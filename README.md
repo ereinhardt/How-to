@@ -1,6 +1,7 @@
 # How to? (v.2.0-09-2025)
 
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.
+[MIT License]
 
 **Pre-Setup (Checklist):**
 1. Before using the software, install FFMPEG.
