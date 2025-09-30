@@ -1,48 +1,64 @@
-# How To 
+### How to? (v.1.1-09-2025)
 
-**FFMPEG IS MANDATORY**
+by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
-## Filename-Structure before Convert
+**Setup**
 
-e. g. How to fold? (ByKmsHdhra8)
+1. Before using the software, install FFMPEG!
+2. Check if the video data folder is called "video-data".
+
+## Filename Structure Before Convert
+
+Example: How to fold? (ByKmsHdhra8)
 ```bash
 How to XXX? (<ID>)
 ```
 
-## Convert 
+## Convert
 
 ```bash
 npm i
-npm run build 
 npm run convert dir=<dirname>
 ```
 
-## Start Backend
+## Start Software
 ```bash 
+npm i
 npm run start_backend
 ```
 
+## Configuration
 
-## Config 
-For the config you need a .env file following fields: 
+1. Create a `users` folder in the root of this software.
+2. Create a `user_question_index.txt` file in the root of this software.
+3. For the configuration, you need to create a `.env` file with the following fields:
 
 ```env
-GEMINI_API_KEY=<> //api key for AI
-USER_QUESTION_INDEX=<> //path to txt file which saves all user questions
-SERVER_HOST=<> //host of fileserver eg. localhost or the ip of your computer
-SERVER_PORT=<> //port of fileserver eg. 5001
-USERS_FOLDER=<> //path to folder which saves the user stream files based on their ids
-USER_STREAM_FILE_ENDING=<> //extra name of user stream file eg. <id>USER_STREAM_FILE_ENDING.<m3u8>
-DUMMY_ID=<> //id for DUMMY for debug
-VIDEOS_PATH=<> // e.g "E:\video-data"
-DEBUG_SERVER = <> //flag "1" or "0" to enable DEBUG
-VIDEO_TS_FOLDER_NAME="ts_sream_convert"
+GEMINI_API_KEY=<> // API key for Google Gemini AI API (model: gemini-2.5-flash)
+USER_QUESTION_INDEX="user_question_index.txt" // Path to txt file which saves all user questions
+SERVER_HOST=<> // Host of file server, e.g., localhost or the IP of your computer
+SERVER_PORT=<> // Port of file server, e.g., 5001
+USERS_FOLDER="users" // Path to folder which saves the user stream files based on their IDs
+USER_STREAM_FILE_ENDING="_stream_file" // Extra name of user stream file, e.g., <id>USER_STREAM_FILE_ENDING.m3u8
+DUMMY_ID="" // ID for DUMMY for debug
+VIDEOS_PATH=<> // e.g., "E:\video-data"
+DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
+VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
 
-## Debug-Tools 
+## Tools
 
-create manually question-index.csv for specific directory: 
+1. **ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
+
+```bash
+python ytdl-downloader.py
+```
+
+**Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
+
+2. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory:
 
 ```bash
 npm run create_question-index dir=<dirname>
 ```
+
