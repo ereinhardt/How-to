@@ -3,6 +3,8 @@
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.<br>
 [MIT License]
 
+---
+
 **Pre-Setup (Checklist):**
 1. Before using the software, install FFMPEG.
 2. Create a video data folder which is called `video-data` (If you want to achieve good results, you need a lot of video material and therefore storage space).
