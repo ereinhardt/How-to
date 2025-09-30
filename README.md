@@ -4,7 +4,7 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
 **Pre-Setup (Checklist):**
 1. Before using the software, install FFMPEG.
-2. Create a video data folder which is called `video-data` (you need a lot of storage).
+2. Create a video data folder which is called `video-data` (If you want to achieve good results, you need a lot of video material and therefore storage space).
 
 ## Pre-Convert Filename Structure
 
@@ -17,7 +17,7 @@ Example: How to fold? (ByKmsHdhra8)
 ## Tools
 
 ### ytdl-Download-Tool:<br>
-Download raw YouTube videos (need to be named in the given pre-convert structure):
+Download raw YouTube videos (need to be named in the given pre-convert filename structure):
 
 ```bash
 python ytdl-downloader.py
