@@ -48,7 +48,7 @@ npm run create_question-index dir=<dirname>
 ```env
 GEMINI_API_KEY=<> // API key for Google Gemini AI API (model: gemini-2.5-flash)
 USER_QUESTION_INDEX="user_question_index.txt" // Path to txt file which saves all user questions
-SERVER_HOST=<> // Host of file server, e.g., localhost or the IP of your computer
+SERVER_HOST=<> // Host of file server, e.g., localhost or the current IP (bc Network-DHCP) of your server
 SERVER_PORT=<> // Port of file server, e.g., 5001
 USERS_FOLDER="users" // Path to folder which saves the user stream files based on their IDs
 USER_STREAM_FILE_ENDING="_stream_file" // Extra name of user stream file, e.g., <id>USER_STREAM_FILE_ENDING.m3u8
