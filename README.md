@@ -7,7 +7,7 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 1. Before using the software, install FFMPEG!
 2. Create a video data folder which is called `video-data` (you need a lot of storage).
 
-## Filename Structure Before Convert
+## Pre-Convert Filename Structure
 
 After the Download of the raw YouTube Video rename it to following Structure:
 ```bash
