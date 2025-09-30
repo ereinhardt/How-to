@@ -14,17 +14,28 @@ Example: How to fold? (ByKmsHdhra8)
 How to XXX? (<ID>)
 ```
 
-## Convert
+## Tools
+
+
+1. **ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
+
+```bash
+python ytdl-downloader.py
+```
+
+**Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
+
+2. **Convert-Tool**: Convert the raw YouTube video downlaod into folders with m3u8-playlists and ts-stream-seqments (these video-folders need to be located in the `video-data` folder:
 
 ```bash
 npm i
 npm run convert dir=<dirname>
 ```
 
-## Start Software
-```bash 
-npm i
-npm run start_backend
+3. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory:
+
+```bash
+npm run create_question-index dir=<dirname>
 ```
 
 ## Configuration
@@ -46,19 +57,10 @@ DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
 
-## Tools
-
-1. **ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
-
-```bash
-python ytdl-downloader.py
+## Start Software
+```bash 
+npm i
+npm run start_backend
 ```
-
-**Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
-
-2. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory:
-
-```bash
-npm run create_question-index dir=<dirname>
 ```
 
