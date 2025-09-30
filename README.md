@@ -1,4 +1,4 @@
-### How to? (v.1.1-09-2025)
+## How to? (v.1.1-09-2025)
 
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
@@ -7,7 +7,7 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 1. Before using the software, install FFMPEG!
 2. Check if the video data folder is called "video-data".
 
-## Filename Structure Before Convert
+# Filename Structure Before Convert
 
 Example: How to fold? (ByKmsHdhra8)
 ```bash
