@@ -67,7 +67,7 @@ VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
 **Note**: 
 1. Delete all the // comments from the `.env`.
-2. Manage your Google Gemini API Settings and Costs at: https://console.cloud.google.com
+2. Manage your Google Gemini (GenAI) API Settings and Costs at: https://console.cloud.google.com
 
 ## Start (How to?) Software
 ```bash 
