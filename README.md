@@ -5,7 +5,7 @@ by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 **Setup**
 
 1. Before using the software, install FFMPEG!
-2. Check if the video data folder is called "video-data".
+2. Check if the video data folder is called `video-data`.
 
 ## Filename Structure Before Convert
 
