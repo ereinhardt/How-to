@@ -1,6 +1,6 @@
 # How to? (v.2.0-09-2025)
 
-by Erik Anton Reinhardt, Finn Jakob Reinhardt.
+by Erik Anton Reinhardt, Finn Jakob Reinhardt.<br>
 [MIT License]
 
 **Pre-Setup (Checklist):**
