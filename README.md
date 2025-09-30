@@ -24,7 +24,8 @@ Example: How to fold? (ByKmsHdhra8)
 python ytdl-downloader.py
 ```
 
-**Note**: Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
+**Note**: 
+Get cookies in Netscape format with the following Chrome extension: https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc?pli=1
 
 2. **Convert-Tool**: Convert the raw YouTube video download into folders with m3u8-playlists and ts-stream-segments (these convert-video-folders need to be located later in the `video-data` folder):
 
@@ -59,7 +60,9 @@ VIDEOS_PATH="" // e.g., "E:\video-data"
 DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
-**Note**: Delete all the // comments from the `.env`.
+**Note**: 
+1. Delete all the // comments from the `.env`.
+2. Manage your Google Gemini API Settings and Costs at: https://console.cloud.google.com
 
 ## Start (How to?) Software
 ```bash 
