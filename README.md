@@ -51,7 +51,7 @@ Example: npm run create_question-index dir=E:\video-data
 
 1. Create a `users` folder in the root of this software.
 2. Create a `user_question_index.txt` file in the root of this software.
-3. For the configuration, you need to create a `.env` file with the following fields:
+3. For the configuration, you need to create a `.env` file in the root of this software with the following fields:
 
 ```env
 GEMINI_API_KEY="" // API key for Google Gemini GenAI (current model: gemini-2.5-flash)
