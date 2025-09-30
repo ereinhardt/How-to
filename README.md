@@ -46,14 +46,14 @@ npm run create_question-index dir=<dirname>
 3. For the configuration, you need to create a `.env` file with the following fields:
 
 ```env
-GEMINI_API_KEY=<> // API key for Google Gemini AI API (model: gemini-2.5-flash)
+GEMINI_API_KEY="" // API key for Google Gemini AI API (model: gemini-2.5-flash)
 USER_QUESTION_INDEX="user_question_index.txt" // Path to txt file which saves all user questions
-SERVER_HOST=<> // Host of file server, e.g., localhost or the current IP (bc Network-DHCP) of your server
-SERVER_PORT=<> // Port of file server, e.g., 5001
+SERVER_HOST="" // Host of file server, e.g., localhost or the current IP (bc Network-DHCP) of your server
+SERVER_PORT="" // Port of file server, e.g., 5001
 USERS_FOLDER="users" // Path to folder which saves the user stream files based on their IDs
 USER_STREAM_FILE_ENDING="_stream_file" // Extra name of user stream file, e.g., <id>USER_STREAM_FILE_ENDING.m3u8
-DUMMY_ID="" // ID for DUMMY for debug
-VIDEOS_PATH=<> // e.g., "E:\video-data"
+DUMMY_ID="" // ID for DUMMY for debug (ignor)
+VIDEOS_PATH="" // e.g., "E:\video-data"
 DEBUG_SERVER="0" // Flag "1" or "0" to enable DEBUG
 VIDEO_TS_FOLDER_NAME="ts_stream_convert"
 ```
