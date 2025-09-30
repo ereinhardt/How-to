@@ -33,7 +33,7 @@ npm i
 npm run convert dir=<dirname>
 ```
 
-3. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory:
+3. **Manual-Question-Index-Tool**: Create manually question-index.csv for specific directory (use just if needed):
 
 ```bash
 npm run create_question-index dir=<dirname>
