@@ -31,12 +31,14 @@ python ytdl-downloader.py
 ```bash
 npm i
 npm run convert dir=<dirname>
+Example: npm run convert dir=E:\video-data
 ```
 
 3. **Manual-Question-Index-Tool**: Manually create question-index.csv for specific directory (use only if needed):
 
 ```bash
 npm run create_question-index dir=<dirname>
+Example: npm run create_question-index dir=E:\video-data
 ```
 
 ## Configuration
