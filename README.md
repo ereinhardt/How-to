@@ -1,4 +1,4 @@
-# How to? (v.1.1-09-2025)
+# How to? (v.2.0-09-2025)
 
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
