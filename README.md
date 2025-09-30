@@ -2,8 +2,7 @@
 
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.
 
-**Pre-Setup (Checklist)**
-
+**Pre-Setup (Checklist):**
 1. Before using the software, install FFMPEG.
 2. Create a video data folder which is called `video-data` (you need a lot of storage).
 
@@ -18,7 +17,8 @@ Example: How to fold? (ByKmsHdhra8)
 ## Tools
 
 
-**ytdl-Download-Tool**: Download raw YouTube videos (need to be named in the given pre-convert structure):
+**ytdl-Download-Tool**: 
+Download raw YouTube videos (need to be named in the given pre-convert structure):
 
 ```bash
 python ytdl-downloader.py
@@ -30,7 +30,8 @@ python ytdl-downloader.py
 
 ---
 
-**Convert-Tool**: Convert the raw YouTube video download into folders with m3u8-playlists and ts-stream-segments (these convert-video-folders need to be located later in the `video-data` folder):
+**Convert-Tool**: 
+Convert the raw YouTube video download into folders with m3u8-playlists and ts-stream-segments (these convert-video-folders need to be located later in the `video-data` folder):
 
 ```bash
 npm i
@@ -39,7 +40,8 @@ Example: npm run convert dir=E:\video-data
 ```
 ---
 
-**Manual-Question-Index-Tool**: Manually create question-index.csv for specific directory (use only if needed):
+**Manual-Question-Index-Tool**: 
+Manually create question-index.csv for specific directory (use only if needed):
 
 ```bash
 npm run create_question-index dir=<dirname>
