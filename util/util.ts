@@ -19,7 +19,20 @@ export function check_if_ids_exists(response_json: any, csv: string): boolean {
   var i = 1;
 
   for (const q of response_json) {
-    if (!csv.includes(q[`video_id_${i}`])) return false;
+    const video_id = q[`video_id_${i}`];
+    
+    // Check if video has an ID (not empty, null, or undefined)
+    if (!video_id || video_id.trim() === "") {
+      console.log(`Video ${i} has no ID or empty ID`);
+      return false;
+    }
+    
+    // Check if the ID exists in the CSV
+    if (!csv.includes(video_id)) {
+      console.log(`Video ID ${video_id} not found in CSV`);
+      return false;
+    }
+    
     i++;
   }
   return true;
