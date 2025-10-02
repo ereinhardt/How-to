@@ -331,9 +331,27 @@ body {
         allLinks.forEach(link => {
           if (link.innerText === activeQuestion.question) {
             link.id = "active";
-            // Only auto-scroll when active question changes AND auto-scroll is enabled
-            if (activeQuestionChanged && shouldAutoScroll) {
-              scrollToActiveTimestamp(link);
+            // Auto-scroll when active question changes
+            if (activeQuestionChanged) {
+              // Check if active element is visible
+              const stampsContainer = document.getElementsByClassName("Stamps")[0];
+              const linkWrapper = link.parentElement;
+              const containerHeight = stampsContainer.clientHeight;
+              const linkHeight = linkWrapper.offsetHeight;
+              const linkOffsetTop = linkWrapper.offsetTop;
+              const currentScrollTop = stampsContainer.scrollTop;
+              
+              const visibleTop = currentScrollTop;
+              const visibleBottom = currentScrollTop + containerHeight;
+              const elementTop = linkOffsetTop;
+              const elementBottom = linkOffsetTop + linkHeight;
+              
+              const isFullyVisible = elementTop >= visibleTop && elementBottom <= visibleBottom;
+              
+              // Scroll if: auto-scroll is enabled OR element is not visible (user likely skipped in video)
+              if (shouldAutoScroll || !isFullyVisible) {
+                scrollToActiveTimestamp(link);
+              }
             }
           }
         });
