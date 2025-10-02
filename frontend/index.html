@@ -164,6 +164,8 @@ body {
             resetToInitialState();
         });
 
+
+
         
     }
 
@@ -275,9 +277,6 @@ body {
 
 
     let timeupdateHandler = null;
-    let lastActiveQuestionIndex = -1; // Track which question was last active
-    let shouldAutoScroll = true; // Flag to control auto-scrolling
-    let userScrollTimer = null; // Timer to detect user scrolling
 
     function generatingTimestamps(questions) {
       const vid = document.getElementsByTagName("video")[0];
@@ -317,70 +316,18 @@ body {
         }
       }
       
-      // Check if we're before the first timestamp (initial video)
-      const isBeforeFirstTimestamp = currentTime < questions[0].startTimeInSec;
-      
-      // Check if active question changed (new timestamp or user skipped in video)
-      const activeQuestionChanged = activeQuestionIndex !== lastActiveQuestionIndex;
-      lastActiveQuestionIndex = activeQuestionIndex;
-      
       // Find the corresponding DOM element and set it as active
       const allLinks = document.querySelectorAll(".Stamps a");
       allLinks.forEach(link => link.id = ""); // Remove active from all
       
-      // Handle scrolling based on position
-      if (isBeforeFirstTimestamp) {
-        // We're in the initial video (before first timestamp) - scroll to beginning
-        if (activeQuestionChanged) {
-          const stampsContainer = document.getElementsByClassName("Stamps")[0];
-          // Scroll if: auto-scroll is enabled OR we just jumped to initial video
-          if (shouldAutoScroll || stampsContainer.scrollTop > 0) {
-            stampsContainer.scrollTop = 0;
+      // Find and activate the correct timestamp
+      const activeQuestion = questions[activeQuestionIndex];
+      if (activeQuestion) {
+        allLinks.forEach(link => {
+          if (link.innerText === activeQuestion.question) {
+            link.id = "active";
           }
-        }
-      } else {
-        // Find and activate the correct timestamp
-        const activeQuestion = questions[activeQuestionIndex];
-        if (activeQuestion) {
-          allLinks.forEach(link => {
-            if (link.innerText === activeQuestion.question) {
-              link.id = "active";
-              // Auto-scroll when active question changes
-              if (activeQuestionChanged) {
-                // Always check and scroll if needed - let scrollToActiveTimestamp handle the visibility logic
-                if (shouldAutoScroll) {
-                  // Normal auto-scroll behavior
-                  scrollToActiveTimestamp(link);
-                } else {
-                  // User has disabled auto-scroll, but check if element is even partially visible
-                  // If not visible at all, scroll anyway (user likely skipped in video)
-                  const stampsContainer = document.getElementsByClassName("Stamps")[0];
-                  const linkWrapper = link.parentElement;
-                  const containerHeight = stampsContainer.clientHeight;
-                  const linkOffsetTop = linkWrapper.offsetTop;
-                  const linkHeight = linkWrapper.offsetHeight;
-                  const currentScrollTop = stampsContainer.scrollTop;
-                  
-                  const visibleTop = currentScrollTop;
-                  const visibleBottom = currentScrollTop + containerHeight;
-                  const elementTop = linkOffsetTop;
-                  const elementBottom = linkOffsetTop + linkHeight;
-                  
-                  // Check if element is at least partially visible
-                  const isPartiallyVisible = elementBottom > visibleTop && elementTop < visibleBottom;
-                  
-                  // If not even partially visible, user likely skipped - force scroll
-                  if (!isPartiallyVisible) {
-                    scrollToActiveTimestamp(link);
-                  } else {
-                    // Element is partially visible, use scrollToActiveTimestamp to ensure it's fully visible
-                    scrollToActiveTimestamp(link);
-                  }
-                }
-              }
-            }
-          });
-        }
+        });
       }
     }
 
@@ -402,12 +349,6 @@ body {
         }
         wrapper.appendChild(link);
         document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
-        
-        // Only scroll to newest when a new timestamp is generated
-        // (not when user is manually scrolling)
-        if (shouldAutoScroll) {
-          scrollToNewestTimestamp();
-        }
       }
 
 
@@ -421,93 +362,6 @@ body {
         document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
         // den geklickten aktiv setzen
         linkElem.id = "active";
-        // When user clicks a timestamp, enable auto-scroll and scroll to it
-        shouldAutoScroll = true;
-        scrollToActiveTimestamp(linkElem);
-      }
-
-      // Add scroll event listener to detect user scrolling
-      document.addEventListener("DOMContentLoaded", () => {
-        const stampsContainer = document.getElementsByClassName("Stamps")[0];
-        
-        stampsContainer.addEventListener("scroll", () => {
-          // User is manually scrolling - disable auto-scroll temporarily
-          shouldAutoScroll = false;
-          
-          // Clear existing timer
-          if (userScrollTimer) {
-            clearTimeout(userScrollTimer);
-          }
-          
-          // Re-enable auto-scroll after 3 seconds of no manual timestamp scrolling
-          userScrollTimer = setTimeout(() => {
-            shouldAutoScroll = true;
-          }, 3000);
-        });
-        
-        // Add window resize event listener to keep active timestamp visible
-        window.addEventListener("resize", () => {
-          // Find the currently active timestamp
-          const activeLink = document.getElementById("active");
-          if (activeLink && shouldAutoScroll) {
-            // Small delay to ensure the DOM has updated after resize
-            setTimeout(() => {
-              scrollToActiveTimestamp(activeLink);
-            }, 100);
-          }
-        });
-      });
-
-      // Automatisch zum neuesten (zuletzt hinzugefügten) Timestamp scrollen
-      function scrollToNewestTimestamp() {
-        const stampsContainer = document.getElementsByClassName("Stamps")[0];
-        stampsContainer.scrollTop = stampsContainer.scrollHeight;
-      }
-
-            // Automatisch zum aktiven Timestamp scrollen (ohne smooth behavior)
-      function scrollToActiveTimestamp(activeLink) {
-        const stampsContainer = document.getElementsByClassName("Stamps")[0];
-        const linkWrapper = activeLink.parentElement;
-        
-        const containerHeight = stampsContainer.clientHeight;
-        const linkHeight = linkWrapper.offsetHeight;
-        const linkOffsetTop = linkWrapper.offsetTop;
-        const currentScrollTop = stampsContainer.scrollTop;
-        
-        // Calculate the visible area boundaries
-        const visibleTop = currentScrollTop;
-        const visibleBottom = currentScrollTop + containerHeight;
-        
-        // Calculate element boundaries
-        const elementTop = linkOffsetTop;
-        const elementBottom = linkOffsetTop + linkHeight;
-        
-        // Check if element is fully visible
-        const isFullyVisible = elementTop >= visibleTop && elementBottom <= visibleBottom;
-        
-        if (!isFullyVisible) {
-          // Element is not fully visible, calculate new scroll position
-          let targetScrollTop;
-          
-          // If element is too close to top or partially above visible area
-          if (elementTop < visibleTop || elementTop < visibleTop + (linkHeight * 0.5)) {
-            // Scroll so element is at top with small margin
-            targetScrollTop = Math.max(0, elementTop - 10);
-          }
-          // If element is too close to bottom or partially below visible area  
-          else if (elementBottom > visibleBottom || elementBottom > visibleBottom - (linkHeight * 0.5)) {
-            // Scroll so element is at bottom with small margin
-            targetScrollTop = elementBottom - containerHeight + 10;
-          }
-          // Default: center the element
-          else {
-            targetScrollTop = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
-          }
-          
-          // Apply scroll position with bounds checking
-          stampsContainer.scrollTop = Math.max(0, Math.min(targetScrollTop, stampsContainer.scrollHeight - containerHeight));
-        }
-        // If element is already fully visible, don't scroll
       }
 
 
