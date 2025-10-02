@@ -265,6 +265,9 @@ body {
 
 
     let timeupdateHandler = null;
+    let lastActiveQuestionIndex = -1; // Track which question was last active
+    let shouldAutoScroll = true; // Flag to control auto-scrolling
+    let userScrollTimer = null; // Timer to detect user scrolling
 
     function generatingTimestamps(questions) {
       const vid = document.getElementsByTagName("video")[0];
@@ -304,6 +307,10 @@ body {
         }
       }
       
+      // Check if active question changed (new timestamp or user skipped in video)
+      const activeQuestionChanged = activeQuestionIndex !== lastActiveQuestionIndex;
+      lastActiveQuestionIndex = activeQuestionIndex;
+      
       // Find the corresponding DOM element and set it as active
       const allLinks = document.querySelectorAll(".Stamps a");
       allLinks.forEach(link => link.id = ""); // Remove active from all
@@ -314,8 +321,10 @@ body {
         allLinks.forEach(link => {
           if (link.innerText === activeQuestion.question) {
             link.id = "active";
-            // Automatisch zum aktiven Timestamp scrollen
-            scrollToActiveTimestamp(link);
+            // Only auto-scroll when active question changes AND auto-scroll is enabled
+            if (activeQuestionChanged && shouldAutoScroll) {
+              scrollToActiveTimestamp(link);
+            }
           }
         });
       }
@@ -340,8 +349,11 @@ body {
         wrapper.appendChild(link);
         document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
         
-        // Automatisch zum neuesten Timestamp scrollen
-        scrollToNewestTimestamp();
+        // Only scroll to newest when a new timestamp is generated
+        // (not when user is manually scrolling)
+        if (shouldAutoScroll) {
+          scrollToNewestTimestamp();
+        }
       }
 
 
@@ -355,9 +367,30 @@ body {
         document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
         // den geklickten aktiv setzen
         linkElem.id = "active";
-        // Zum aktiven Link scrollen
+        // When user clicks a timestamp, enable auto-scroll and scroll to it
+        shouldAutoScroll = true;
         scrollToActiveTimestamp(linkElem);
       }
+
+      // Add scroll event listener to detect user scrolling
+      document.addEventListener("DOMContentLoaded", () => {
+        const stampsContainer = document.getElementsByClassName("Stamps")[0];
+        
+        stampsContainer.addEventListener("scroll", () => {
+          // User is manually scrolling - disable auto-scroll temporarily
+          shouldAutoScroll = false;
+          
+          // Clear existing timer
+          if (userScrollTimer) {
+            clearTimeout(userScrollTimer);
+          }
+          
+          // Re-enable auto-scroll after 3 seconds of no manual timestamp scrolling
+          userScrollTimer = setTimeout(() => {
+            shouldAutoScroll = true;
+          }, 3000);
+        });
+      });
 
       // Automatisch zum neuesten (zuletzt hinzugefügten) Timestamp scrollen
       function scrollToNewestTimestamp() {
@@ -365,7 +398,7 @@ body {
         stampsContainer.scrollTop = stampsContainer.scrollHeight;
       }
 
-      // Automatisch zum aktiven Timestamp scrollen (sanftes Scrollen)
+            // Automatisch zum aktiven Timestamp scrollen (ohne smooth behavior)
       function scrollToActiveTimestamp(activeLink) {
         const stampsContainer = document.getElementsByClassName("Stamps")[0];
         const linkWrapper = activeLink.parentElement;
@@ -381,11 +414,8 @@ body {
         
         const targetScrollTop = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
         
-        // Sanftes Scrollen zum Ziel
-        stampsContainer.scrollTo({
-          top: Math.max(0, targetScrollTop),
-          behavior: 'smooth'
-        });
+        // Sofortiges Scrollen zum Ziel (kein smooth behavior)
+        stampsContainer.scrollTop = Math.max(0, targetScrollTop);
       }
 
 
