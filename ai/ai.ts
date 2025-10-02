@@ -253,44 +253,68 @@ export default async function generate_question(start_question: string) {
   const users_csv = readFileSync(users_questions_path, { encoding: "utf8" });
   const ai = new GoogleGenAI({ apiKey: api_key });
 
-  const cache = await ai.caches.create({
-    model: model,
-    config: {
-      contents: users_csv,
-      ttl: "60.0s",
-    },
-  });
-
-  const response = await ai.models.generateContent({
-    model: model,
-    contents: generatePrompt(start_question),
-    config: {
-      thinkingConfig: {
-        thinkingBudget: 0,
+  let cache;
+  try {
+    cache = await ai.caches.create({
+      model: model,
+      config: {
+        contents: users_csv,
+        ttl: "60.0s",
       },
-      cachedContent: cache.name,
-    },
-  });
+    });
 
-  await ai.caches.delete({ name: cache.name! });
-  console.log("Delete Cache!");
+    const response = await ai.models.generateContent({
+      model: model,
+      contents: generatePrompt(start_question),
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
+        cachedContent: cache.name,
+      },
+    });
 
-  if (!response.text) {
-    console.log("got no response text!");
+    await ai.caches.delete({ name: cache.name! });
+    console.log("Delete Cache!");
+
+    if (!response.text) {
+      console.log("got no response text!");
+      return await generate_question(start_question);
+    }
+
+    const parsed_response = parse_ai_response(response.text);
+
+    if (!parsed_response) {
+      console.log("unvalid parsed_response");
+      return await generate_question(start_question);
+    }
+
+    if (!check_if_ids_exists(parsed_response, users_csv)) {
+      console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
+      return await generate_question(start_question);
+    }
+
+    return parsed_response;
+
+  } catch (error: any) {
+    // Clean up cache if it was created
+    if (cache) {
+      try {
+        await ai.caches.delete({ name: cache.name! });
+        console.log("Cache cleaned up after error");
+      } catch (cacheError) {
+        console.log("Error cleaning cache:", cacheError);
+      }
+    }
+
+    // Check if it's a 503 Service Unavailable error
+    if (error.status === 503 || error.message?.includes('503') || error.message?.includes('Service Unavailable')) {
+      console.log("Gemini API 503 Service Unavailable error - throwing for frontend reset");
+      throw new Error('GEMINI_503_ERROR');
+    }
+
+    // For other errors, log and retry
+    console.log("Gemini API error, retrying:", error.message || error);
     return await generate_question(start_question);
   }
-
-  const parsed_response = parse_ai_response(response.text);
-
-  if (!parsed_response) {
-    console.log("unvalid parsed_response");
-    return await generate_question(start_question);
-  }
-
-  if (!check_if_ids_exists(parsed_response, users_csv)) {
-    console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
-    return await generate_question(start_question);
-  }
-
-  return parsed_response;
 }
