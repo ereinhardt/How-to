@@ -402,6 +402,18 @@ body {
             shouldAutoScroll = true;
           }, 3000);
         });
+        
+        // Add window resize event listener to keep active timestamp visible
+        window.addEventListener("resize", () => {
+          // Find the currently active timestamp
+          const activeLink = document.getElementById("active");
+          if (activeLink && shouldAutoScroll) {
+            // Small delay to ensure the DOM has updated after resize
+            setTimeout(() => {
+              scrollToActiveTimestamp(activeLink);
+            }, 100);
+          }
+        });
       });
 
       // Automatisch zum neuesten (zuletzt hinzugefügten) Timestamp scrollen
