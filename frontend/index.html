@@ -314,6 +314,8 @@ body {
         allLinks.forEach(link => {
           if (link.innerText === activeQuestion.question) {
             link.id = "active";
+            // Automatisch zum aktiven Timestamp scrollen
+            scrollToActiveTimestamp(link);
           }
         });
       }
@@ -337,6 +339,9 @@ body {
         }
         wrapper.appendChild(link);
         document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
+        
+        // Automatisch zum neuesten Timestamp scrollen
+        scrollToNewestTimestamp();
       }
 
 
@@ -350,6 +355,37 @@ body {
         document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
         // den geklickten aktiv setzen
         linkElem.id = "active";
+        // Zum aktiven Link scrollen
+        scrollToActiveTimestamp(linkElem);
+      }
+
+      // Automatisch zum neuesten (zuletzt hinzugefügten) Timestamp scrollen
+      function scrollToNewestTimestamp() {
+        const stampsContainer = document.getElementsByClassName("Stamps")[0];
+        stampsContainer.scrollTop = stampsContainer.scrollHeight;
+      }
+
+      // Automatisch zum aktiven Timestamp scrollen (sanftes Scrollen)
+      function scrollToActiveTimestamp(activeLink) {
+        const stampsContainer = document.getElementsByClassName("Stamps")[0];
+        const linkWrapper = activeLink.parentElement;
+        
+        // Berechne die Position des aktiven Elements relativ zum Container
+        const containerRect = stampsContainer.getBoundingClientRect();
+        const linkRect = linkWrapper.getBoundingClientRect();
+        
+        // Berechne die optimale Scroll-Position (Element in der Mitte des sichtbaren Bereichs)
+        const containerHeight = stampsContainer.clientHeight;
+        const linkHeight = linkWrapper.offsetHeight;
+        const linkOffsetTop = linkWrapper.offsetTop;
+        
+        const targetScrollTop = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+        
+        // Sanftes Scrollen zum Ziel
+        stampsContainer.scrollTo({
+          top: Math.max(0, targetScrollTop),
+          behavior: 'smooth'
+        });
       }
 
 

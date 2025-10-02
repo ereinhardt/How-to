@@ -1,5 +1,7 @@
 # How to? (v.2.0-09-2025)
 
+"How to?" generates a continuous tutorial video stream (approx. 7-8h) when the user enters an initial question.
+
 by Erik Anton Reinhardt, Finn Jakob Reinhardt.<br>
 [MIT License]
 
@@ -79,3 +81,5 @@ npm i
 npm run start_backend
 ```
 
+## Known Bugs (TODO):
+- Rare parsing error with certain video IDs.
