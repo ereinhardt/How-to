@@ -26,11 +26,12 @@ function generatePrompt(initial_question: string): string {
   **INITIAL QUESTION**: "${initial_question}?"
 
   **DATA SOURCE INSTRUCTIONS**:
-  - For question 1: Find a matching (most similar) video title/subject for "${initial_question}?" in 'question_index.csv' and provide always the 'video_id' (video_id_1) of the matching video from the database.
+  - For question 1: Search 'question_index.csv' to find the video that best matches "${initial_question}?". Use the exact 'video_id' from that matching row for 'video_id_1'.
   - For questions 2-50: Select appropriate video titles and IDs from the dataset that match your question chain
-  - No 'video_title' or 'video_id' should not be more then once in the list.
+  - No 'video_title' or 'video_id' should not be more then once in the list. 
+  - CRITICAL: Every video_title MUST have a corresponding video_id. Never leave video_id empty or blank.
 
-  **OUTPUT FORMAT**: Provide exactly 50 questions in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
+  **OUTPUT FORMAT**: Provide exactly 50 questions + video_ids in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
 
   [
       {
@@ -287,7 +288,7 @@ export default async function generate_question(start_question: string) {
   }
 
   if (!check_if_ids_exists(parsed_response, users_csv)) {
-    console.log("found a Undefined id");
+    console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
     return await generate_question(start_question);
   }
 
