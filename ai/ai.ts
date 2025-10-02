@@ -9,7 +9,8 @@ import { GoogleGenAI } from "@google/genai";
 
 function generatePrompt(initial_question: string): string {
   return `
-  **TASK**: Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
+  **TASK**: 
+  Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
 
   **REQUIREMENTS**:
   1. **Question Chain**: Start with "${initial_question}?" and create 29 additional questions
@@ -29,9 +30,11 @@ function generatePrompt(initial_question: string): string {
   - For question 1: Search 'question_index.csv' to find the video that best matches "${initial_question}?". Use the exact 'video_id' from that matching row for 'video_id_1'.
   - For questions 2-50: Select appropriate video titles and IDs from the dataset that match your question chain
   - No 'video_title' or 'video_id' should not be more then once in the list. 
-  - CRITICAL: Every video_title MUST have a corresponding video_id. Never leave video_id empty or blank.
 
-  **OUTPUT FORMAT**: Provide exactly 50 questions + video_ids in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
+  **OUTPUT FORMAT**: 
+  - Provide exactly 50 questions + video_ids in the following valid JSON structure. 
+  - CRITICAL: Every video_title MUST have a corresponding video_id. Never leave video_id empty or blank.
+  - Return only the JSON structure with no additional text, explanations, or formatting:
 
   [
       {

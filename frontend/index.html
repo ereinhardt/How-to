@@ -164,8 +164,6 @@ body {
             resetToInitialState();
         });
 
-
-
         
     }
 
@@ -427,19 +425,45 @@ body {
         const stampsContainer = document.getElementsByClassName("Stamps")[0];
         const linkWrapper = activeLink.parentElement;
         
-        // Berechne die Position des aktiven Elements relativ zum Container
-        const containerRect = stampsContainer.getBoundingClientRect();
-        const linkRect = linkWrapper.getBoundingClientRect();
-        
-        // Berechne die optimale Scroll-Position (Element in der Mitte des sichtbaren Bereichs)
         const containerHeight = stampsContainer.clientHeight;
         const linkHeight = linkWrapper.offsetHeight;
         const linkOffsetTop = linkWrapper.offsetTop;
+        const currentScrollTop = stampsContainer.scrollTop;
         
-        const targetScrollTop = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+        // Calculate the visible area boundaries
+        const visibleTop = currentScrollTop;
+        const visibleBottom = currentScrollTop + containerHeight;
         
-        // Sofortiges Scrollen zum Ziel (kein smooth behavior)
-        stampsContainer.scrollTop = Math.max(0, targetScrollTop);
+        // Calculate element boundaries
+        const elementTop = linkOffsetTop;
+        const elementBottom = linkOffsetTop + linkHeight;
+        
+        // Check if element is fully visible
+        const isFullyVisible = elementTop >= visibleTop && elementBottom <= visibleBottom;
+        
+        if (!isFullyVisible) {
+          // Element is not fully visible, calculate new scroll position
+          let targetScrollTop;
+          
+          // If element is too close to top or partially above visible area
+          if (elementTop < visibleTop || elementTop < visibleTop + (linkHeight * 0.5)) {
+            // Scroll so element is at top with small margin
+            targetScrollTop = Math.max(0, elementTop - 10);
+          }
+          // If element is too close to bottom or partially below visible area  
+          else if (elementBottom > visibleBottom || elementBottom > visibleBottom - (linkHeight * 0.5)) {
+            // Scroll so element is at bottom with small margin
+            targetScrollTop = elementBottom - containerHeight + 10;
+          }
+          // Default: center the element
+          else {
+            targetScrollTop = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+          }
+          
+          // Apply scroll position with bounds checking
+          stampsContainer.scrollTop = Math.max(0, Math.min(targetScrollTop, stampsContainer.scrollHeight - containerHeight));
+        }
+        // If element is already fully visible, don't scroll
       }
 
 
