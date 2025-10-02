@@ -317,6 +317,9 @@ body {
         }
       }
       
+      // Check if we're before the first timestamp (initial video)
+      const isBeforeFirstTimestamp = currentTime < questions[0].startTimeInSec;
+      
       // Check if active question changed (new timestamp or user skipped in video)
       const activeQuestionChanged = activeQuestionIndex !== lastActiveQuestionIndex;
       lastActiveQuestionIndex = activeQuestionIndex;
@@ -325,36 +328,59 @@ body {
       const allLinks = document.querySelectorAll(".Stamps a");
       allLinks.forEach(link => link.id = ""); // Remove active from all
       
-      // Find and activate the correct timestamp
-      const activeQuestion = questions[activeQuestionIndex];
-      if (activeQuestion) {
-        allLinks.forEach(link => {
-          if (link.innerText === activeQuestion.question) {
-            link.id = "active";
-            // Auto-scroll when active question changes
-            if (activeQuestionChanged) {
-              // Check if active element is visible
-              const stampsContainer = document.getElementsByClassName("Stamps")[0];
-              const linkWrapper = link.parentElement;
-              const containerHeight = stampsContainer.clientHeight;
-              const linkHeight = linkWrapper.offsetHeight;
-              const linkOffsetTop = linkWrapper.offsetTop;
-              const currentScrollTop = stampsContainer.scrollTop;
-              
-              const visibleTop = currentScrollTop;
-              const visibleBottom = currentScrollTop + containerHeight;
-              const elementTop = linkOffsetTop;
-              const elementBottom = linkOffsetTop + linkHeight;
-              
-              const isFullyVisible = elementTop >= visibleTop && elementBottom <= visibleBottom;
-              
-              // Scroll if: auto-scroll is enabled OR element is not visible (user likely skipped in video)
-              if (shouldAutoScroll || !isFullyVisible) {
-                scrollToActiveTimestamp(link);
+      // Handle scrolling based on position
+      if (isBeforeFirstTimestamp) {
+        // We're in the initial video (before first timestamp) - scroll to beginning
+        if (activeQuestionChanged) {
+          const stampsContainer = document.getElementsByClassName("Stamps")[0];
+          // Scroll if: auto-scroll is enabled OR we just jumped to initial video
+          if (shouldAutoScroll || stampsContainer.scrollTop > 0) {
+            stampsContainer.scrollTop = 0;
+          }
+        }
+      } else {
+        // Find and activate the correct timestamp
+        const activeQuestion = questions[activeQuestionIndex];
+        if (activeQuestion) {
+          allLinks.forEach(link => {
+            if (link.innerText === activeQuestion.question) {
+              link.id = "active";
+              // Auto-scroll when active question changes
+              if (activeQuestionChanged) {
+                // Always check and scroll if needed - let scrollToActiveTimestamp handle the visibility logic
+                if (shouldAutoScroll) {
+                  // Normal auto-scroll behavior
+                  scrollToActiveTimestamp(link);
+                } else {
+                  // User has disabled auto-scroll, but check if element is even partially visible
+                  // If not visible at all, scroll anyway (user likely skipped in video)
+                  const stampsContainer = document.getElementsByClassName("Stamps")[0];
+                  const linkWrapper = link.parentElement;
+                  const containerHeight = stampsContainer.clientHeight;
+                  const linkOffsetTop = linkWrapper.offsetTop;
+                  const linkHeight = linkWrapper.offsetHeight;
+                  const currentScrollTop = stampsContainer.scrollTop;
+                  
+                  const visibleTop = currentScrollTop;
+                  const visibleBottom = currentScrollTop + containerHeight;
+                  const elementTop = linkOffsetTop;
+                  const elementBottom = linkOffsetTop + linkHeight;
+                  
+                  // Check if element is at least partially visible
+                  const isPartiallyVisible = elementBottom > visibleTop && elementTop < visibleBottom;
+                  
+                  // If not even partially visible, user likely skipped - force scroll
+                  if (!isPartiallyVisible) {
+                    scrollToActiveTimestamp(link);
+                  } else {
+                    // Element is partially visible, use scrollToActiveTimestamp to ensure it's fully visible
+                    scrollToActiveTimestamp(link);
+                  }
+                }
               }
             }
-          }
-        });
+          });
+        }
       }
     }
 
