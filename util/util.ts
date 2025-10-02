@@ -17,6 +17,7 @@ export function parse_ai_response(json_markdown_string: string) {
 
 export function check_if_ids_exists(response_json: any, csv: string): boolean {
   var i = 1;
+  const usedVideoIds = new Set<string>(); // Track used video IDs
 
   for (const q of response_json) {
     const video_id = q[`video_id_${i}`];
@@ -27,12 +28,20 @@ export function check_if_ids_exists(response_json: any, csv: string): boolean {
       return false;
     }
     
+    // Check if this video ID was already used
+    if (usedVideoIds.has(video_id)) {
+      console.log(`Video ID ${video_id} is used more than once in the list`);
+      return false;
+    }
+    
     // Check if the ID exists in the CSV
     if (!csv.includes(video_id)) {
       console.log(`Video ID ${video_id} not found in CSV`);
       return false;
     }
     
+    // Add video ID to the set of used IDs
+    usedVideoIds.add(video_id);
     i++;
   }
   return true;

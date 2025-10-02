@@ -28,6 +28,7 @@ function generatePrompt(initial_question: string): string {
   **DATA SOURCE INSTRUCTIONS**:
   - For question 1: Find a matching (most similar) video title/subject for "${initial_question}?" in 'question_index.csv' and provide always the 'video_id' (video_id_1) of the matching video from the database.
   - For questions 2-50: Select appropriate video titles and IDs from the dataset that match your question chain
+  - No 'video_title' or 'video_id' should not be more then once in the list.
 
   **OUTPUT FORMAT**: Provide exactly 50 questions in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
 
