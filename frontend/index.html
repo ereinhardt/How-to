@@ -146,18 +146,16 @@ body {
             console.log(user.questions);
         });
 
-        // Listen for Gemini 503 errors
-        socket.on("GEMINI_503_ERROR", (error) => {
-            console.log("Google 503 Error received:", error.message);
+        // Listen for Gemini API errors (all error codes)
+        socket.on("GEMINI_API_ERROR", (error) => {
+            console.log("Gemini API Error received:", error.message);
             resetToInitialState();
-            alert("Google Gemini service is temporarily unavailable. Please try again in a moment.");
         });
 
         // Listen for general search errors
         socket.on("SEARCH_ERROR", (error) => {
             console.log("Search Error received:", error.message);
             resetToInitialState();
-            alert("An error occurred while processing your search. Please try again.");
         });
 
         // Listen for stream end event from server

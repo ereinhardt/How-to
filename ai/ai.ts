@@ -307,14 +307,36 @@ export default async function generate_question(start_question: string) {
       }
     }
 
-    // Check if it's a 503 Service Unavailable error
-    if (error.status === 503 || error.message?.includes('503') || error.message?.includes('Service Unavailable')) {
-      console.log("Gemini API 503 Service Unavailable error - throwing for frontend reset");
-      throw new Error('GEMINI_503_ERROR');
+    // Check for various Gemini API errors that should trigger a silent reset
+    const errorCode = error.status || error.code;
+    const errorMessage = error.message || '';
+    
+    const shouldSilentReset = [
+      400, // INVALID_ARGUMENT or FAILED_PRECONDITION
+      403, // PERMISSION_DENIED
+      404, // NOT_FOUND
+      429, // RESOURCE_EXHAUSTED
+      500, // INTERNAL
+      503, // UNAVAILABLE
+      504  // DEADLINE_EXCEEDED
+    ].includes(errorCode) || 
+    errorMessage.includes('503') || 
+    errorMessage.includes('Service Unavailable') ||
+    errorMessage.includes('INVALID_ARGUMENT') ||
+    errorMessage.includes('FAILED_PRECONDITION') ||
+    errorMessage.includes('PERMISSION_DENIED') ||
+    errorMessage.includes('NOT_FOUND') ||
+    errorMessage.includes('RESOURCE_EXHAUSTED') ||
+    errorMessage.includes('INTERNAL') ||
+    errorMessage.includes('DEADLINE_EXCEEDED');
+
+    if (shouldSilentReset) {
+      console.log(`Gemini API error (${errorCode}): ${errorMessage} - triggering frontend reset`);
+      throw new Error('GEMINI_API_ERROR');
     }
 
-    // For other errors, log and retry
-    console.log("Gemini API error, retrying:", error.message || error);
+    // For unexpected errors, log and retry
+    console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
     return await generate_question(start_question);
   }
 }

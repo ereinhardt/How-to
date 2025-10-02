@@ -81,10 +81,10 @@ export default async function start_socket_server(io: Server, users: User[]) {
       } catch (error: any) {
         console.log("Error in NEW_SEARCH:", error.message || error);
         
-        if (error.message === 'GEMINI_503_ERROR') {
-          console.log("Sending GEMINI_503_ERROR to frontend");
-          socket.emit("GEMINI_503_ERROR", { 
-            message: "Google Gemini service is temporarily unavailable. Please try again." 
+        if (error.message === 'GEMINI_API_ERROR') {
+          console.log("Sending GEMINI_API_ERROR to frontend");
+          socket.emit("GEMINI_API_ERROR", { 
+            message: "Gemini API error occurred. Resetting search." 
           });
         } else {
           // For other errors, send generic error
