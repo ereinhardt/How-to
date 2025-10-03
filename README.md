@@ -1,4 +1,4 @@
-# How to? (v.2.0-09-2025)
+# How to? (v.2.1-10-2025)
 
 "How to?" generates a continuous tutorial video stream (approx. 7-8h) when the user enters an initial question.
 
@@ -82,4 +82,4 @@ npm run start_backend
 ```
 
 ## Known Bugs (TODO):
-- Rare parsing error with certain video IDs.
+–No Bugs know–
