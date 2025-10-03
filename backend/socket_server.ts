@@ -1,4 +1,4 @@
-import { appendFileSync, mkdirSync, rmdirSync, writeFileSync } from "fs";
+import { appendFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { Server } from "socket.io";
 import * as p from "path";
 import { save_accesing_env_field } from "../util/util";
@@ -34,7 +34,7 @@ export default async function start_socket_server(io: Server, users: User[]) {
 
     socket.on("disconnect", (_) => {
       try {
-        rmdirSync(user_folder, { recursive: true });
+        rmSync(user_folder, { recursive: true, force: true });
         console.log("Client disconnected:", socket.id);
         remove_user_by_id(users, socket.id);
       } catch (error: any) {
