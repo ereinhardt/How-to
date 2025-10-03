@@ -105,7 +105,6 @@ export function get_user_by_id(users: User[], user_id: string): User | null {
   }
   return foundUser;
 }
-}
 
 export function remove_user_by_id(user: User[], user_id: string): void {
   const user_index = user.findIndex((u) => u.id == user_id);
