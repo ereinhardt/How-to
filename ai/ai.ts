@@ -9,7 +9,8 @@ import { GoogleGenAI } from "@google/genai";
 
 function generatePrompt(initial_question: string): string {
   return `
-  **TASK**: Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
+  **TASK**: 
+  Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
 
   **REQUIREMENTS**:
   1. **Question Chain**: Start with "${initial_question}?" and create 29 additional questions
@@ -26,10 +27,14 @@ function generatePrompt(initial_question: string): string {
   **INITIAL QUESTION**: "${initial_question}?"
 
   **DATA SOURCE INSTRUCTIONS**:
-  - For question 1: Find a matching video title for "How to fold?" in 'question_index.csv' and provide only the 'video_id_1'
+  - For question 1: Search 'question_index.csv' to find the video that best matches "${initial_question}?". Use the exact 'video_id' from that matching row for 'video_id_1'.
   - For questions 2-50: Select appropriate video titles and IDs from the dataset that match your question chain
+  - No 'video_title' or 'video_id' should not be more then once in the list. 
 
-  **OUTPUT FORMAT**: Provide exactly 50 questions in the following valid JSON structure. Return only the JSON structure with no additional text, explanations, or formatting:
+  **OUTPUT FORMAT**: 
+  - Provide exactly 50 questions + video_ids in the following valid JSON structure. 
+  - CRITICAL: Every video_title MUST have a corresponding video_id. Never leave video_id empty or blank.
+  - Return only the JSON structure with no additional text, explanations, or formatting:
 
   [
       {
@@ -251,44 +256,90 @@ export default async function generate_question(start_question: string) {
   const users_csv = readFileSync(users_questions_path, { encoding: "utf8" });
   const ai = new GoogleGenAI({ apiKey: api_key });
 
-  const cache = await ai.caches.create({
-    model: model,
-    config: {
-      contents: users_csv,
-      ttl: "60.0s",
-    },
-  });
-
-  const response = await ai.models.generateContent({
-    model: model,
-    contents: generatePrompt(start_question),
-    config: {
-      thinkingConfig: {
-        thinkingBudget: 0,
+  let cache;
+  try {
+    cache = await ai.caches.create({
+      model: model,
+      config: {
+        contents: users_csv,
+        ttl: "60.0s",
       },
-      cachedContent: cache.name,
-    },
-  });
+    });
 
-  await ai.caches.delete({ name: cache.name! });
-  console.log("Delete Cache!");
+    const response = await ai.models.generateContent({
+      model: model,
+      contents: generatePrompt(start_question),
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
+        cachedContent: cache.name,
+      },
+    });
 
-  if (!response.text) {
-    console.log("got no response text!");
+    await ai.caches.delete({ name: cache.name! });
+    console.log("Delete Cache!");
+
+    if (!response.text) {
+      console.log("got no response text!");
+      return await generate_question(start_question);
+    }
+
+    const parsed_response = parse_ai_response(response.text);
+
+    if (!parsed_response) {
+      console.log("unvalid parsed_response");
+      return await generate_question(start_question);
+    }
+
+    if (!check_if_ids_exists(parsed_response, users_csv)) {
+      console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
+      return await generate_question(start_question);
+    }
+
+    return parsed_response;
+
+  } catch (error: any) {
+    // Clean up cache if it was created
+    if (cache) {
+      try {
+        await ai.caches.delete({ name: cache.name! });
+        console.log("Cache cleaned up after error");
+      } catch (cacheError) {
+        console.log("Error cleaning cache:", cacheError);
+      }
+    }
+
+    // Check for various Gemini API errors that should trigger a silent reset
+    const errorCode = error.status || error.code;
+    const errorMessage = error.message || '';
+    
+    const shouldSilentReset = [
+      400, // INVALID_ARGUMENT or FAILED_PRECONDITION
+      403, // PERMISSION_DENIED
+      404, // NOT_FOUND
+      429, // RESOURCE_EXHAUSTED
+      500, // INTERNAL
+      503, // UNAVAILABLE
+      504  // DEADLINE_EXCEEDED
+    ].includes(errorCode) || 
+    errorMessage.includes('503') || 
+    errorMessage.includes('Service Unavailable') ||
+    errorMessage.includes('INVALID_ARGUMENT') ||
+    errorMessage.includes('FAILED_PRECONDITION') ||
+    errorMessage.includes('PERMISSION_DENIED') ||
+    errorMessage.includes('NOT_FOUND') ||
+    errorMessage.includes('RESOURCE_EXHAUSTED') ||
+    errorMessage.includes('INTERNAL') ||
+    errorMessage.includes('DEADLINE_EXCEEDED');
+
+    if (shouldSilentReset) {
+      console.log(`Gemini API error (${errorCode}): ${errorMessage} - triggering frontend reset`);
+      throw new Error('GEMINI_API_ERROR');
+    }
+
+    // For unexpected errors, log and retry
+    console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
     return await generate_question(start_question);
   }
-
-  const parsed_response = parse_ai_response(response.text);
-
-  if (!parsed_response) {
-    console.log("unvalid parsed_response");
-    return await generate_question(start_question);
-  }
-
-  if (!check_if_ids_exists(parsed_response, users_csv)) {
-    console.log("found a Undefined id");
-    return await generate_question(start_question);
-  }
-
-  return parsed_response;
 }

@@ -49,20 +49,28 @@ export default class User {
       return;
     this.state = UserState.generateQuestions;
     this.generatedFollowingQuestions = true;
-    const questions = await generate_question(start_question);
-    let i = 1;
+    
+    try {
+      const questions = await generate_question(start_question);
+      let i = 1;
 
-    let startTime = 0;
+      let startTime = 0;
 
-    for (const q of questions) {
-      const question = q[`video_title_${i}`];
-      const id = q[`video_id_${i}`];
-      const durationInSec = extractDurationInSec(id);
-      this.questions.push(
-        new Question(i, question, id, durationInSec, startTime)
-      );
-      startTime += durationInSec;
-      i++;
+      for (const q of questions) {
+        const question = q[`video_title_${i}`];
+        const id = q[`video_id_${i}`];
+        const durationInSec = extractDurationInSec(id);
+        this.questions.push(
+          new Question(i, question, id, durationInSec, startTime)
+        );
+        startTime += durationInSec;
+        i++;
+      }
+    } catch (error: any) {
+      // Reset state so user can try again
+      this.state = UserState.Unset;
+      this.generatedFollowingQuestions = false;
+      throw error; // Re-throw to be handled by socket handler
     }
   }
 

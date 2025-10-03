@@ -40,41 +40,59 @@ export default async function start_socket_server(io: Server, users: User[]) {
       );
 
       const user = get_user_by_id(users, socket.id);
-      await user.generateUpcommingQuestions(search);
+      
+      try {
+        await user.generateUpcommingQuestions(search);
 
-      console.log(user);
+        console.log(user);
 
-      appendFileSync(user_question_index_path, search + "\n");
+        appendFileSync(user_question_index_path, search + "\n");
 
-      //const dummy = "How to fold!";
-      const stream_file_path = create_user_m3u8(id, user_folder);
+        //const dummy = "How to fold!";
+        const stream_file_path = create_user_m3u8(id, user_folder);
 
-      const server_port = save_accesing_env_field("SERVER_PORT");
-      const server_host = save_accesing_env_field("SERVER_HOST");
-      const user_stream_file_url = `http://${server_host}:${server_port}/${stream_file_path}`;
+        const server_port = save_accesing_env_field("SERVER_PORT");
+        const server_host = save_accesing_env_field("SERVER_HOST");
+        const user_stream_file_url = `http://${server_host}:${server_port}/${stream_file_path}`;
 
-      if (save_accesing_env_field("DEBUG_SERVER") == "1") {
-        const dummy_id = save_accesing_env_field("DUMMY_ID");
+        if (save_accesing_env_field("DEBUG_SERVER") == "1") {
+          const dummy_id = save_accesing_env_field("DUMMY_ID");
 
-        const first_segment = find_next_segment_path(dummy_id, 0, socket.id);
+          const first_segment = find_next_segment_path(dummy_id, 0, socket.id);
 
-        const segment_length = 1.0;
+          const segment_length = 1.0;
 
-        add_segment(socket.id, first_segment, segment_length);
-      } else if (save_accesing_env_field("DEBUG_SERVER") == "0") {
-        const currentQuestion = user.getCurrentQuestion();
+          add_segment(socket.id, first_segment, segment_length);
+        } else if (save_accesing_env_field("DEBUG_SERVER") == "0") {
+          const currentQuestion = user.getCurrentQuestion();
 
-        const first_segment = find_next_segment_path(
-          currentQuestion.id,
-          0,
-          socket.id
-        );
+          const first_segment = find_next_segment_path(
+            currentQuestion.id,
+            0,
+            socket.id
+          );
 
-        const segment_length = 1.0;
-        add_segment(socket.id, first_segment, segment_length);
+          const segment_length = 1.0;
+          add_segment(socket.id, first_segment, segment_length);
+        }
+
+        socket.emit("START_STREAM", user_stream_file_url, user);
+        
+      } catch (error: any) {
+        console.log("Error in NEW_SEARCH:", error.message || error);
+        
+        if (error.message === 'GEMINI_API_ERROR') {
+          console.log("Sending GEMINI_API_ERROR to frontend");
+          socket.emit("GEMINI_API_ERROR", { 
+            message: "Gemini API error occurred. Resetting search." 
+          });
+        } else {
+          // For other errors, send generic error
+          socket.emit("SEARCH_ERROR", { 
+            message: "An error occurred while processing your search. Please try again." 
+          });
+        }
       }
-
-      socket.emit("START_STREAM", user_stream_file_url, user);
     });
   });
 }

@@ -146,6 +146,18 @@ body {
             console.log(user.questions);
         });
 
+        // Listen for Gemini API errors (all error codes)
+        socket.on("GEMINI_API_ERROR", (error) => {
+            console.log("Gemini API Error received:", error.message);
+            resetToInitialState();
+        });
+
+        // Listen for general search errors
+        socket.on("SEARCH_ERROR", (error) => {
+            console.log("Search Error received:", error.message);
+            resetToInitialState();
+        });
+
         // Listen for stream end event from server
         socket.on("STREAM_ENDED", () => {
             console.log("Received STREAM_ENDED event from server");
