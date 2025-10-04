@@ -1,0 +1,23 @@
+socket id connected:  qH7xgilnczQritnWAAAE
+users\qH7xgilnczQritnWAAAE
+Delete Cache!
+Video ID 7vUDk-UK74Q is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Delete Cache!
+Video ID QrFrzjEXpKE is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Maximum retries (2) reached for question: "How to kill a person"
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Error in NEW_SEARCH: MAX_RETRIES_REACHED
+Maximum retries reached - resetting search
