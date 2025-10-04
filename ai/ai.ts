@@ -345,6 +345,11 @@ export default async function generate_question(start_question: string, retryCou
       throw new Error('GEMINI_API_ERROR');
     }
 
+    // Check if this is a MAX_RETRIES_REACHED error and re-throw it
+    if (errorMessage === 'MAX_RETRIES_REACHED') {
+      throw error;
+    }
+
     // For unexpected errors, log and retry
     console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
     return await generate_question(start_question, retryCount + 1);
