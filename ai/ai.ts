@@ -284,11 +284,10 @@ export default async function generate_question(start_question: string, retryCou
       },
     });
 
-    await ai.caches.delete({ name: cache.name! });
-    console.log("Delete Cache!");
-
     if (!response.text) {
       console.log("got no response text!");
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
       return await generate_question(start_question, retryCount + 1);
     }
 
@@ -296,27 +295,24 @@ export default async function generate_question(start_question: string, retryCou
 
     if (!parsed_response) {
       console.log("unvalid parsed_response");
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
       return await generate_question(start_question, retryCount + 1);
     }
 
     if (!check_if_ids_exists(parsed_response, users_csv)) {
       console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
       return await generate_question(start_question, retryCount + 1);
     }
 
+    // Only delete cache on success
+    await ai.caches.delete({ name: cache.name! });
+    console.log("Delete Cache!");
     return parsed_response;
 
   } catch (error: any) {
-    // Clean up cache if it was created and if we have a valid cache reference
-    if (cache && cache.name) {
-      try {
-        await ai.caches.delete({ name: cache.name! });
-        console.log("Cache cleaned up after error");
-      } catch (cacheError) {
-        console.log("Error cleaning cache:", cacheError);
-      }
-    }
-
     // Check for various Gemini API errors that should trigger a silent reset
     const errorCode = error.status || error.code;
     const errorMessage = error.message || '';
