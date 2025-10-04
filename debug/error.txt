@@ -1,0 +1,418 @@
+Delete Cache!
+Video ID NTBRThwL-2c is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Delete Cache!
+Video ID NTBRThwL-2c is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Delete Cache!
+Video ID NTBRThwL-2c is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Delete Cache!
+Video ID NTBRThwL-2c is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Delete Cache!
+Video ID wX_kYQ8nOrM is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Maximum retries (5) reached for question: "How to kill a schnitzel"
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Unexpected Gemini API error, retrying: MAX_RETRIES_REACHED
+Maximum retries (5) reached for question: "How to kill a schnitzel"
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Unexpected Gemini API error, retrying: MAX_RETRIES_REACHED
+Delete Cache!
+Video ID NTBRThwL-2c is used more than once in the list
+Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...
+Maximum retries (5) reached for question: "How to kill a schnitzel"
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Unexpected Gemini API error, retrying: MAX_RETRIES_REACHED
+Maximum retries (5) reached for question: "How to kill a schnitzel"
+Error cleaning cache: ApiError: {"error":{"code":403,"message":"CachedContent not found (or permission denied)","status":"PERMISSION_DENIED"}}
+    at throwErrorIfNotOK (C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14856:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\NUC\Desktop\howto2.0-experimental\node_modules\@google\genai\dist\node\index.cjs:14632:13 {
+  status: 403
+}
+Unexpected Gemini API error, retrying: MAX_RETRIES_REACHED
+Delete Cache!
+User {
+  highestRequestedFile: 0,
+  highestAddedToPlaylist: -1,
+  generatedFollowingQuestions: true,
+  state: 1,
+  questions: [
+    Question {
+      index: 1,
+      question: 'How to kill a schnitzel?',
+      id: '3b54bPC60dQ',
+      durationInSec: 206,
+      startTimeInSec: 0
+    },
+    Question {
+      index: 2,
+      question: 'How to cook Chicken Breast?',
+      id: 'NTBRThwL-2c',
+      durationInSec: 684,
+      startTimeInSec: 206
+    },
+    Question {
+      index: 3,
+      question: 'How to clean chicken?',
+      id: 'JkIjSCksllw',
+      durationInSec: 928,
+      startTimeInSec: 890
+    },
+    Question {
+      index: 4,
+      question: 'How to butcher a chicken?',
+      id: 'bw0Gqdud1cc',
+      durationInSec: 425,
+      startTimeInSec: 1818
+    },
+    Question {
+      index: 5,
+      question: 'How to breed chicken?',
+      id: '6DtfXDKSITk',
+      durationInSec: 588,
+      startTimeInSec: 2243
+    },
+    Question {
+      index: 6,
+      question: 'How to build a chicken house?',
+      id: 'G5QjAcTDkBw',
+      durationInSec: 1458,
+      startTimeInSec: 2831
+    },
+    Question {
+      index: 7,
+      question: 'How to Make a Business Plan?',
+      id: 'ZEMbKzy7FD8',
+      durationInSec: 691,
+      startTimeInSec: 4289
+    },
+    Question {
+      index: 8,
+      question: 'How to start a Business?',
+      id: 'bXLZ8I7s8tw',
+      durationInSec: 1021,
+      startTimeInSec: 4980
+    },
+    Question {
+      index: 9,
+      question: 'How to build confidence?',
+      id: '7e6RSGdvHD8',
+      durationInSec: 896,
+      startTimeInSec: 6001
+    },
+    Question {
+      index: 10,
+      question: 'How to be happy?',
+      id: 'NmlWK-zCo6M',
+      durationInSec: 240,
+      startTimeInSec: 6897
+    },
+    Question {
+      index: 11,
+      question: 'How to be hopeful?',
+      id: 'NofoVqcpiDY',
+      durationInSec: 808,
+      startTimeInSec: 7137
+    },
+    Question {
+      index: 12,
+      question: 'How to be optimistic?',
+      id: 'ynjOQgll5PE',
+      durationInSec: 967,
+      startTimeInSec: 7945
+    },
+    Question {
+      index: 13,
+      question: 'How to develop a growth mindset?',
+      id: 'hiiEeMN7vbQ',
+      durationInSec: 578,
+      startTimeInSec: 8912
+    },
+    Question {
+      index: 14,
+      question: 'How to stay motivated?',
+      id: '7P48XfWSEQ0',
+      durationInSec: 276,
+      startTimeInSec: 9490
+    },
+    Question {
+      index: 15,
+      question: 'How to keep yourself motivated?',
+      id: '8ZhoeSaPF-k',
+      durationInSec: 348,
+      startTimeInSec: 9766
+    },
+    Question {
+      index: 16,
+      question: 'How to set goals that stick?',
+      id: 'fXyRprdoEoE',
+      durationInSec: 856,
+      startTimeInSec: 10114
+    },
+    Question {
+      index: 17,
+      question: 'How to Set Goals?',
+      id: 'BQbufwSqxpU',
+      durationInSec: 603,
+      startTimeInSec: 10970
+    },
+    Question {
+      index: 18,
+      question: 'How to create a budget?',
+      id: '3pslPbfpnzk',
+      durationInSec: 385,
+      startTimeInSec: 11573
+    },
+    Question {
+      index: 19,
+      question: 'How to save money?',
+      id: '7ZfxVv4FC5o',
+      durationInSec: 369,
+      startTimeInSec: 11958
+    },
+    Question {
+      index: 20,
+      question: 'How to manage personal finances?',
+      id: 'VaiqGsot5ws',
+      durationInSec: 778,
+      startTimeInSec: 12327
+    },
+    Question {
+      index: 21,
+      question: 'How to invest money for beginners?',
+      id: '8Ij7A1VCB7I',
+      durationInSec: 680,
+      startTimeInSec: 13105
+    },
+    Question {
+      index: 22,
+      question: 'How to Start Investing?',
+      id: 'Ay4fmZdZqJE',
+      durationInSec: 1285,
+      startTimeInSec: 13785
+    },
+    Question {
+      index: 23,
+      question: 'How to invest for beginners?',
+      id: 'lNdOtlpmH5U',
+      durationInSec: 1215,
+      startTimeInSec: 15070
+    },
+    Question {
+      index: 24,
+      question: 'How to open a brokerage account?',
+      id: 'PwLy3av-Dq4',
+      durationInSec: 752,
+      startTimeInSec: 16285
+    },
+    Question {
+      index: 25,
+      question: 'How to earn money?',
+      id: 'B24Wvtz-Dz0',
+      durationInSec: 564,
+      startTimeInSec: 17037
+    },
+    Question {
+      index: 26,
+      question: 'How to turn hobbies into income?',
+      id: 'hK3LZi3eha4',
+      durationInSec: 1343,
+      startTimeInSec: 17601
+    },
+    Question {
+      index: 27,
+      question: 'How to Start a Side Hustle?',
+      id: 'kU64fhwbiLE',
+      durationInSec: 789,
+      startTimeInSec: 18944
+    },
+    Question {
+      index: 28,
+      question: 'How to Find Freelance Work?',
+      id: 'VLZPcY6vILk',
+      durationInSec: 1208,
+      startTimeInSec: 19733
+    },
+    Question {
+      index: 29,
+      question: 'How to Start Freelancing?',
+      id: 'EjTTelvJAyU',
+      durationInSec: 739,
+      startTimeInSec: 20941
+    },
+    Question {
+      index: 30,
+      question: 'How to create a personal brand?',
+      id: 'ozMCb0wOnMU',
+      durationInSec: 375,
+      startTimeInSec: 21680
+    },
+    Question {
+      index: 31,
+      question: 'How to build a personal brand?',
+      id: '5pAQcC9YniM',
+      durationInSec: 2201,
+      startTimeInSec: 22055
+    },
+    Question {
+      index: 32,
+      question: 'How to create a portfolio?',
+      id: 'rGSmG7qp2Eg',
+      durationInSec: 654,
+      startTimeInSec: 24256
+    },
+    Question {
+      index: 33,
+      question: 'How to Make a Portfolio?',
+      id: 'fyNns5amxRk',
+      durationInSec: 545,
+      startTimeInSec: 24910
+    },
+    Question {
+      index: 34,
+      question: 'How to create a digital resume?',
+      id: 'S6d3MdZKpxk',
+      durationInSec: 514,
+      startTimeInSec: 25455
+    },
+    Question {
+      index: 35,
+      question: 'How to Create a Resume?',
+      id: 'Tt08KmFfIYQ',
+      durationInSec: 517,
+      startTimeInSec: 25969
+    },
+    Question {
+      index: 36,
+      question: 'How to write a resume?',
+      id: 'Y9Pyv-GWbmg',
+      durationInSec: 1342,
+      startTimeInSec: 26486
+    },
+    Question {
+      index: 37,
+      question: 'How to create a strong resume?',
+      id: 'R3abknwWX7k',
+      durationInSec: 515,
+      startTimeInSec: 27828
+    },
+    Question {
+      index: 38,
+      question: 'How to use AI for resume writing?',
+      id: 'WFX-an9ZEIA',
+      durationInSec: 654,
+      startTimeInSec: 28343
+    },
+    Question {
+      index: 39,
+      question: 'How to Write a Cover Letter?',
+      id: 'NUhDP30IRKk',
+      durationInSec: 446,
+      startTimeInSec: 28997
+    },
+    Question {
+      index: 40,
+      question: 'How to prepare for an interview?',
+      id: 'LCWr-TJrc0k',
+      durationInSec: 457,
+      startTimeInSec: 29443
+    },
+    Question {
+      index: 41,
+      question: 'How to Master a Job Interview?',
+      id: '0siE31sqz0Q',
+      durationInSec: 375,
+      startTimeInSec: 29900
+    },
+    Question {
+      index: 42,
+      question: 'How to Negotiate a Salary?',
+      id: 'J30wmYgzVXM',
+      durationInSec: 462,
+      startTimeInSec: 30275
+    },
+    Question {
+      index: 43,
+      question: 'How to improve your communication skills?',
+      id: 'LI57EB_T38c',
+      durationInSec: 1122,
+      startTimeInSec: 30737
+    },
+    Question {
+      index: 44,
+      question: 'How to Develop Better Communication Skills?',
+      id: '7hr60EumwQ4',
+      durationInSec: 494,
+      startTimeInSec: 31859
+    },
+    Question {
+      index: 45,
+      question: 'How to improve public speaking?',
+      id: '962eYqe--Yc',
+      durationInSec: 777,
+      startTimeInSec: 32353
+    },
+    Question {
+      index: 46,
+      question: 'How to Learn Public Speaking?',
+      id: 'i5mYphUoOCs',
+      durationInSec: 352,
+      startTimeInSec: 33130
+    },
+    Question {
+      index: 47,
+      question: 'How to Give a Great Presentation?',
+      id: 'MnIPpUiTcRc',
+      durationInSec: 424,
+      startTimeInSec: 33482
+    },
+    Question {
+      index: 48,
+      question: 'How to build good habits?',
+      id: 'eu1K9-xE42Q',
+      durationInSec: 350,
+      startTimeInSec: 33906
+    },
+    Question {
+      index: 49,
+      question: 'How to start a personal development routine?',
+      id: 'w2eRkU3I5OM',
+      durationInSec: 886,
+      startTimeInSec: 34256
+    },
+    Question {
+      index: 50,
+      question: 'How to be patient?',
+      id: 'KzW84p4bCzA',
+      durationInSec: 654,
+      startTimeInSec: 35142
+    }
+  ],
+  current_question_index: 0,
+  id: 'sIUlvvuhWj4Cd1ngAAAH'
+}
+found ts FILE How-to-Broil-Chicken-Breasts_3b54bPC60dQ__0.ts 0
+Requested File: sIUlvvuhWj4Cd1ngAAAH_stream_file.m3u8
+Requested File: sIUlvvuhWj4Cd1ngAAAH_stream_file.m3u8
+Requested File: sIUlvvuhWj4Cd1ngAAAH_stream_file.m3u8
+Requested File: sIUlvvuhWj4Cd1ngAAAH_stream_file.m3u8
+found ts FILE How-to-Broil-Chicken-Breasts_3b54bPC60dQ__1.ts 1
+E:\video-data\How-to-Broil-Chicken-Breasts_3b54bPC60dQ\ts_stream_convert\How-to-Broil-Chicken-Breasts_3
