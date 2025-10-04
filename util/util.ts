@@ -60,35 +60,45 @@ export function check_if_user_exits(id: string): boolean {
   return lstatSync(requested_path).isDirectory();
 }
 
-export function get_ts_file_by_video_id(video_id: string, segment: number) {
-  const videos_path = save_accesing_env_field("VIDEOS_PATH");
+export function get_ts_file_by_video_id(video_id: string, segment: number): string | null {
+  try {
+    const videos_path = save_accesing_env_field("VIDEOS_PATH");
 
-  assert(
-    lstatSync(videos_path).isDirectory(),
-    "Video Path: " + videos_path + " is not a Directory!"
-  );
+    if (!lstatSync(videos_path).isDirectory()) {
+      console.error(`CRITICAL: Video Path ${videos_path} is not a Directory!`);
+      return null;
+    }
 
-  const videos = readdirSync(videos_path);
-  const video = videos.find((v) => v.includes(video_id));
+    const videos = readdirSync(videos_path);
+    const video = videos.find((v) => v.includes(video_id));
 
-  assert(video, "could not find a video with id: " + video_id);
+    if (!video) {
+      console.error(`CRITICAL: Could not find a video with id: ${video_id}`);
+      return null;
+    }
 
-  const video_path = p.join(
-    videos_path,
-    video!,
-    save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
-  );
+    const video_path = p.join(
+      videos_path,
+      video,
+      save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
+    );
 
-  assert(
-    lstatSync(video_path).isDirectory(),
-    "Video path " + video_path + " is not a Directory!"
-  );
+    if (!lstatSync(video_path).isDirectory()) {
+      console.error(`CRITICAL: Video path ${video_path} is not a Directory!`);
+      return null;
+    }
 
-  const ts_files = readdirSync(video_path);
+    const ts_files = readdirSync(video_path);
+    const ts_file = ts_files.find((t) => t.match(`__${segment}.ts`));
 
-  const ts_file = ts_files.find((t) => t.match(`__${segment}.ts`)); //TODO CHANGE ME BUG
+    if (!ts_file) {
+      console.error(`CRITICAL: Could not find ts File for segment ${segment}`);
+      return null;
+    }
 
-  assert(ts_file, "could not find ts File for segment " + segment);
-
-  return p.join(video_path, ts_file!);
+    return p.join(video_path, ts_file);
+  } catch (error: any) {
+    console.error(`CRITICAL ERROR in get_ts_file_by_video_id:`, error.message);
+    return null;
+  }
 }

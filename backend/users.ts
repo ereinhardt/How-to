@@ -96,8 +96,14 @@ export default class User {
 export function user_allready_saved(user: User[], user_id: string): boolean {
   return user.find((u) => u.id === user_id) != undefined;
 }
-export function get_user_by_id(user: User[], user_id: string): User {
-  return user.find((u) => u.id === user_id)!;
+
+export function get_user_by_id(users: User[], user_id: string): User | null {
+  const foundUser = users.find((u) => u.id === user_id);
+  if (!foundUser) {
+    console.error(`CRITICAL: User with ID ${user_id} not found!`);
+    return null;
+  }
+  return foundUser;
 }
 
 export function remove_user_by_id(user: User[], user_id: string): void {

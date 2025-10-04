@@ -77,7 +77,7 @@ body {
     <div class="main">
         <div class="Search">
           <span> How to&nbsp;</span>
-          <input type="text"  name="" value="">
+          <input type="text"  name="" value="" maxlength="25">
           <span id="search_span"><button id="search_button">?</button></span>
         </div>
         <div class="Stamps">
@@ -149,6 +149,12 @@ body {
         // Listen for Gemini API errors (all error codes)
         socket.on("GEMINI_API_ERROR", (error) => {
             console.log("Gemini API Error received:", error.message);
+            resetToInitialState();
+        });
+
+        // Listen for max retries error
+        socket.on("MAX_RETRIES_ERROR", (error) => {
+            console.log("Max Retries Error received:", error.message);
             resetToInitialState();
         });
 

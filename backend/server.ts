@@ -9,6 +9,17 @@ import generate_question from "../ai/ai";
 import User from "./users";
 import cors from "cors";
 
+// CRITICAL: Global error handlers to prevent server crashes
+process.on('uncaughtException', (error) => {
+  console.error('UNCAUGHT EXCEPTION - Server continuing but this needs investigation:', error);
+  // Don't exit in production - log and continue
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED PROMISE REJECTION at:', promise, 'reason:', reason);
+  // Don't exit in production - log and continue
+});
+
 const port = save_accesing_env_field("SERVER_PORT");
 const host = save_accesing_env_field("SERVER_HOST");
 

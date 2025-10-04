@@ -242,7 +242,14 @@ function generatePrompt(initial_question: string): string {
   `;
 }
 
-export default async function generate_question(start_question: string) {
+export default async function generate_question(start_question: string, retryCount: number = 0): Promise<any> {
+  const MAX_RETRIES = 5;  // Set the maximum number of retries here (e.g., 5)
+
+  if (retryCount >= MAX_RETRIES) {
+    console.log(`Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`);
+    throw new Error('MAX_RETRIES_REACHED');
+  }
+
   const video_folder = save_accesing_env_field("VIDEOS_PATH");
   const api_key = save_accesing_env_field("GEMINI_API_KEY");
 
@@ -277,39 +284,35 @@ export default async function generate_question(start_question: string) {
       },
     });
 
-    await ai.caches.delete({ name: cache.name! });
-    console.log("Delete Cache!");
-
     if (!response.text) {
       console.log("got no response text!");
-      return await generate_question(start_question);
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
+      return await generate_question(start_question, retryCount + 1);
     }
 
     const parsed_response = parse_ai_response(response.text);
 
     if (!parsed_response) {
       console.log("unvalid parsed_response");
-      return await generate_question(start_question);
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
+      return await generate_question(start_question, retryCount + 1);
     }
 
     if (!check_if_ids_exists(parsed_response, users_csv)) {
       console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
-      return await generate_question(start_question);
+      await ai.caches.delete({ name: cache.name! });
+      console.log("Delete Cache!");
+      return await generate_question(start_question, retryCount + 1);
     }
 
+    // Only delete cache on success
+    await ai.caches.delete({ name: cache.name! });
+    console.log("Delete Cache!");
     return parsed_response;
 
   } catch (error: any) {
-    // Clean up cache if it was created
-    if (cache) {
-      try {
-        await ai.caches.delete({ name: cache.name! });
-        console.log("Cache cleaned up after error");
-      } catch (cacheError) {
-        console.log("Error cleaning cache:", cacheError);
-      }
-    }
-
     // Check for various Gemini API errors that should trigger a silent reset
     const errorCode = error.status || error.code;
     const errorMessage = error.message || '';
@@ -338,8 +341,13 @@ export default async function generate_question(start_question: string) {
       throw new Error('GEMINI_API_ERROR');
     }
 
+    // Check if this is a MAX_RETRIES_REACHED error and re-throw it
+    if (errorMessage === 'MAX_RETRIES_REACHED') {
+      throw error;
+    }
+
     // For unexpected errors, log and retry
     console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
-    return await generate_question(start_question);
+    return await generate_question(start_question, retryCount + 1);
   }
 }

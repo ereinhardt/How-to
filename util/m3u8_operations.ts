@@ -171,14 +171,19 @@ export function find_next_segment_path(
 }
 
 export function extract_ts_segment_number(filename: string): number {
-  assert(filename.includes("ts"), "could not extract ts Segment Number");
+  if (!filename.includes("ts")) {
+    console.error(`CRITICAL: Could not extract ts Segment Number from ${filename}`);
+    return -1;
+  }
 
   const segment_number_regex = /(.+)__(\d+)\.ts/;
-
   const match = filename.match(segment_number_regex);
 
-  assert(match, "could not found a segment number");
-  const segment_number = match![2];
-
+  if (!match) {
+    console.error(`CRITICAL: Could not find segment number in ${filename}`);
+    return -1;
+  }
+  
+  const segment_number = match[2];
   return Number(segment_number);
 }
