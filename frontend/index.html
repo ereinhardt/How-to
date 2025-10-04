@@ -186,12 +186,10 @@ body {
 
     function start_hls(source_url) {
          
-
-       
         const video = document.getElementsByTagName("video")[0];
         video.style.display = "block";
         if(!Hls.isSupported()){
-            alert("L in chat für den User der kein HLS abspielen kann!");
+            alert("Your browser does not support HLS video streaming.");
         }
 
         hls_context = new Hls({
@@ -201,6 +199,8 @@ body {
             levelLoadingMaxRetry: 2,
             autoStartLoad : true, 
             debug: false,
+            enableLogging: false,
+            enableVerboseLogging: false,
             liveDurationInfinity: false,
             maxBufferLength: 20,
             liveSyncDurationCount: 5,

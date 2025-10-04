@@ -243,8 +243,8 @@ function generatePrompt(initial_question: string): string {
 }
 
 export default async function generate_question(start_question: string, retryCount: number = 0): Promise<any> {
-  const MAX_RETRIES = 2;  // Temporarily set to 2 for testing
-  
+  const MAX_RETRIES = 5;  // Set the maximum number of retries here (e.g., 5)
+
   if (retryCount >= MAX_RETRIES) {
     console.log(`Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`);
     throw new Error('MAX_RETRIES_REACHED');
