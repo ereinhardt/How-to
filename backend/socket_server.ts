@@ -103,6 +103,11 @@ export default async function start_socket_server(io: Server, users: User[]) {
           socket.emit("GEMINI_API_ERROR", { 
             message: "Gemini API error occurred. Resetting search." 
           });
+        } else if (error.message === 'MAX_RETRIES_REACHED') {
+          console.log("Maximum retries reached - resetting search");
+          socket.emit("MAX_RETRIES_ERROR", { 
+            message: "Maximum retry attempts reached. Please try a different search." 
+          });
         } else {
           // For other errors, send generic error
           socket.emit("SEARCH_ERROR", { 

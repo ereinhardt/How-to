@@ -152,6 +152,12 @@ body {
             resetToInitialState();
         });
 
+        // Listen for max retries error
+        socket.on("MAX_RETRIES_ERROR", (error) => {
+            console.log("Max Retries Error received:", error.message);
+            resetToInitialState();
+        });
+
         // Listen for general search errors
         socket.on("SEARCH_ERROR", (error) => {
             console.log("Search Error received:", error.message);

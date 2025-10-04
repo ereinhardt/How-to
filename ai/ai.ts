@@ -242,7 +242,14 @@ function generatePrompt(initial_question: string): string {
   `;
 }
 
-export default async function generate_question(start_question: string) {
+export default async function generate_question(start_question: string, retryCount: number = 0): Promise<any> {
+  const MAX_RETRIES = 5;
+  
+  if (retryCount >= MAX_RETRIES) {
+    console.log(`Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`);
+    throw new Error('MAX_RETRIES_REACHED');
+  }
+
   const video_folder = save_accesing_env_field("VIDEOS_PATH");
   const api_key = save_accesing_env_field("GEMINI_API_KEY");
 
@@ -282,19 +289,19 @@ export default async function generate_question(start_question: string) {
 
     if (!response.text) {
       console.log("got no response text!");
-      return await generate_question(start_question);
+      return await generate_question(start_question, retryCount + 1);
     }
 
     const parsed_response = parse_ai_response(response.text);
 
     if (!parsed_response) {
       console.log("unvalid parsed_response");
-      return await generate_question(start_question);
+      return await generate_question(start_question, retryCount + 1);
     }
 
     if (!check_if_ids_exists(parsed_response, users_csv)) {
       console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
-      return await generate_question(start_question);
+      return await generate_question(start_question, retryCount + 1);
     }
 
     return parsed_response;
@@ -340,6 +347,6 @@ export default async function generate_question(start_question: string) {
 
     // For unexpected errors, log and retry
     console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
-    return await generate_question(start_question);
+    return await generate_question(start_question, retryCount + 1);
   }
 }
