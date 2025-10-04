@@ -243,7 +243,7 @@ function generatePrompt(initial_question: string): string {
 }
 
 export default async function generate_question(start_question: string, retryCount: number = 0): Promise<any> {
-  const MAX_RETRIES = 5;
+  const MAX_RETRIES = 2;  // Temporarily set to 2 for testing
   
   if (retryCount >= MAX_RETRIES) {
     console.log(`Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`);
@@ -307,8 +307,8 @@ export default async function generate_question(start_question: string, retryCou
     return parsed_response;
 
   } catch (error: any) {
-    // Clean up cache if it was created
-    if (cache) {
+    // Clean up cache if it was created and if we have a valid cache reference
+    if (cache && cache.name) {
       try {
         await ai.caches.delete({ name: cache.name! });
         console.log("Cache cleaned up after error");
