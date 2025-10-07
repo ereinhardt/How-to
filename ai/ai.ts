@@ -242,12 +242,17 @@ function generatePrompt(initial_question: string): string {
   `;
 }
 
-export default async function generate_question(start_question: string, retryCount: number = 0): Promise<any> {
-  const MAX_RETRIES = 5;  // Set the maximum number of retries here (e.g., 5)
+export default async function generate_question(
+  start_question: string,
+  retryCount: number = 0
+): Promise<any> {
+  const MAX_RETRIES = 5; // Set the maximum number of retries here (e.g., 5)
 
   if (retryCount >= MAX_RETRIES) {
-    console.log(`Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`);
-    throw new Error('MAX_RETRIES_REACHED');
+    console.log(
+      `Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`
+    );
+    throw new Error("MAX_RETRIES_REACHED");
   }
 
   const video_folder = save_accesing_env_field("VIDEOS_PATH");
@@ -255,10 +260,7 @@ export default async function generate_question(start_question: string, retryCou
 
   const model = "gemini-2.5-flash";
 
-  const users_questions_path = p.join(
-    video_folder,
-    "question_index.csv"
-  );
+  const users_questions_path = p.join(video_folder, "question_index.csv");
 
   const users_csv = readFileSync(users_questions_path, { encoding: "utf8" });
   const ai = new GoogleGenAI({ apiKey: api_key });
@@ -273,6 +275,7 @@ export default async function generate_question(start_question: string, retryCou
       },
     });
 
+    console.log("AI Request for: " + start_question);
     const response = await ai.models.generateContent({
       model: model,
       contents: generatePrompt(start_question),
@@ -301,7 +304,9 @@ export default async function generate_question(start_question: string, retryCou
     }
 
     if (!check_if_ids_exists(parsed_response, users_csv)) {
-      console.log("Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...");
+      console.log(
+        "Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying..."
+      );
       await ai.caches.delete({ name: cache.name! });
       console.log("Delete Cache!");
       return await generate_question(start_question, retryCount + 1);
@@ -311,43 +316,48 @@ export default async function generate_question(start_question: string, retryCou
     await ai.caches.delete({ name: cache.name! });
     console.log("Delete Cache!");
     return parsed_response;
-
   } catch (error: any) {
     // Check for various Gemini API errors that should trigger a silent reset
     const errorCode = error.status || error.code;
-    const errorMessage = error.message || '';
-    
-    const shouldSilentReset = [
-      400, // INVALID_ARGUMENT or FAILED_PRECONDITION
-      403, // PERMISSION_DENIED
-      404, // NOT_FOUND
-      429, // RESOURCE_EXHAUSTED
-      500, // INTERNAL
-      503, // UNAVAILABLE
-      504  // DEADLINE_EXCEEDED
-    ].includes(errorCode) || 
-    errorMessage.includes('503') || 
-    errorMessage.includes('Service Unavailable') ||
-    errorMessage.includes('INVALID_ARGUMENT') ||
-    errorMessage.includes('FAILED_PRECONDITION') ||
-    errorMessage.includes('PERMISSION_DENIED') ||
-    errorMessage.includes('NOT_FOUND') ||
-    errorMessage.includes('RESOURCE_EXHAUSTED') ||
-    errorMessage.includes('INTERNAL') ||
-    errorMessage.includes('DEADLINE_EXCEEDED');
+    const errorMessage = error.message || "";
+
+    const shouldSilentReset =
+      [
+        400, // INVALID_ARGUMENT or FAILED_PRECONDITION
+        403, // PERMISSION_DENIED
+        404, // NOT_FOUND
+        429, // RESOURCE_EXHAUSTED
+        500, // INTERNAL
+        503, // UNAVAILABLE
+        504, // DEADLINE_EXCEEDED
+      ].includes(errorCode) ||
+      errorMessage.includes("503") ||
+      errorMessage.includes("Service Unavailable") ||
+      errorMessage.includes("INVALID_ARGUMENT") ||
+      errorMessage.includes("FAILED_PRECONDITION") ||
+      errorMessage.includes("PERMISSION_DENIED") ||
+      errorMessage.includes("NOT_FOUND") ||
+      errorMessage.includes("RESOURCE_EXHAUSTED") ||
+      errorMessage.includes("INTERNAL") ||
+      errorMessage.includes("DEADLINE_EXCEEDED");
 
     if (shouldSilentReset) {
-      console.log(`Gemini API error (${errorCode}): ${errorMessage} - triggering frontend reset`);
-      throw new Error('GEMINI_API_ERROR');
+      console.log(
+        `Gemini API error (${errorCode}): ${errorMessage} - triggering frontend reset`
+      );
+      throw new Error("GEMINI_API_ERROR");
     }
 
     // Check if this is a MAX_RETRIES_REACHED error and re-throw it
-    if (errorMessage === 'MAX_RETRIES_REACHED') {
+    if (errorMessage === "MAX_RETRIES_REACHED") {
       throw error;
     }
 
     // For unexpected errors, log and retry
-    console.log("Unexpected Gemini API error, retrying:", errorMessage || error);
+    console.log(
+      "Unexpected Gemini API error, retrying:",
+      errorMessage || error
+    );
     return await generate_question(start_question, retryCount + 1);
   }
 }

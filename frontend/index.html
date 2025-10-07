@@ -83,7 +83,7 @@ body {
         <div class="Stamps">
         </div>
         <div class="Video">
-         <video src="" controls controlslist="noplaybackrate nodownload nofullscreen" autoplay style="display: none; width: 100%; height: auto;" style="height: 100%; width: 100%">
+         <video src="" controls controlslist="noplaybackrate nodownload nofullscreen" autoplay style="display: none; width: 100%; height: auto;">
     
          </video>
         </div>
@@ -112,76 +112,95 @@ body {
       }
     });
 
-    function start_search(){
+async function start_search() {
+  await destroy_hls_context();
+  deleteAllTimestamps();
+  num_of_videos = 0;
+  currentTimestamps = 0;
+
+  const video = document.getElementsByTagName("video")[0];
+  video.style.display = "none";
+  document.body.style.backgroundColor = "white";
+
+  const current_value = document.getElementsByTagName("input")[0].value;
+  search_value = `How to ${current_value}`;
+
+  document.body.style.cursor = "wait";
+  document.getElementById("search_button").disabled = true;
+
+  socket.disconnect();
+
+  // 🧹 ganz wichtig: alte Socket-Listener entfernen
+  socket.removeAllListeners("START_STREAM");
+  socket.removeAllListeners("GEMINI_API_ERROR");
+  socket.removeAllListeners("MAX_RETRIES_ERROR");
+  socket.removeAllListeners("SEARCH_ERROR");
+  socket.removeAllListeners("STREAM_ENDED");
+
+  // Neu verbinden und saubere Listener setzen
+  if (socket.disconnected) socket.connect();
+
+  socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
+
+  socket.on("START_STREAM", (source_url, user) => {
+    console.log("start Hls Stream! with url: " + source_url);
+    document.body.style.cursor = "auto";
+    document.getElementById("search_button").disabled = false;
+    start_hls(source_url);
+    generatingTimestamps(user.questions);
+  });
+
+  socket.on("GEMINI_API_ERROR", (error) => {
+    console.log("Gemini API Error received:", error.message);
+    resetToInitialState();
+  });
+
+  socket.on("MAX_RETRIES_ERROR", (error) => {
+    console.log("Max Retries Error received:", error.message);
+    resetToInitialState();
+  });
+
+  socket.on("SEARCH_ERROR", (error) => {
+    console.log("Search Error received:", error.message);
+    resetToInitialState();
+  });
+
+  socket.on("STREAM_ENDED", () => {
+    console.log("Received STREAM_ENDED event from server");
+    resetToInitialState();
+  });
+}
+
+    async function destroy_hls_context() {
+        if (hls_context) {
+    try {
+        // 1️⃣ Ladevorgänge stoppen
+        hls_context.stopLoad();
+
+        // 2️⃣ Media trennen (damit keine Autoplay- oder Buffer-Ereignisse mehr kommen)
+        hls_context.detachMedia();
+
+        // 3️⃣ Falls ein Loader noch aktiv ist: abbrechen erzwingen
+        if (hls_context.coreComponents) {
+            for (const comp of hls_context.coreComponents) {
+                if (comp && typeof comp.abort === 'function') {
+                    comp.abort();
+                }
+            }
+        }
+
+        // 4️⃣ Jetzt destroy
+        hls_context.destroy();
 
 
-        deleteAllTimestamps();
-        num_of_videos = 0;
-        currentTimestamps = 0;
-        let current_value = document.getElementsByTagName("input")[0].value;
-        
-        document.body.style.cursor = "wait";
-
-        const video = document.getElementsByTagName("video")[0];
-        video.style.display = "none";
-        document.body.style.backgroundColor = "white";
-
-        search_value = `How to ${current_value}`;
-
-        document.getElementById("search_button").disabled = true;
-        socket.disconnect();
-        socket.connect();
-
-        socket.emit("NEW_SEARCH", {search: search_value, is_first: true});
-       
-        destroy_hls_context();
-
-        socket.on("START_STREAM", (source_url, user) => {
-
-            console.log("start Hls Stream! with url: " + source_url);
-            document.body.style.cursor = "auto";
-            document.getElementById("search_button").disabled = false;
-            start_hls(source_url);
-            generatingTimestamps(user.questions);
-            console.log(user.questions);
-        });
-
-        // Listen for Gemini API errors (all error codes)
-        socket.on("GEMINI_API_ERROR", (error) => {
-            console.log("Gemini API Error received:", error.message);
-            resetToInitialState();
-        });
-
-        // Listen for max retries error
-        socket.on("MAX_RETRIES_ERROR", (error) => {
-            console.log("Max Retries Error received:", error.message);
-            resetToInitialState();
-        });
-
-        // Listen for general search errors
-        socket.on("SEARCH_ERROR", (error) => {
-            console.log("Search Error received:", error.message);
-            resetToInitialState();
-        });
-
-        // Listen for stream end event from server
-        socket.on("STREAM_ENDED", () => {
-            console.log("Received STREAM_ENDED event from server");
-            resetToInitialState();
-        });
-
-
-
-        
+        // 5️⃣ (optional) kurz warten, bevor du neu initialisierst
+        await new Promise(r => setTimeout(r, 100));
+    } catch (e) {
+        console.warn('Fehler beim Stoppen des alten HLS-Streams:', e);
     }
 
-    function destroy_hls_context() {
-        if(hls_context) {
-            hls_context.destroy();
-            hls_context.detachMedia();
-            
-            hls_context = null;
-        }
+    hls_context = null;
+}
     }
 
     function start_hls(source_url) {
