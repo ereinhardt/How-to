@@ -1,4 +1,4 @@
-# How to? (v.2.2-10-2025)
+# How to? (v.2.3-10-2025)
 
 "How to?" generates a continuous tutorial video stream (approx. 7-8h) when the user enters an initial question.
 
