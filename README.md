@@ -61,6 +61,7 @@ Example: npm run create_question-index dir=E:\video-data
 
 ```env
 GEMINI_API_KEY="" // API key for Google Gemini GenAI (current model: gemini-2.5-flash)
+GEMINI_MODEL="" //model name for Gemini eg. gemini-2.5-flash
 USER_QUESTION_INDEX="user_question_index.txt" // Path to txt file which saves all user questions
 SERVER_HOST="" // Host of file server, e.g., localhost or the current IP (bc Network-DHCP) of your server
 SERVER_PORT="" // Port of file server, e.g., 5001

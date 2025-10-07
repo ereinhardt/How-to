@@ -67,9 +67,12 @@ body {
     margin-left: 8px;
     overflow-x: hidden;
   }
+
+
   #active {
     color: red;
   }
+
 
 </style>
 
@@ -81,6 +84,7 @@ body {
           <span id="search_span"><button id="search_button">?</button></span>
         </div>
         <div class="Stamps">
+
         </div>
         <div class="Video">
          <video src="" controls controlslist="noplaybackrate nodownload nofullscreen" autoplay style="display: none; width: 100%; height: auto;">
@@ -239,10 +243,7 @@ async function start_search() {
                 switch(data.type) {
                     case Hls.ErrorTypes.NETWORK_ERROR:
                         console.log('Fatal network error, stream might have ended');
-                        if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR || 
-                            data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
-                            resetToInitialState();
-                        }
+                         resetToInitialState();
                         break;
                     case Hls.ErrorTypes.MEDIA_ERROR:
                         console.log('Fatal media error');
@@ -287,6 +288,11 @@ async function start_search() {
           video.removeEventListener("timeupdate", timeupdateHandler);
           timeupdateHandler = null;
         }
+
+       if (_seekHandler) {
+          vid.removeEventListener("seeked", vid._seekHandler);
+          _seekHandler = null;
+      }
         
         // Reset state variables
         currentTimestamps = 0;
@@ -302,33 +308,40 @@ async function start_search() {
 
 
     let timeupdateHandler = null;
+    let _seekHandler = null;
 
-    function generatingTimestamps(questions) {
-      const vid = document.getElementsByTagName("video")[0];
-      let currentIndex = 1;
+   function generatingTimestamps(questions) {
+  const vid = document.getElementsByTagName("video")[0];
+  let currentIndex = 1;
 
-      // falls schon ein alter Handler existiert → entfernen
-      if (timeupdateHandler) {
-        vid.removeEventListener("timeupdate", timeupdateHandler);
-      }
+  // Falls schon alte Handler existieren → entfernen
+  if (timeupdateHandler) {
+    vid.removeEventListener("timeupdate", timeupdateHandler);
+  }
+  if (_seekHandler) {
+    vid.removeEventListener("seeked", _seekHandler);
+  }
 
-      // neuen Handler definieren
-      timeupdateHandler = () => {
-        const time = vid.currentTime;
-        
-        // Generate new timestamps as they reach their start time
-        if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
-          generateTimeStamp(questions[currentIndex]);
-          currentIndex++;
-        }
-        
-        // Update active timestamp based on current video time
-        updateActiveTimestamp(time, questions);
-      };
-
-      // neuen Handler anhängen
-      vid.addEventListener("timeupdate", timeupdateHandler);
+  // 🔹 timeupdate Handler (wie bisher)
+  timeupdateHandler = () => {
+    const time = vid.currentTime;
+    if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
+      generateTimeStamp(questions[currentIndex]);
+      updateActiveTimestamp(time, questions);
+      currentIndex++;
     }
+  };
+  vid.addEventListener("timeupdate", timeupdateHandler);
+
+  // 🔹 seeked Handler (NEU)
+  _seekHandler = () => {
+    const currentTime = vid.currentTime;
+    console.log("Seek detected → new time:", currentTime);
+    updateActiveTimestamp(currentTime, questions);
+  };
+
+  vid.addEventListener("seeked", _seekHandler);
+}
 
     function updateActiveTimestamp(currentTime, questions) {
       // Find which timestamp should be active based on current time
@@ -340,10 +353,20 @@ async function start_search() {
           break;
         }
       }
+
+      
+      
+  
       
       // Find the corresponding DOM element and set it as active
       const allLinks = document.querySelectorAll(".Stamps a");
       allLinks.forEach(link => link.id = ""); // Remove active from all
+
+       //dann sind wir beim start Question Video
+      if(activeQuestionIndex == 0 && currentTime <= questions[0].startTimeInSec) {
+        const first_link = allLinks[0].scrollIntoView({behavior: "smooth", block: "end"});
+        return;
+      }
       
       // Find and activate the correct timestamp
       const activeQuestion = questions[activeQuestionIndex];
@@ -351,6 +374,7 @@ async function start_search() {
         allLinks.forEach(link => {
           if (link.innerText === activeQuestion.question) {
             link.id = "active";
+            link.scrollIntoView({behavior: "smooth", block: "center"})
           }
         });
       }
