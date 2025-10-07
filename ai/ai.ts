@@ -246,7 +246,7 @@ export default async function generate_question(
   start_question: string,
   retryCount: number = 0
 ): Promise<any> {
-  const MAX_RETRIES = 5; // Set the maximum number of retries here (e.g., 5)
+  const MAX_RETRIES = 2; // Set the maximum number of retries here (e.g., 5)
 
   if (retryCount >= MAX_RETRIES) {
     console.log(
