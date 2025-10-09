@@ -17,9 +17,31 @@ export function parse_ai_response(json_markdown_string: string) {
 
 export function check_if_ids_exists(response_json: any, csv: string): boolean {
   var i = 1;
+  const usedVideoIds = new Set<string>(); // Track used video IDs
 
   for (const q of response_json) {
-    if (!csv.includes(q[`video_id_${i}`])) return false;
+    const video_id = q[`video_id_${i}`];
+    
+    // Check if video has an ID (not empty, null, or undefined)
+    if (!video_id || video_id.trim() === "") {
+      console.log(`Video ${i} has no ID or empty ID`);
+      return false;
+    }
+    
+    // Check if this video ID was already used
+    if (usedVideoIds.has(video_id)) {
+      console.log(`Video ID ${video_id} is used more than once in the list`);
+      return false;
+    }
+    
+    // Check if the ID exists in the CSV
+    if (!csv.includes(video_id)) {
+      console.log(`Video ID ${video_id} not found in CSV`);
+      return false;
+    }
+    
+    // Add video ID to the set of used IDs
+    usedVideoIds.add(video_id);
     i++;
   }
   return true;
@@ -38,35 +60,45 @@ export function check_if_user_exits(id: string): boolean {
   return lstatSync(requested_path).isDirectory();
 }
 
-export function get_ts_file_by_video_id(video_id: string, segment: number) {
-  const videos_path = save_accesing_env_field("VIDEOS_PATH");
+export function get_ts_file_by_video_id(video_id: string, segment: number): string | null {
+  try {
+    const videos_path = save_accesing_env_field("VIDEOS_PATH");
 
-  assert(
-    lstatSync(videos_path).isDirectory(),
-    "Video Path: " + videos_path + " is not a Directory!"
-  );
+    if (!lstatSync(videos_path).isDirectory()) {
+      console.error(`CRITICAL: Video Path ${videos_path} is not a Directory!`);
+      return null;
+    }
 
-  const videos = readdirSync(videos_path);
-  const video = videos.find((v) => v.includes(video_id));
+    const videos = readdirSync(videos_path);
+    const video = videos.find((v) => v.includes(video_id));
 
-  assert(video, "could not find a video with id: " + video_id);
+    if (!video) {
+      console.error(`CRITICAL: Could not find a video with id: ${video_id}`);
+      return null;
+    }
 
-  const video_path = p.join(
-    videos_path,
-    video!,
-    save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
-  );
+    const video_path = p.join(
+      videos_path,
+      video,
+      save_accesing_env_field("VIDEO_TS_FOLDER_NAME")
+    );
 
-  assert(
-    lstatSync(video_path).isDirectory(),
-    "Video path " + video_path + " is not a Directory!"
-  );
+    if (!lstatSync(video_path).isDirectory()) {
+      console.error(`CRITICAL: Video path ${video_path} is not a Directory!`);
+      return null;
+    }
 
-  const ts_files = readdirSync(video_path);
+    const ts_files = readdirSync(video_path);
+    const ts_file = ts_files.find((t) => t.match(`__${segment}.ts`));
 
-  const ts_file = ts_files.find((t) => t.match(`__${segment}.ts`)); //TODO CHANGE ME BUG
+    if (!ts_file) {
+      console.error(`CRITICAL: Could not find ts File for segment ${segment}`);
+      return null;
+    }
 
-  assert(ts_file, "could not find ts File for segment " + segment);
-
-  return p.join(video_path, ts_file!);
+    return p.join(video_path, ts_file);
+  } catch (error: any) {
+    console.error(`CRITICAL ERROR in get_ts_file_by_video_id:`, error.message);
+    return null;
+  }
 }
