@@ -16,15 +16,18 @@ import User, { get_user_by_id, user_allready_saved } from "./users";
 
 const html_name = "frontend/index.html";
 
+// Start HTTP server with routes for serving frontend and video files
 export default async function start_http_server(
   server: Express,
   users: User[],
   io?: any
 ) {
+  // Serve the main frontend HTML file
   server.get("/", (req, res) => {
     res.sendFile(p.join(__dirname, `../../${html_name}`));
   });
 
+  // Serve user-specific files by user ID and filename
   server.get("/:id/:filename", async (req, res) => {
     try {
       console.log("Requested File:", req.params.filename);
@@ -44,8 +47,7 @@ export default async function start_http_server(
         id,
         filename
       );
-      
-      // CRITICAL FIX: Safe file sending with error handling
+
       res.sendFile(file_path, (err) => {
         if (err) {
           console.error(`ERROR sending file ${file_path}:`, err.message);
@@ -62,6 +64,7 @@ export default async function start_http_server(
     }
   });
 
+  // Handle video segment requests and manage streaming playlists
   server.get(`/:video_id/:user_id/:filename`, (req, res) => {
     try {
       const { video_id, filename, user_id } = req.params;
@@ -91,8 +94,6 @@ export default async function start_http_server(
         return;
       }
 
-      // Add next segment only when progressing forward AND it hasn't been added to playlist yet
-      // This prevents duplicate segments when seeking to unbuffered areas
       if (
         segment >= current_user.highestRequestedFile &&
         current_user.getCurrentQuestion().id == video_id &&
@@ -100,24 +101,26 @@ export default async function start_http_server(
       ) {
         current_user.highestRequestedFile = segment;
         current_user.highestAddedToPlaylist = segment;
-        
-        let next_segment = find_next_segment_path(video_id, segment + 1, user_id);
+
+        let next_segment = find_next_segment_path(
+          video_id,
+          segment + 1,
+          user_id
+        );
 
         if (next_segment == "ENDING") {
           current_user.highestRequestedFile = 0;
-          current_user.highestAddedToPlaylist = -1; // Reset for new question
+          current_user.highestAddedToPlaylist = -1; 
           const newQuestion = current_user.getNewQuestion();
 
           if (!newQuestion) {
             console.log("Stream from ", user_id, "has Ended!");
             addStreamEnding(user_id);
-            
-            // Notify frontend via socket if io is available
+
             if (io) {
               io.to(user_id).emit("STREAM_ENDED");
             }
-            
-            // Return 404 for ENDING requests to properly signal stream end
+
             res.status(404).send("Stream ended");
             return;
           } else {
@@ -128,21 +131,26 @@ export default async function start_http_server(
         }
 
         add_segment(user_id, next_segment, 1.0);
-      } else if (segment > current_user.highestRequestedFile && current_user.getCurrentQuestion().id == video_id) {
-        // Update highest requested when seeking forward, but don't add segments to avoid duplicates
+      } else if (
+        segment > current_user.highestRequestedFile &&
+        current_user.getCurrentQuestion().id == video_id
+      ) {
         current_user.highestRequestedFile = segment;
       }
-      
+
       const requested_file = get_ts_file_by_video_id(video_id, segment);
       if (!requested_file) {
         res.status(404).send("Video file not found");
         return;
       }
-      
+
       console.log(requested_file);
       res.sendFile(p.join(requested_file), (err) => {
         if (err) {
-          console.error(`ERROR sending video file ${requested_file}:`, err.message);
+          console.error(
+            `ERROR sending video file ${requested_file}:`,
+            err.message
+          );
           if (!res.headersSent) {
             res.status(404).send("Video file not found");
           }

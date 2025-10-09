@@ -1,269 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>How to?</title>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.js" integrity="sha512-YR4vWgTmC0QwRfYKWTy1eTMvBYpmAsSGP76is/15Uxqfa3N/qYRZKFE8pf66GsfSrFksaJkNmbTS2BcdLamZoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.js"
+      integrity="sha512-YR4vWgTmC0QwRfYKWTy1eTMvBYpmAsSGP76is/15Uxqfa3N/qYRZKFE8pf66GsfSrFksaJkNmbTS2BcdLamZoA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
 
-</head>
-<style>
+    .main {
+      position: absolute;
+      margin: auto;
+      z-index: 1000;
+      max-width: 177.78vh;
+      max-height: 100vh;
+      width: 100vw;
+      height: calc(100vw / 1.7778);
+      overflow-x: hidden;
+    }
+    .Video {
+      width: 100%;
+      position: absolute;
+      height: 100%;
+      top: 0;
+      z-index: -10000000000;
+      overflow-x: hidden;
+    }
 
-body {
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-  }
-  
-  .main{
-    position: absolute;
-    margin: auto;
-    z-index: 1000;
-    max-width: 177.78vh;
-    max-height: 100vh;
-    width: 100vw;
-    height: calc(100vw / 1.7778);
-    overflow-x: hidden;
-  }
-  .Video{
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    top: 0;
-    z-index: -10000000000;
-    overflow-x: hidden;
-  }
-  
-  .Search{
-    height: 30px;
-    padding-left: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    align-items:center;
-    overflow-x: hidden;
-  }
-  
-  .Search input{
-    width: 100px;
-    height: 14px;
-    overflow-x: hidden;
-  }
-  .Search span {
-    cursor: pointer;
-    overflow-x: hidden;
-  }
-  
-  .Stamps {
-    height: calc(50% - 31px);
-    overflow-y: auto;
-    width: 100%;
-    margin-left: 8px;
-    overflow-x: hidden;
-  }
+    .Search {
+      height: 30px;
+      padding-left: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      overflow-x: hidden;
+    }
 
+    .Search input {
+      width: 100px;
+      height: 14px;
+      overflow-x: hidden;
+    }
+    .Search span {
+      cursor: pointer;
+      overflow-x: hidden;
+    }
 
-  #active {
-    color: red;
-  }
+    .Stamps {
+      height: calc(50% - 31px);
+      overflow-y: auto;
+      width: 100%;
+      margin-left: 8px;
+      overflow-x: hidden;
+    }
 
-  #notification {
-    margin-left: 10px;
-    color: red;
-    cursor: auto;
-  }
+    #active {
+      color: red;
+    }
 
+    #notification {
+      margin-left: 10px;
+      color: red;
+      cursor: auto;
+    }
+  </style>
 
-</style>
-
-<body>
+  <body>
     <div class="main">
-        <div class="Search">
-          <span> How to&nbsp;</span>
-          <input type="text"  name="" value="" maxlength="25">
-          <span id="search_span"><button id="search_button">?</button></span>
-          <span id="notification"></span>
-        </div>
-        <div class="Stamps">
-
-        </div>
-        <div class="Video">
-         <video src="" controls controlslist="noplaybackrate nodownload nofullscreen" autoplay style="display: none; width: 100%; height: auto;">
-    
-         </video>
-        </div>
+      <div class="Search">
+        <span> How to&nbsp;</span>
+        <input type="text" name="" value="" maxlength="25" />
+        <span id="search_span"><button id="search_button">?</button></span>
+        <span id="notification"></span>
       </div>
-<script>
-    //TODO: check if you need a port!
-    const socket = io();
-    let currentTimestamps = 0;
-    let timeStamps = [];
+      <div class="Stamps"></div>
+      <div class="Video">
+        <video
+          src=""
+          controls
+          controlslist="noplaybackrate nodownload nofullscreen"
+          autoplay
+          style="display: none; width: 100%; height: auto"
+        ></video>
+      </div>
+    </div>
+    <script>
+      //TODO: check if you need a port!
+      const socket = io();
+      let currentTimestamps = 0;
+      let timeStamps = [];
 
-    let num_of_videos = 0;
-    let search_value = "";
-    
-    let hls_context;
+      let num_of_videos = 0;
+      let search_value = "";
 
-    let is_searching = false;
+      let hls_context;
 
-    document.getElementById("search_span").addEventListener("click", () => {
-      start_search(); 
-    });
+      let is_searching = false;
 
-    // Add Enter key support for the input field
-    document.getElementsByTagName("input")[0].addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        start_search();
-      }
-    });
-
-async function start_search() {
-  await destroy_hls_context();
-  deleteAllTimestamps();
-  num_of_videos = 0;
-  currentTimestamps = 0;
-
-  const video = document.getElementsByTagName("video")[0];
-  video.style.display = "none";
-  document.body.style.backgroundColor = "white";
-
-  const current_value = document.getElementsByTagName("input")[0].value;
-  search_value = `How to ${current_value}`;
-
-  document.body.style.cursor = "wait";
-  document.getElementById("search_button").disabled = true;
-
-  socket.disconnect();
-
-  // 🧹 ganz wichtig: alte Socket-Listener entfernen
-  socket.removeAllListeners("START_STREAM");
-  socket.removeAllListeners("GEMINI_API_ERROR");
-  socket.removeAllListeners("MAX_RETRIES_ERROR");
-  socket.removeAllListeners("SEARCH_ERROR");
-  socket.removeAllListeners("STREAM_ENDED");
-
-  // Neu verbinden und saubere Listener setzen
-  if (socket.disconnected) socket.connect();
-
-  socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
-
-  socket.on("START_STREAM", (source_url, user) => {
-    console.log("start Hls Stream! with url: " + source_url);
-    document.body.style.cursor = "auto";
-    document.getElementById("search_button").disabled = false;
-    start_hls(source_url);
-    generatingTimestamps(user.questions);
-  });
-
-  socket.on("GEMINI_API_ERROR", (error) => {
-    console.log("Gemini API Error received:", error.message);
-    setNotification("Search failed, try again.");
-    resetToInitialState();
-  }); 
-
-  socket.on("MAX_RETRIES_ERROR", (error) => {
-    console.log("Max Retries Error received:", error.message);
-    setNotification("Search failed, try again.");
-    resetToInitialState();
-  });
-
-  socket.on("SEARCH_ERROR", (error) => {
-    console.log("Search Error received:", error.message);
-    setNotification("Search failed, try again.");
-    resetToInitialState();
-  });
-
-  socket.on("STREAM_ENDED", () => {
-    console.log("Received STREAM_ENDED event from server");
-    resetToInitialState();
-  });
-}
-
-    async function destroy_hls_context() {
-        if (hls_context) {
-    try {
-        // 1️⃣ Ladevorgänge stoppen
-        hls_context.stopLoad();
-
-        // 2️⃣ Media trennen (damit keine Autoplay- oder Buffer-Ereignisse mehr kommen)
-        hls_context.detachMedia();
-
-        // 3️⃣ Falls ein Loader noch aktiv ist: abbrechen erzwingen
-        if (hls_context.coreComponents) {
-            for (const comp of hls_context.coreComponents) {
-                if (comp && typeof comp.abort === 'function') {
-                    comp.abort();
-                }
-            }
+      document.getElementById("search_span").addEventListener("click", () => {
+        if (!is_searching) {
+          start_search();
         }
+      });
 
-        // 4️⃣ Jetzt destroy
-        hls_context.destroy();
+      document
+        .getElementsByTagName("input")[0]
+        .addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && !is_searching) {
+            start_search();
+          }
+        });
 
+      // Start new search and handle server communication
+      async function start_search() {
+        await destroy_hls_context();
+        deleteAllTimestamps();
+        num_of_videos = 0;
+        currentTimestamps = 0;
 
-        // 5️⃣ (optional) kurz warten, bevor du neu initialisierst
-        await new Promise(r => setTimeout(r, 100));
-    } catch (e) {
-        console.warn('Fehler beim Stoppen des alten HLS-Streams:', e);
-    }
+        const video = document.getElementsByTagName("video")[0];
+        video.style.display = "none";
+        document.body.style.backgroundColor = "white";
 
-    hls_context = null;
-}
-    }
+        const current_value = document.getElementsByTagName("input")[0].value;
+        search_value = `How to ${current_value}`;
 
-    function start_hls(source_url) {
-         
+        is_searching = true;
+        document.getElementsByTagName("input")[0].readOnly = true;
+        document.body.style.cursor = "wait";
+        document.getElementById("search_button").disabled = true;
 
-       
+        socket.disconnect();
+
+        socket.removeAllListeners("START_STREAM");
+        socket.removeAllListeners("GEMINI_API_ERROR");
+        socket.removeAllListeners("MAX_RETRIES_ERROR");
+        socket.removeAllListeners("SEARCH_ERROR");
+        socket.removeAllListeners("STREAM_ENDED");
+
+        if (socket.disconnected) socket.connect();
+
+        socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
+
+        socket.on("START_STREAM", (source_url, user) => {
+          console.log("start Hls Stream! with url: " + source_url);
+          is_searching = false;
+          document.getElementsByTagName("input")[0].readOnly = false;
+          document.body.style.cursor = "auto";
+          document.getElementById("search_button").disabled = false;
+          start_hls(source_url);
+          generatingTimestamps(user.questions);
+        });
+
+        socket.on("GEMINI_API_ERROR", (error) => {
+          console.log("Gemini API Error received:", error.message);
+          setNotification("Search failed, try again.");
+          is_searching = false;
+          document.getElementsByTagName("input")[0].readOnly = false;
+          document.getElementById("search_button").disabled = false;
+          document.body.style.cursor = "auto";
+          resetToInitialState();
+        });
+
+        socket.on("MAX_RETRIES_ERROR", (error) => {
+          console.log("Max Retries Error received:", error.message);
+          setNotification("Search failed, try again.");
+          is_searching = false;
+          document.getElementsByTagName("input")[0].readOnly = false;
+          document.getElementById("search_button").disabled = false;
+          document.body.style.cursor = "auto";
+          resetToInitialState();
+        });
+
+        socket.on("SEARCH_ERROR", (error) => {
+          console.log("Search Error received:", error.message);
+          setNotification("Search failed, try again.");
+          is_searching = false;
+          document.getElementsByTagName("input")[0].readOnly = false;
+          document.getElementById("search_button").disabled = false;
+          document.body.style.cursor = "auto";
+          resetToInitialState();
+        });
+
+        socket.on("STREAM_ENDED", () => {
+          console.log("Received STREAM_ENDED event from server");
+          is_searching = false;
+          document.getElementsByTagName("input")[0].readOnly = false;
+          document.getElementById("search_button").disabled = false;
+          document.body.style.cursor = "auto";
+          resetToInitialState();
+        });
+      }
+
+      // Clean up and destroy HLS streaming context
+      async function destroy_hls_context() {
+        if (hls_context) {
+          try {
+            hls_context.stopLoad();
+
+            hls_context.detachMedia();
+
+            if (hls_context.coreComponents) {
+              for (const comp of hls_context.coreComponents) {
+                if (comp && typeof comp.abort === "function") {
+                  comp.abort();
+                }
+              }
+            }
+
+            hls_context.destroy();
+
+            await new Promise((r) => setTimeout(r, 100));
+          } catch (e) {
+            console.warn("Fehler beim Stoppen des alten HLS-Streams:", e);
+          }
+
+          hls_context = null;
+        }
+      }
+
+      // Initialize HLS video streaming
+      function start_hls(source_url) {
         const video = document.getElementsByTagName("video")[0];
         video.style.display = "block";
-        if(!Hls.isSupported()){
-            //alert("L in chat für den User der kein HLS abspielen kann!");
-            setNotification("Hls is not supported.");
+        if (!Hls.isSupported()) {
+          setNotification("Hls is not supported.");
         }
 
         hls_context = new Hls({
-            levelLoadingTimeOut: 1000000,
-            manifestLoadingTimeOut: 1000,
-            levelLoadingMaxRetryTimeout: 1000,
-            levelLoadingMaxRetry: 2,
-            autoStartLoad : true, 
-            debug: false,
-            liveDurationInfinity: false,
-            maxBufferLength: 20,
-            liveSyncDurationCount: 5,
-            backBufferLength: 20, 
-            adjustTs: true,
-            forceKeyFrameOnDiscontinuity: true, 
-            makSeekHole: 1
+          levelLoadingTimeOut: 1000000,
+          manifestLoadingTimeOut: 1000,
+          levelLoadingMaxRetryTimeout: 1000,
+          levelLoadingMaxRetry: 2,
+          autoStartLoad: true,
+          debug: false,
+          liveDurationInfinity: false,
+          maxBufferLength: 20,
+          liveSyncDurationCount: 5,
+          backBufferLength: 20,
+          adjustTs: true,
+          forceKeyFrameOnDiscontinuity: true,
+          makSeekHole: 1,
         });
 
         hls_context.loadSource(source_url);
         hls_context.attachMedia(video);
         document.body.style.backgroundColor = "black";
 
-        // Listen for stream end events
         hls_context.on(Hls.Events.ERROR, function (event, data) {
-            if (data.fatal) {
-                switch(data.type) {
-                    case Hls.ErrorTypes.NETWORK_ERROR:
-                        console.log('Fatal network error, stream might have ended');
-                         resetToInitialState();
-                        break;
-                    case Hls.ErrorTypes.MEDIA_ERROR:
-                        console.log('Fatal media error');
-                        break;
-                    default:
-                        console.log('Fatal error');
-                        break;
-                }
+          if (data.fatal) {
+            switch (data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                console.log("Fatal network error, stream might have ended");
+                resetToInitialState();
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                console.log("Fatal media error");
+                break;
+              default:
+                console.log("Fatal error");
+                break;
             }
+          }
         });
 
         video.addEventListener("ended", () => {
@@ -271,19 +286,20 @@ async function start_search() {
           resetToInitialState();
         });
 
-        // Additional listener for when stream reaches end
         hls_context.on(Hls.Events.LEVEL_UPDATED, function (event, data) {
-            if (data.details && data.details.endOfStream) {
-                console.log("Stream end detected via level update");
-                resetToInitialState();
-            }
+          if (data.details && data.details.endOfStream) {
+            console.log("Stream end detected via level update");
+            resetToInitialState();
+          }
         });
       }
 
+      // Remove all timestamp elements from the DOM
       function deleteAllTimestamps() {
-        document.querySelectorAll(".Stamps a").forEach(a => a.remove());
+        document.querySelectorAll(".Stamps a").forEach((a) => a.remove());
       }
 
+      // Reset application to initial state
       function resetToInitialState() {
         console.log("Resetting to initial state");
         destroy_hls_context();
@@ -291,139 +307,137 @@ async function start_search() {
         video.style.display = "none";
         video.src = "";
         document.getElementsByTagName("input")[0].value = "";
+        document.getElementsByTagName("input")[0].readOnly = false;
         document.body.style.backgroundColor = "white";
         deleteAllTimestamps();
-        
-        // Remove any timeupdate handlers
+
         if (timeupdateHandler) {
           video.removeEventListener("timeupdate", timeupdateHandler);
           timeupdateHandler = null;
         }
 
-       if (_seekHandler) {
+        if (_seekHandler) {
           vid.removeEventListener("seeked", vid._seekHandler);
           _seekHandler = null;
-      }
-        
-        // Reset state variables
+        }
+
         currentTimestamps = 0;
         timeStamps = [];
         num_of_videos = 0;
         search_value = "";
         is_searching = false;
-        
-        // Enable search button
+
         document.getElementById("search_button").disabled = false;
         document.body.style.cursor = "auto";
       }
 
+      let timeupdateHandler = null;
+      let _seekHandler = null;
 
-    let timeupdateHandler = null;
-    let _seekHandler = null;
+      // Generate timestamps and handle video time events
+      function generatingTimestamps(questions) {
+        const vid = document.getElementsByTagName("video")[0];
+        let currentIndex = 1;
 
-   function generatingTimestamps(questions) {
-  const vid = document.getElementsByTagName("video")[0];
-  let currentIndex = 1;
+        if (timeupdateHandler) {
+          vid.removeEventListener("timeupdate", timeupdateHandler);
+        }
+        if (_seekHandler) {
+          vid.removeEventListener("seeked", _seekHandler);
+        }
 
-  // Falls schon alte Handler existieren → entfernen
-  if (timeupdateHandler) {
-    vid.removeEventListener("timeupdate", timeupdateHandler);
-  }
-  if (_seekHandler) {
-    vid.removeEventListener("seeked", _seekHandler);
-  }
+        timeupdateHandler = () => {
+          const time = vid.currentTime;
+          if (
+            currentIndex < questions.length &&
+            time > questions[currentIndex].startTimeInSec
+          ) {
+            generateTimeStamp(questions[currentIndex]);
+            updateActiveTimestamp(time, questions);
+            currentIndex++;
+          }
+        };
+        vid.addEventListener("timeupdate", timeupdateHandler);
 
-  // 🔹 timeupdate Handler (wie bisher)
-  timeupdateHandler = () => {
-    const time = vid.currentTime;
-    if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
-      generateTimeStamp(questions[currentIndex]);
-      updateActiveTimestamp(time, questions);
-      currentIndex++;
-    }
-  };
-  vid.addEventListener("timeupdate", timeupdateHandler);
+        _seekHandler = () => {
+          const currentTime = vid.currentTime;
+          console.log("Seek detected → new time:", currentTime);
+          updateActiveTimestamp(currentTime, questions);
+        };
 
-  // 🔹 seeked Handler (NEU)
-  _seekHandler = () => {
-    const currentTime = vid.currentTime;
-    console.log("Seek detected → new time:", currentTime);
-    updateActiveTimestamp(currentTime, questions);
-  };
+        vid.addEventListener("seeked", _seekHandler);
+      }
 
-  vid.addEventListener("seeked", _seekHandler);
-}
+      // Update which timestamp is currently active based on video time
+      function updateActiveTimestamp(currentTime, questions) {
+        let activeQuestionIndex = 0;
 
-    function updateActiveTimestamp(currentTime, questions) {
-      // Find which timestamp should be active based on current time
-      let activeQuestionIndex = 0;
-      
-      for (let i = questions.length - 1; i >= 0; i--) {
-        if (currentTime >= questions[i].startTimeInSec) {
-          activeQuestionIndex = i;
-          break;
+        for (let i = questions.length - 1; i >= 0; i--) {
+          if (currentTime >= questions[i].startTimeInSec) {
+            activeQuestionIndex = i;
+            break;
+          }
+        }
+
+        const allLinks = document.querySelectorAll(".Stamps a");
+        allLinks.forEach((link) => (link.id = "")); 
+
+        if (
+          activeQuestionIndex == 0 &&
+          currentTime <= questions[0].startTimeInSec
+        ) {
+          const first_link = allLinks[0].scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+          });
+          return;
+        }
+
+        const activeQuestion = questions[activeQuestionIndex];
+        if (activeQuestion) {
+          allLinks.forEach((link) => {
+            if (link.innerText === activeQuestion.question) {
+              link.id = "active";
+              link.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
         }
       }
 
-      
-      
-  
-      
-      // Find the corresponding DOM element and set it as active
-      const allLinks = document.querySelectorAll(".Stamps a");
-      allLinks.forEach(link => link.id = ""); // Remove active from all
-
-       //dann sind wir beim start Question Video
-      if(activeQuestionIndex == 0 && currentTime <= questions[0].startTimeInSec) {
-        const first_link = allLinks[0].scrollIntoView({behavior: "smooth", block: "end"});
-        return;
-      }
-      
-      // Find and activate the correct timestamp
-      const activeQuestion = questions[activeQuestionIndex];
-      if (activeQuestion) {
-        allLinks.forEach(link => {
-          if (link.innerText === activeQuestion.question) {
-            link.id = "active";
-            link.scrollIntoView({behavior: "smooth", block: "center"})
-          }
-        });
-      }
-    }
-
+      // Generate single timestamp entry
       function generateTimeStamp(question) {
-        generateTimeStampsDOM(question.question, question.startTimeInSec)
+        generateTimeStampsDOM(question.question, question.startTimeInSec);
       }
 
-      function generateTimeStampsDOM(title, time){
+      // Create DOM elements for timestamp links
+      function generateTimeStampsDOM(title, time) {
         var wrapper = document.createElement("div");
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        // Don't automatically set as active - let updateActiveTimestamp handle it
         link.innerText = title;
-        
-        link.onclick = (e)=>{
+
+        link.onclick = (e) => {
           Jumpto(time, e);
           setActiveLink(e.target);
-        }
+        };
         wrapper.appendChild(link);
         document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
       }
 
-
-      function Jumpto(value, e){
+      // Jump to specific time in video
+      function Jumpto(value, e) {
         e.preventDefault();
-        return document.getElementsByTagName("video")[0].currentTime = value;
+        return (document.getElementsByTagName("video")[0].currentTime = value);
       }
 
+      // Set which timestamp link is visually active
       function setActiveLink(linkElem) {
-        // alle bisherigen aktiven Links deaktivieren
-        document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
-        // den geklickten aktiv setzen
+        document.querySelectorAll(".Stamps a").forEach((a) => (a.id = ""));
         linkElem.id = "active";
       }
 
+      // Display temporary notification message
       function setNotification(message) {
         const noti = document.getElementById("notification");
         noti.innerText = "(" + message + ")";
@@ -433,7 +447,17 @@ async function start_search() {
         }, 3000);
       }
 
+      // Scroll to currently active timestamp
+      function scrollToActiveTimestamp() {
+        const activeLink = document.querySelector(".Stamps a#active");
+        if (activeLink) {
+          activeLink.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
 
-</script>
-</body>
+      window.addEventListener("resize", () => {
+        setTimeout(scrollToActiveTimestamp, 100);
+      });
+    </script>
+  </body>
 </html>

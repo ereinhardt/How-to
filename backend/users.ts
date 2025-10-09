@@ -6,6 +6,7 @@ enum UserState {
   generateQuestions,
 }
 
+// Represents a single question with metadata
 class Question {
   public index: number;
   public question: string;
@@ -13,6 +14,7 @@ class Question {
   public durationInSec: number;
   public startTimeInSec: number;
 
+  // Create a new question with all required properties
   constructor(
     i: number,
     q: string,
@@ -28,19 +30,22 @@ class Question {
   }
 }
 
+// Manages user state and question chains for streaming
 export default class User {
   public id: string;
   public highestRequestedFile = 0;
-  public highestAddedToPlaylist = -1; // Track highest segment added to M3U8 playlist
+  public highestAddedToPlaylist = -1;
   public generatedFollowingQuestions = false;
   public state = UserState.Unset;
   public questions: Question[] = [];
   public current_question_index = 0;
 
+  // Initialize a new user with the given ID
   constructor(id: string) {
     this.id = id;
   }
 
+  // Generate AI-powered question chain from starting question
   async generateUpcommingQuestions(start_question: string) {
     if (
       this.state == UserState.generateQuestions ||
@@ -49,7 +54,7 @@ export default class User {
       return;
     this.state = UserState.generateQuestions;
     this.generatedFollowingQuestions = true;
-    
+
     try {
       const questions = await generate_question(start_question);
       let i = 1;
@@ -67,17 +72,18 @@ export default class User {
         i++;
       }
     } catch (error: any) {
-      // Reset state so user can try again
       this.state = UserState.Unset;
       this.generatedFollowingQuestions = false;
-      throw error; // Re-throw to be handled by socket handler
+      throw error; 
     }
   }
 
+  // Get the currently active question
   getCurrentQuestion(): Question {
     return this.questions[this.current_question_index];
   }
 
+  // Move to next question in the chain
   getNewQuestion() {
     this.current_question_index += 1;
 
@@ -86,6 +92,7 @@ export default class User {
     return this.questions[this.current_question_index];
   }
 
+  // Reset user state and clear all questions
   resetQuestions() {
     this.questions = [];
     this.state = UserState.Unset;
@@ -93,10 +100,12 @@ export default class User {
   }
 }
 
+// Check if user already exists in the users array
 export function user_allready_saved(user: User[], user_id: string): boolean {
   return user.find((u) => u.id === user_id) != undefined;
 }
 
+// Find and return user by ID from users array
 export function get_user_by_id(users: User[], user_id: string): User | null {
   const foundUser = users.find((u) => u.id === user_id);
   if (!foundUser) {
@@ -106,6 +115,7 @@ export function get_user_by_id(users: User[], user_id: string): User | null {
   return foundUser;
 }
 
+// Remove user from users array by ID
 export function remove_user_by_id(user: User[], user_id: string): void {
   const user_index = user.findIndex((u) => u.id == user_id);
 

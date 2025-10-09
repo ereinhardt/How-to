@@ -1,6 +1,7 @@
 import { appendFileSync, existsSync, writeFileSync } from "fs";
 import * as p from "path";
 
+// Create or update CSV index file with video title and ID
 export default async function create_question_index(
   base_path: string,
   video_file_name: string,

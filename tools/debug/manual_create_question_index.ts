@@ -1,4 +1,10 @@
-import { existsSync, readdirSync, writeFileSync, lstatSync, mkdirSync } from "fs";
+import {
+  existsSync,
+  readdirSync,
+  writeFileSync,
+  lstatSync,
+  mkdirSync,
+} from "fs";
 import { copyFile, rename } from "fs/promises";
 import { exec } from "child_process";
 
@@ -13,11 +19,11 @@ import { argv, stdin, stdout } from "process";
  * Usage:
  * ts-node manual_create_question_index.ts dir=<directory_path>
  */
+// Generate CSV question index from video filenames in directory
 function createQuestionIndex() {
   const args = argv;
   let basePath: string | undefined;
 
-  // Find the 'dir' argument from command line
   for (const arg of args) {
     if (arg.startsWith("dir=")) {
       basePath = arg.split("=")[1];
@@ -27,7 +33,9 @@ function createQuestionIndex() {
 
   if (!basePath) {
     console.error("Error: Missing required argument 'dir'.");
-    console.error("Usage: ts-node manual_create_question_index.ts dir=<directory_path>");
+    console.error(
+      "Usage: ts-node manual_create_question_index.ts dir=<directory_path>"
+    );
     return;
   }
 
@@ -64,7 +72,6 @@ function createQuestionIndex() {
 
     writeFileSync(file_path, csvContent, { encoding: "utf-8" });
     console.log(`Successfully created and wrote to ${file_path}`);
-    
   } catch (error) {
     console.error("An error occurred during file processing:");
     console.error(error);

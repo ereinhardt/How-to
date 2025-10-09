@@ -1,7 +1,9 @@
 import { assert } from "console";
 import { lstatSync, readdirSync } from "fs";
 import * as p from "path";
+import { networkInterfaces } from "os";
 
+// Parse JSON response from AI markdown string
 export function parse_ai_response(json_markdown_string: string) {
   const match = json_markdown_string.match(/\[[\s\S]*]/gm);
 
@@ -15,31 +17,39 @@ export function parse_ai_response(json_markdown_string: string) {
   }
 }
 
+// Validate video IDs exist and are unique in CSV data
 export function check_if_ids_exists(response_json: any, csv: string): boolean {
   var i = 1;
-  const usedVideoIds = new Set<string>(); // Track used video IDs
+  const usedVideoIds = new Set<string>();
 
   for (const q of response_json) {
     const video_id = q[`video_id_${i}`];
-    
+    const video_title = q[`video_title_${i}`];
+
     // Check if video has an ID (not empty, null, or undefined)
     if (!video_id || video_id.trim() === "") {
       console.log(`Video ${i} has no ID or empty ID`);
       return false;
     }
-    
+
+    // Check if video has a title (not empty, null, or undefined)
+    if (!video_title || video_title.trim() === "") {
+      console.log(`Video ${i} has no title or empty title`);
+      return false;
+    }
+
     // Check if this video ID was already used
     if (usedVideoIds.has(video_id)) {
       console.log(`Video ID ${video_id} is used more than once in the list`);
       return false;
     }
-    
+
     // Check if the ID exists in the CSV
     if (!csv.includes(video_id)) {
       console.log(`Video ID ${video_id} not found in CSV`);
       return false;
     }
-    
+
     // Add video ID to the set of used IDs
     usedVideoIds.add(video_id);
     i++;
@@ -47,12 +57,80 @@ export function check_if_ids_exists(response_json: any, csv: string): boolean {
   return true;
 }
 
+
+
+// Get local network IP address for server binding
+export function getLocalNetworkIP(): string {
+  try {
+    const interfaces = networkInterfaces();
+
+    const preferredInterfaces = ["en0", "eth0", "wlan0", "Wi-Fi", "Ethernet"];
+
+    for (const interfaceName of preferredInterfaces) {
+      const networkInterface = interfaces[interfaceName];
+      if (networkInterface) {
+        for (const net of networkInterface) {
+          if (
+            net.family === "IPv4" &&
+            !net.internal &&
+            net.address !== "127.0.0.1"
+          ) {
+            return net.address;
+          }
+        }
+      }
+    }
+
+    for (const interfaceName in interfaces) {
+      const networkInterface = interfaces[interfaceName];
+      if (networkInterface) {
+        for (const net of networkInterface) {
+          if (
+            net.family === "IPv4" &&
+            !net.internal &&
+            net.address !== "127.0.0.1"
+          ) {
+            return net.address;
+          }
+        }
+      }
+    }
+
+    return "localhost";
+  } catch (error) {
+    return "localhost";
+  }
+}
+
+
+// Access environment variable with IP detection for SERVER_HOST
+export function save_accesing_env_field_with_ip_detection(
+  field: string
+): string {
+  if (field === "SERVER_HOST") {
+    const localhostFlag = process.env.LOCALHOST;
+
+    if (localhostFlag === "1") {
+      return "localhost";
+    } else {
+      const detectedIP = getLocalNetworkIP();
+      return detectedIP;
+    }
+  }
+
+  if (process.env[field]) return process.env[field]!;
+
+  throw Error(`could not found ${field} in .env file!`);
+}
+
+// Access environment variable or throw error if not found
 export function save_accesing_env_field(field: string) {
   if (process.env[field]) return process.env[field]!;
 
   throw Error(`could not found ${field} in .env file!`);
 }
 
+// Check if user directory exists
 export function check_if_user_exits(id: string): boolean {
   const user_path = save_accesing_env_field("USERS_FOLDER");
   const requested_path = p.join(user_path, id);
@@ -60,7 +138,11 @@ export function check_if_user_exits(id: string): boolean {
   return lstatSync(requested_path).isDirectory();
 }
 
-export function get_ts_file_by_video_id(video_id: string, segment: number): string | null {
+// Get TS video file path by video ID and segment number
+export function get_ts_file_by_video_id(
+  video_id: string,
+  segment: number
+): string | null {
   try {
     const videos_path = save_accesing_env_field("VIDEOS_PATH");
 

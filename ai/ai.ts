@@ -7,6 +7,7 @@ import {
 import { readFileSync } from "fs";
 import { GoogleGenAI } from "@google/genai";
 
+// Generate AI prompt for creating a chain of "How to" questions
 function generatePrompt(initial_question: string): string {
   return `
   **TASK**: 
@@ -33,7 +34,8 @@ function generatePrompt(initial_question: string): string {
 
   **OUTPUT FORMAT**: 
   - Provide exactly 50 questions + video_ids in the following valid JSON structure. 
-  - CRITICAL: Every video_title MUST have a corresponding video_id. Never leave video_id empty or blank.
+  - CRITICAL: Every video_title (in the JSON) needs to have a video_title (from the CSV). Never leave video_title empty or blank.
+  - CRITICAL: Every video_title (in the JSON) MUST have a corresponding video_id (from the CSV). Never leave video_id empty or blank.
   - Return only the JSON structure with no additional text, explanations, or formatting:
 
   [
@@ -242,6 +244,7 @@ function generatePrompt(initial_question: string): string {
   `;
 }
 
+// Generate a question chain using AI with retry logic and validation
 export default async function generate_question(
   start_question: string,
   retryCount: number = 0
@@ -312,12 +315,10 @@ export default async function generate_question(
       return await generate_question(start_question, retryCount + 1);
     }
 
-    // Only delete cache on success
     await ai.caches.delete({ name: cache.name! });
     console.log("Delete Cache!");
     return parsed_response;
   } catch (error: any) {
-    // Check for various Gemini API errors that should trigger a silent reset
     const errorCode = error.status || error.code;
     const errorMessage = error.message || "";
 
@@ -348,12 +349,10 @@ export default async function generate_question(
       throw new Error("GEMINI_API_ERROR");
     }
 
-    // Check if this is a MAX_RETRIES_REACHED error and re-throw it
     if (errorMessage === "MAX_RETRIES_REACHED") {
       throw error;
     }
 
-    // For unexpected errors, log and retry
     console.log(
       "Unexpected Gemini API error, retrying:",
       errorMessage || error

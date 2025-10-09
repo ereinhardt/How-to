@@ -13,6 +13,7 @@ interface arg_state {
 
 const OPTS = ["dir", "create_question_index"];
 
+// Parse command line arguments into structured state
 function parse_args(): arg_state | undefined {
   const args = argv.slice(2);
 
@@ -68,6 +69,7 @@ function parse_args(): arg_state | undefined {
   return state;
 }
 
+// Extract file extension from filename
 function parse_file_end(fileName: string): string {
   let current_index = fileName.length - 1;
   let current_char = fileName[current_index];
@@ -79,7 +81,6 @@ function parse_file_end(fileName: string): string {
     current_char = fileName[current_index];
   }
 
-  //wenn es keine extension gibt, dann gib leeren string
   if (fileName == file_extension) {
     return "";
   }
@@ -87,10 +88,12 @@ function parse_file_end(fileName: string): string {
   return file_extension;
 }
 
+// Check if filename contains ID (has underscore)
 function has_id(fileName: string): boolean {
   return fileName.includes("_");
 }
 
+// Check if directory doesn't already exist for this filename
 function has_not_dir(fileName: string, path: string): boolean {
   const dir = readdirSync(path);
 
@@ -101,6 +104,7 @@ function has_not_dir(fileName: string, path: string): boolean {
   return dirs_in_dir.find((f) => f.includes(space_to_hyphen(f))) ? false : true;
 }
 
+// Remove file extension from filename
 function remove_file_extension(fileName: string): string {
   const extension = parse_file_end(fileName);
 
@@ -112,14 +116,17 @@ function remove_file_extension(fileName: string): string {
   return fileName.replace("." + extension, "");
 }
 
+// Replace spaces with hyphens in string
 function space_to_hyphen(str: string): string {
   return str.replace(/\s/g, "-");
 }
 
+// Remove question marks from string
 function remove_question_marks(str: string): string {
   return str.replace(/[\?\uF025]/g, "");
 }
 
+// Check if FFmpeg is installed on the system
 async function check_ffmpeg_installation(): Promise<boolean> {
   return new Promise((resolve) => {
     exec("ffmpeg -version", (error) => {
@@ -128,6 +135,7 @@ async function check_ffmpeg_installation(): Promise<boolean> {
   });
 }
 
+// Convert video file to HLS stream format using FFmpeg
 async function convert_to_fs(
   path: string,
   fileName: string,
@@ -142,7 +150,7 @@ async function convert_to_fs(
     "-crf 30",
     '-vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1"',
     "-g 1",
-    "-ac 2", 
+    "-ac 2",
     "-hls_time 1",
     "-hls_list_size 0",
     "-hls_segment_filename",
@@ -153,7 +161,7 @@ async function convert_to_fs(
   return new Promise((resolve, reject) => {
     exec(
       "ffmpeg " + opts.join(" "),
-      { maxBuffer: 1024 * 1024 * 1024 }, // (cuurent 1 GB) Set a larger buffer size here
+      { maxBuffer: 1024 * 1024 * 1024 },
       (e, stdout, stderr) => {
         if (!e) {
           resolve();
@@ -166,6 +174,7 @@ async function convert_to_fs(
   });
 }
 
+// Main conversion function to process video files
 async function convert(): Promise<number> {
   const state = parse_args();
   if (!state) return -1;
