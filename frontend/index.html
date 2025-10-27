@@ -396,7 +396,9 @@
         const activeQuestion = questions[activeQuestionIndex];
         if (activeQuestion) {
           allLinks.forEach((link) => {
-            if (link.innerText === activeQuestion.question) {
+            // Compare with the displayed title (which might have a question mark added)
+            const displayTitle = activeQuestion.question.endsWith('?') ? activeQuestion.question : activeQuestion.question + '?';
+            if (link.innerText === displayTitle) {
               link.id = "active";
               link.scrollIntoView({ behavior: "smooth", block: "center" });
             }
@@ -415,7 +417,9 @@
         wrapper.className = title;
         var link = document.createElement("a");
         link.href = "#";
-        link.innerText = title;
+        // Ensure title ends with a question mark
+        const displayTitle = title.endsWith('?') ? title : title + '?';
+        link.innerText = displayTitle;
 
         link.onclick = (e) => {
           Jumpto(time, e);

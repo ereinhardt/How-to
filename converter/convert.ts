@@ -141,8 +141,13 @@ async function convert_to_fs(
   fileName: string,
   input_path: string
 ): Promise<void> {
+  // Wrap paths in quotes to handle special characters
+  const quotedInputPath = `"${input_path}"`;
+  const quotedSegmentPath = `"${path}/${fileName}__%d.ts"`;
+  const quotedPlaylistPath = `"${path}/${fileName}_playlist.m3u8"`;
+
   const opts = [
-    `-i ${input_path}`,
+    `-i ${quotedInputPath}`,
     "-profile:v baseline",
     "-filter:v fps=25",
     "-start_number 0",
@@ -154,8 +159,8 @@ async function convert_to_fs(
     "-hls_time 1",
     "-hls_list_size 0",
     "-hls_segment_filename",
-    `${path}/${fileName}__%d.ts`,
-    `${path}/${fileName}_playlist.m3u8`,
+    quotedSegmentPath,
+    quotedPlaylistPath,
   ];
 
   return new Promise((resolve, reject) => {
