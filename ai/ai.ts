@@ -6,6 +6,7 @@ import {
 } from "../util/util";
 import { readFileSync } from "fs";
 import { GoogleGenAI } from "@google/genai";
+import * as dns from "dns";
 
 // Generate AI prompt for creating a chain of "How to" questions
 function generatePrompt(initial_question: string): string {
@@ -249,6 +250,9 @@ export default async function generate_question(
   start_question: string,
   retryCount: number = 0
 ): Promise<any> {
+  // Prefer IPv4 over IPv6 to avoid network issues
+  dns.setDefaultResultOrder('ipv4first');
+  
   const MAX_RETRIES = 5; // Set the maximum number of retries here (e.g., 5)
 
   if (retryCount >= MAX_RETRIES) {
