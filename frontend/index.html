@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -114,6 +115,23 @@
 
       let is_searching = false;
 
+      // Add socket connection logging
+      socket.on("connect", () => {
+        console.log("Socket connected with ID:", socket.id);
+      });
+
+      socket.on("disconnect", (reason) => {
+        console.log("Socket disconnected. Reason:", reason);
+        if (reason === "io server disconnect") {
+          console.log("Server disconnected the socket, reconnecting...");
+          socket.connect();
+        }
+      });
+
+      socket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+      });
+
       document.getElementById("search_span").addEventListener("click", () => {
         if (!is_searching) {
           start_search();
@@ -130,6 +148,7 @@
 
       // Start new search and handle server communication
       async function start_search() {
+        console.log("=== Starting new search ===");
         await destroy_hls_context();
         deleteAllTimestamps();
         num_of_videos = 0;
@@ -147,6 +166,7 @@
         document.body.style.cursor = "wait";
         document.getElementById("search_button").disabled = true;
 
+        console.log("Disconnecting socket for clean state...");
         socket.disconnect();
 
         socket.removeAllListeners("START_STREAM");
@@ -155,18 +175,22 @@
         socket.removeAllListeners("SEARCH_ERROR");
         socket.removeAllListeners("STREAM_ENDED");
 
-        if (socket.disconnected) socket.connect();
-
-        socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
-
+        // Set up listeners BEFORE reconnecting
         socket.on("START_STREAM", (source_url, user) => {
           console.log("start Hls Stream! with url: " + source_url);
+          console.log("User data received:", user);
           is_searching = false;
           document.getElementsByTagName("input")[0].readOnly = false;
           document.body.style.cursor = "auto";
           document.getElementById("search_button").disabled = false;
-          start_hls(source_url);
-          generatingTimestamps(user.questions);
+          
+          try {
+            start_hls(source_url);
+            generatingTimestamps(user.questions);
+          } catch (error) {
+            console.error("Error starting stream:", error);
+            setNotification("Failed to start stream");
+          }
         });
 
         socket.on("GEMINI_API_ERROR", (error) => {
@@ -207,6 +231,22 @@
           document.body.style.cursor = "auto";
           resetToInitialState();
         });
+
+        // Now reconnect and send the search request
+        console.log("Reconnecting socket...");
+        if (socket.disconnected) socket.connect();
+
+        // Wait for connection to be established
+        await new Promise(resolve => {
+          if (socket.connected) {
+            resolve();
+          } else {
+            socket.once("connect", resolve);
+          }
+        });
+
+        console.log("Socket connected, emitting NEW_SEARCH with query:", search_value);
+        socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
       }
 
       // Clean up and destroy HLS streaming context
@@ -245,10 +285,12 @@
         }
 
         hls_context = new Hls({
-          levelLoadingTimeOut: 1000000,
-          manifestLoadingTimeOut: 1000,
-          levelLoadingMaxRetryTimeout: 1000,
-          levelLoadingMaxRetry: 2,
+          levelLoadingTimeOut: 10000,
+          manifestLoadingTimeOut: 10000,
+          levelLoadingMaxRetryTimeout: 64000,
+          levelLoadingMaxRetry: 3,
+          manifestLoadingMaxRetry: 3,
+          manifestLoadingMaxRetryTimeout: 64000,
           autoStartLoad: true,
           debug: false,
           liveDurationInfinity: false,
@@ -257,7 +299,7 @@
           backBufferLength: 20,
           adjustTs: true,
           forceKeyFrameOnDiscontinuity: true,
-          makSeekHole: 1,
+          maxSeekHole: 1,
         });
 
         hls_context.loadSource(source_url);
@@ -265,20 +307,46 @@
         document.body.style.backgroundColor = "black";
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
+          console.log("HLS Error:", data.type, data.details, "Fatal:", data.fatal);
           if (data.fatal) {
             switch (data.type) {
               case Hls.ErrorTypes.NETWORK_ERROR:
-                console.log("Fatal network error, stream might have ended");
-                resetToInitialState();
+                console.log("Fatal network error encountered, details:", data.details);
+                console.log("Attempting to recover from network error...");
+                if (hls_context) {
+                  hls_context.startLoad(-1);
+                }
+                setTimeout(() => {
+                  if (hls_context && hls_context.media && hls_context.media.error) {
+                    console.log("Recovery failed, resetting");
+                    resetToInitialState();
+                  }
+                }, 5000);
                 break;
               case Hls.ErrorTypes.MEDIA_ERROR:
-                console.log("Fatal media error");
+                console.log("Fatal media error, attempting recovery");
+                hls_context.recoverMediaError();
                 break;
               default:
-                console.log("Fatal error");
+                console.log("Fatal error - type:", data.type);
+                setNotification("Stream error occurred");
+                resetToInitialState();
                 break;
             }
           }
+        });
+
+        // Debug: Log fragment loading events
+        hls_context.on(Hls.Events.FRAG_LOADING, function (event, data) {
+          console.log("Loading TS fragment:", data.frag.url);
+        });
+
+        hls_context.on(Hls.Events.FRAG_LOADED, function (event, data) {
+          console.log("TS fragment loaded successfully");
+        });
+
+        hls_context.on(Hls.Events.FRAG_LOAD_ERROR, function (event, data) {
+          console.error("Fragment load error:", data);
         });
 
         video.addEventListener("ended", () => {
@@ -301,7 +369,7 @@
 
       // Reset application to initial state
       function resetToInitialState() {
-        console.log("Resetting to initial state");
+        console.log("=== Resetting to initial state ===");
         destroy_hls_context();
         const video = document.getElementsByTagName("video")[0];
         video.style.display = "none";
@@ -317,7 +385,7 @@
         }
 
         if (_seekHandler) {
-          vid.removeEventListener("seeked", vid._seekHandler);
+          video.removeEventListener("seeked", _seekHandler);
           _seekHandler = null;
         }
 
@@ -329,6 +397,9 @@
 
         document.getElementById("search_button").disabled = false;
         document.body.style.cursor = "auto";
+        
+        // Keep socket connected - don't disconnect here
+        console.log("Reset complete, socket remains connected");
       }
 
       let timeupdateHandler = null;
@@ -465,3 +536,19 @@
     </script>
   </body>
 </html>
+
+
+hls_context = new Hls({
+          levelLoadingTimeOut: 1000000,
+          manifestLoadingTimeOut: 1000,
+          levelLoadingMaxRetryTimeout: 1000,
+          levelLoadingMaxRetry: 2,
+          autoStartLoad: true,
+          debug: false,
+          liveDurationInfinity: false,
+          maxBufferLength: 20,
+          liveSyncDurationCount: 5,
+          backBufferLength: 20,
+          adjustTs: true,
+          forceKeyFrameOnDiscontinuity: true,
+          maxSeekHole: 1,
