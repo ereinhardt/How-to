@@ -66,6 +66,12 @@
       overflow-y: auto;
       width: 100%;
       margin-left: 8px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .Stamps::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     #active {
