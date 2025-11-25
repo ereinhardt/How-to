@@ -35,7 +35,8 @@ export function create_user_m3u8(id: string, user_path: string): string {
 
   writeFileSync(stream_file_path, M3U8_HEADER.join("\n") + "\n", { flag: "w" });
 
-  return p.join(id, id + stream_file_ending + ".m3u8");
+  // Return URL path with forward slashes
+  return `${id}/${id}${stream_file_ending}.m3u8`;
 }
 
 // Extract video duration in seconds from video ID
@@ -170,10 +171,10 @@ export function find_next_segment_path(
 
   console.log("found ts FILE", video_segment_files[new_segment], new_segment);
 
-  return (
-    `http://${host}:${port}/` +
-    p.join(current_video_id, user_id, video_segment_files[new_segment])
-  );
+  // Use forward slashes for URLs (path.join uses backslashes on Windows)
+  const urlPath = `${current_video_id}/${user_id}/${video_segment_files[new_segment]}`;
+  
+  return `http://${host}:${port}/${urlPath}`;
 }
 
 // Extract segment number from TS filename

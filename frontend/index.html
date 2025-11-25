@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -32,15 +33,14 @@
       max-height: 100vh;
       width: 100vw;
       height: calc(100vw / 1.7778);
-      overflow-x: hidden;
     }
+    
     .Video {
       width: 100%;
       position: absolute;
       height: 100%;
       top: 0;
-      z-index: -10000000000;
-      overflow-x: hidden;
+      z-index: -9999;
     }
 
     .Search {
@@ -50,17 +50,15 @@
       display: flex;
       justify-content: start;
       align-items: center;
-      overflow-x: hidden;
     }
 
     .Search input {
       width: 100px;
       height: 14px;
-      overflow-x: hidden;
     }
+    
     .Search span {
       cursor: pointer;
-      overflow-x: hidden;
     }
 
     .Stamps {
@@ -68,7 +66,12 @@
       overflow-y: auto;
       width: 100%;
       margin-left: 8px;
-      overflow-x: hidden;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .Stamps::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     #active {
@@ -102,153 +105,193 @@
       </div>
     </div>
     <script>
-      //TODO: check if you need a port!
       const socket = io();
-      let currentTimestamps = 0;
-      let timeStamps = [];
-
-      let num_of_videos = 0;
-      let search_value = "";
+      const elements = {
+        input: null,
+        video: null,
+        searchButton: null,
+        notification: null,
+        stamps: null
+      };
 
       let hls_context;
-
       let is_searching = false;
+      let networkErrorCount = 0;
+      let socketReconnectAttempts = 0;
+      let timeupdateHandler = null;
+      let seekHandler = null;
 
-      document.getElementById("search_span").addEventListener("click", () => {
-        if (!is_searching) {
-          start_search();
+      const MAX_NETWORK_ERRORS = 1;
+      const MAX_SOCKET_RECONNECT_ATTEMPTS = 5;
+
+      // Initialize DOM element references
+      document.addEventListener('DOMContentLoaded', () => {
+        elements.input = document.querySelector('.Search input');
+        elements.video = document.querySelector('video');
+        elements.searchButton = document.getElementById('search_button');
+        elements.notification = document.getElementById('notification');
+        elements.stamps = document.querySelector('.Stamps');
+      });
+
+      // UI state management
+      function setSearchingState(searching) {
+        is_searching = searching;
+        elements.input.readOnly = searching;
+        elements.searchButton.disabled = searching;
+        document.body.style.cursor = searching ? 'wait' : 'auto';
+      }
+
+      function setNotification(message) {
+        elements.notification.innerText = `(${message})`;
+        setTimeout(() => elements.notification.innerHTML = "", 3000);
+      }
+
+      // Socket event handlers
+      socket.on("connect", () => {
+        console.log("Socket connected with ID:", socket.id);
+        socketReconnectAttempts = 0;
+      });
+
+      socket.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+        if ((reason === "io server disconnect" || reason === "transport close") && hls_context) {
+          console.log("Server connection lost during streaming.");
+          setNotification("Connection to server lost.");
+          setTimeout(resetToInitialState, 2000);
+        } else if (reason === "io server disconnect") {
+          console.log("Server disconnected, reconnecting...");
+          socket.connect();
         }
       });
 
-      document
-        .getElementsByTagName("input")[0]
-        .addEventListener("keypress", (e) => {
-          if (e.key === "Enter" && !is_searching) {
-            start_search();
+      socket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+        if (++socketReconnectAttempts >= MAX_SOCKET_RECONNECT_ATTEMPTS) {
+          console.log("Max socket reconnection attempts reached.");
+          setNotification("Unable to connect to server.");
+          if (hls_context || is_searching) {
+            setTimeout(() => {
+              resetToInitialState();
+              socketReconnectAttempts = 0;
+            }, 2000);
           }
-        });
+        }
+      });
+
+      // Event listeners
+      document.getElementById("search_span").addEventListener("click", () => {
+        if (!is_searching) start_search();
+      });
+
+      document.querySelector('.Search input').addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && !is_searching) start_search();
+      });
+
+      // Handle search errors uniformly
+      function handleSearchError(errorType, message) {
+        console.log(`${errorType} received:`, message);
+        setNotification("Search failed. Please try again.");
+        setSearchingState(false);
+        resetToInitialState();
+      }
 
       // Start new search and handle server communication
       async function start_search() {
+        console.log("Starting new search...");
         await destroy_hls_context();
         deleteAllTimestamps();
-        num_of_videos = 0;
-        currentTimestamps = 0;
 
-        const video = document.getElementsByTagName("video")[0];
-        video.style.display = "none";
+        elements.video.style.display = "none";
         document.body.style.backgroundColor = "white";
 
-        const current_value = document.getElementsByTagName("input")[0].value;
-        search_value = `How to ${current_value}`;
+        const search_value = `How to ${elements.input.value}`;
+        setSearchingState(true);
 
-        is_searching = true;
-        document.getElementsByTagName("input")[0].readOnly = true;
-        document.body.style.cursor = "wait";
-        document.getElementById("search_button").disabled = true;
-
+        console.log("Disconnecting socket for clean state...");
         socket.disconnect();
 
-        socket.removeAllListeners("START_STREAM");
-        socket.removeAllListeners("GEMINI_API_ERROR");
-        socket.removeAllListeners("MAX_RETRIES_ERROR");
-        socket.removeAllListeners("SEARCH_ERROR");
-        socket.removeAllListeners("STREAM_ENDED");
+        // Remove old listeners
+        ["START_STREAM", "GEMINI_API_ERROR", "MAX_RETRIES_ERROR", "SEARCH_ERROR", "STREAM_ENDED"]
+          .forEach(event => socket.removeAllListeners(event));
 
+        // Set up listeners BEFORE reconnecting
+        socket.on("START_STREAM", (source_url, user) => {
+          console.log("Starting HLS stream:", source_url);
+          console.log("User data received:", user);
+          setSearchingState(false);
+          
+          try {
+            start_hls(source_url);
+            generatingTimestamps(user.questions);
+          } catch (error) {
+            console.error("Error starting stream:", error);
+            setNotification("Failed to start stream.");
+          }
+        });
+
+        socket.on("GEMINI_API_ERROR", (error) => handleSearchError("Gemini API Error", error.message));
+        socket.on("MAX_RETRIES_ERROR", (error) => handleSearchError("Max Retries Error", error.message));
+        socket.on("SEARCH_ERROR", (error) => handleSearchError("Search Error", error.message));
+        
+        socket.on("STREAM_ENDED", () => {
+          console.log("Stream ended by server.");
+          setSearchingState(false);
+          resetToInitialState();
+        });
+
+        // Reconnect and send the search request
+        console.log("Reconnecting socket...");
         if (socket.disconnected) socket.connect();
 
+        // Wait for connection
+        await new Promise(resolve => {
+          socket.connected ? resolve() : socket.once("connect", resolve);
+        });
+
+        const display_search = search_value.endsWith('?') ? search_value : search_value + '?';
+        console.log("Emitting NEW_SEARCH:", display_search);
         socket.emit("NEW_SEARCH", { search: search_value, is_first: true });
-
-        socket.on("START_STREAM", (source_url, user) => {
-          console.log("start Hls Stream! with url: " + source_url);
-          is_searching = false;
-          document.getElementsByTagName("input")[0].readOnly = false;
-          document.body.style.cursor = "auto";
-          document.getElementById("search_button").disabled = false;
-          start_hls(source_url);
-          generatingTimestamps(user.questions);
-        });
-
-        socket.on("GEMINI_API_ERROR", (error) => {
-          console.log("Gemini API Error received:", error.message);
-          setNotification("Search failed, try again.");
-          is_searching = false;
-          document.getElementsByTagName("input")[0].readOnly = false;
-          document.getElementById("search_button").disabled = false;
-          document.body.style.cursor = "auto";
-          resetToInitialState();
-        });
-
-        socket.on("MAX_RETRIES_ERROR", (error) => {
-          console.log("Max Retries Error received:", error.message);
-          setNotification("Search failed, try again.");
-          is_searching = false;
-          document.getElementsByTagName("input")[0].readOnly = false;
-          document.getElementById("search_button").disabled = false;
-          document.body.style.cursor = "auto";
-          resetToInitialState();
-        });
-
-        socket.on("SEARCH_ERROR", (error) => {
-          console.log("Search Error received:", error.message);
-          setNotification("Search failed, try again.");
-          is_searching = false;
-          document.getElementsByTagName("input")[0].readOnly = false;
-          document.getElementById("search_button").disabled = false;
-          document.body.style.cursor = "auto";
-          resetToInitialState();
-        });
-
-        socket.on("STREAM_ENDED", () => {
-          console.log("Received STREAM_ENDED event from server");
-          is_searching = false;
-          document.getElementsByTagName("input")[0].readOnly = false;
-          document.getElementById("search_button").disabled = false;
-          document.body.style.cursor = "auto";
-          resetToInitialState();
-        });
       }
 
       // Clean up and destroy HLS streaming context
       async function destroy_hls_context() {
-        if (hls_context) {
-          try {
-            hls_context.stopLoad();
+        if (!hls_context) return;
+        
+        try {
+          hls_context.stopLoad();
+          hls_context.detachMedia();
 
-            hls_context.detachMedia();
-
-            if (hls_context.coreComponents) {
-              for (const comp of hls_context.coreComponents) {
-                if (comp && typeof comp.abort === "function") {
-                  comp.abort();
-                }
-              }
-            }
-
-            hls_context.destroy();
-
-            await new Promise((r) => setTimeout(r, 100));
-          } catch (e) {
-            console.warn("Fehler beim Stoppen des alten HLS-Streams:", e);
+          if (hls_context.coreComponents) {
+            hls_context.coreComponents.forEach(comp => {
+              if (comp?.abort) comp.abort();
+            });
           }
 
-          hls_context = null;
+          hls_context.destroy();
+          await new Promise(r => setTimeout(r, 100));
+        } catch (e) {
+          console.error("Error stopping HLS stream:", e);
         }
+        
+        hls_context = null;
       }
 
       // Initialize HLS video streaming
       function start_hls(source_url) {
-        const video = document.getElementsByTagName("video")[0];
-        video.style.display = "block";
+        elements.video.style.display = "block";
+        networkErrorCount = 0;
+        
         if (!Hls.isSupported()) {
-          setNotification("Hls is not supported.");
+          return setNotification("HLS is not supported.");
         }
 
         hls_context = new Hls({
-          levelLoadingTimeOut: 1000000,
-          manifestLoadingTimeOut: 1000,
-          levelLoadingMaxRetryTimeout: 1000,
-          levelLoadingMaxRetry: 2,
+          levelLoadingTimeOut: 10000,
+          manifestLoadingTimeOut: 10000,
+          levelLoadingMaxRetryTimeout: 64000,
+          levelLoadingMaxRetry: 3,
+          manifestLoadingMaxRetry: 3,
+          manifestLoadingMaxRetryTimeout: 64000,
           autoStartLoad: true,
           debug: false,
           liveDurationInfinity: false,
@@ -257,38 +300,64 @@
           backBufferLength: 20,
           adjustTs: true,
           forceKeyFrameOnDiscontinuity: true,
-          makSeekHole: 1,
+          maxSeekHole: 1,
         });
 
         hls_context.loadSource(source_url);
-        hls_context.attachMedia(video);
+        hls_context.attachMedia(elements.video);
         document.body.style.backgroundColor = "black";
 
         hls_context.on(Hls.Events.ERROR, function (event, data) {
-          if (data.fatal) {
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                console.log("Fatal network error, stream might have ended");
+          if (!data.fatal) return;
+          
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              if (++networkErrorCount >= MAX_NETWORK_ERRORS) {
+                console.log("Max network errors reached.");
+                setNotification("Connection to server lost.");
                 resetToInitialState();
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                console.log("Fatal media error");
-                break;
-              default:
-                console.log("Fatal error");
-                break;
-            }
+                networkErrorCount = 0;
+                return;
+              }
+              
+              console.log(`Network error ${networkErrorCount}/${MAX_NETWORK_ERRORS}, attempting recovery...`);
+              if (hls_context) hls_context.startLoad(-1);
+              
+              setTimeout(() => {
+                if (hls_context?.media?.error) {
+                  console.log("Network recovery failed.");
+                  setNotification("Connection failed. Please try again.");
+                  resetToInitialState();
+                  networkErrorCount = 0;
+                }
+              }, 5000);
+              break;
+              
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              console.log("Fatal media error, attempting recovery...");
+              hls_context.recoverMediaError();
+              break;
+              
+            default:
+              console.log("Fatal error type:", data.type);
+              setNotification("Stream error occurred.");
+              resetToInitialState();
+              networkErrorCount = 0;
           }
         });
 
-        video.addEventListener("ended", () => {
-          console.log("Stream has Ended! (#EXT-X-ENDLIST)");
+        hls_context.on(Hls.Events.FRAG_LOAD_ERROR, (event, data) => {
+          console.error("Fragment load error:", data);
+        });
+
+        elements.video.addEventListener("ended", () => {
+          console.log("Stream ended (#EXT-X-ENDLIST).");
           resetToInitialState();
         });
 
-        hls_context.on(Hls.Events.LEVEL_UPDATED, function (event, data) {
-          if (data.details && data.details.endOfStream) {
-            console.log("Stream end detected via level update");
+        hls_context.on(Hls.Events.LEVEL_UPDATED, (event, data) => {
+          if (data.details?.endOfStream) {
+            console.log("Stream end detected via level update.");
             resetToInitialState();
           }
         });
@@ -296,76 +365,63 @@
 
       // Remove all timestamp elements from the DOM
       function deleteAllTimestamps() {
-        document.querySelectorAll(".Stamps a").forEach((a) => a.remove());
+        elements.stamps.innerHTML = '';
       }
 
       // Reset application to initial state
       function resetToInitialState() {
-        console.log("Resetting to initial state");
+        console.log("Resetting to initial state...");
         destroy_hls_context();
-        const video = document.getElementsByTagName("video")[0];
-        video.style.display = "none";
-        video.src = "";
-        document.getElementsByTagName("input")[0].value = "";
-        document.getElementsByTagName("input")[0].readOnly = false;
+        networkErrorCount = 0;
+        socketReconnectAttempts = 0;
+        
+        elements.video.style.display = "none";
+        elements.video.src = "";
+        elements.input.value = "";
+        elements.input.readOnly = false;
         document.body.style.backgroundColor = "white";
         deleteAllTimestamps();
 
         if (timeupdateHandler) {
-          video.removeEventListener("timeupdate", timeupdateHandler);
+          elements.video.removeEventListener("timeupdate", timeupdateHandler);
           timeupdateHandler = null;
         }
 
-        if (_seekHandler) {
-          vid.removeEventListener("seeked", vid._seekHandler);
-          _seekHandler = null;
+        if (seekHandler) {
+          elements.video.removeEventListener("seeked", seekHandler);
+          seekHandler = null;
         }
 
-        currentTimestamps = 0;
-        timeStamps = [];
-        num_of_videos = 0;
-        search_value = "";
         is_searching = false;
-
-        document.getElementById("search_button").disabled = false;
+        elements.searchButton.disabled = false;
         document.body.style.cursor = "auto";
+        
+        console.log("Reset complete.");
       }
-
-      let timeupdateHandler = null;
-      let _seekHandler = null;
 
       // Generate timestamps and handle video time events
       function generatingTimestamps(questions) {
-        const vid = document.getElementsByTagName("video")[0];
         let currentIndex = 1;
 
         if (timeupdateHandler) {
-          vid.removeEventListener("timeupdate", timeupdateHandler);
+          elements.video.removeEventListener("timeupdate", timeupdateHandler);
         }
-        if (_seekHandler) {
-          vid.removeEventListener("seeked", _seekHandler);
+        if (seekHandler) {
+          elements.video.removeEventListener("seeked", seekHandler);
         }
 
         timeupdateHandler = () => {
-          const time = vid.currentTime;
-          if (
-            currentIndex < questions.length &&
-            time > questions[currentIndex].startTimeInSec
-          ) {
+          const time = elements.video.currentTime;
+          if (currentIndex < questions.length && time > questions[currentIndex].startTimeInSec) {
             generateTimeStamp(questions[currentIndex]);
             updateActiveTimestamp(time, questions);
             currentIndex++;
           }
         };
-        vid.addEventListener("timeupdate", timeupdateHandler);
+        elements.video.addEventListener("timeupdate", timeupdateHandler);
 
-        _seekHandler = () => {
-          const currentTime = vid.currentTime;
-          console.log("Seek detected → new time:", currentTime);
-          updateActiveTimestamp(currentTime, questions);
-        };
-
-        vid.addEventListener("seeked", _seekHandler);
+        seekHandler = () => updateActiveTimestamp(elements.video.currentTime, questions);
+        elements.video.addEventListener("seeked", seekHandler);
       }
 
       // Update which timestamp is currently active based on video time
@@ -380,24 +436,17 @@
         }
 
         const allLinks = document.querySelectorAll(".Stamps a");
-        allLinks.forEach((link) => (link.id = "")); 
+        allLinks.forEach(link => link.id = "");
 
-        if (
-          activeQuestionIndex == 0 &&
-          currentTime <= questions[0].startTimeInSec
-        ) {
-          const first_link = allLinks[0].scrollIntoView({
-            behavior: "smooth",
-            block: "end",
-          });
+        if (activeQuestionIndex === 0 && currentTime <= questions[0].startTimeInSec) {
+          allLinks[0]?.scrollIntoView({ behavior: "smooth", block: "end" });
           return;
         }
 
         const activeQuestion = questions[activeQuestionIndex];
         if (activeQuestion) {
-          allLinks.forEach((link) => {
-            // Compare with the displayed title (which might have a question mark added)
-            const displayTitle = activeQuestion.question.endsWith('?') ? activeQuestion.question : activeQuestion.question + '?';
+          const displayTitle = formatQuestionTitle(activeQuestion.question);
+          allLinks.forEach(link => {
             if (link.innerText === displayTitle) {
               link.id = "active";
               link.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -406,57 +455,42 @@
         }
       }
 
+      // Format question title consistently
+      function formatQuestionTitle(title) {
+        const withQuestion = title.endsWith('?') ? title : title + '?';
+        return withQuestion.charAt(0).toUpperCase() + withQuestion.slice(1).toLowerCase();
+      }
+
       // Generate single timestamp entry
       function generateTimeStamp(question) {
-        generateTimeStampsDOM(question.question, question.startTimeInSec);
-      }
-
-      // Create DOM elements for timestamp links
-      function generateTimeStampsDOM(title, time) {
-        var wrapper = document.createElement("div");
-        wrapper.className = title;
-        var link = document.createElement("a");
+        const wrapper = document.createElement("div");
+        wrapper.className = "timestamp-item";
+        
+        const link = document.createElement("a");
         link.href = "#";
-        // Ensure title ends with a question mark
-        const displayTitle = title.endsWith('?') ? title : title + '?';
-        link.innerText = displayTitle;
-
+        link.innerText = formatQuestionTitle(question.question);
         link.onclick = (e) => {
-          Jumpto(time, e);
-          setActiveLink(e.target);
+          e.preventDefault();
+          elements.video.currentTime = question.startTimeInSec;
+          setActiveLink(link);
         };
+        
         wrapper.appendChild(link);
-        document.getElementsByClassName("Stamps")[0].appendChild(wrapper);
-      }
-
-      // Jump to specific time in video
-      function Jumpto(value, e) {
-        e.preventDefault();
-        return (document.getElementsByTagName("video")[0].currentTime = value);
+        elements.stamps.appendChild(wrapper);
       }
 
       // Set which timestamp link is visually active
       function setActiveLink(linkElem) {
-        document.querySelectorAll(".Stamps a").forEach((a) => (a.id = ""));
+        document.querySelectorAll(".Stamps a").forEach(a => a.id = "");
         linkElem.id = "active";
-      }
-
-      // Display temporary notification message
-      function setNotification(message) {
-        const noti = document.getElementById("notification");
-        noti.innerText = "(" + message + ")";
-
-        setTimeout(() => {
-          noti.innerHTML = "";
-        }, 3000);
       }
 
       // Scroll to currently active timestamp
       function scrollToActiveTimestamp() {
-        const activeLink = document.querySelector(".Stamps a#active");
-        if (activeLink) {
-          activeLink.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
+        document.querySelector(".Stamps a#active")?.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "center" 
+        });
       }
 
       window.addEventListener("resize", () => {
