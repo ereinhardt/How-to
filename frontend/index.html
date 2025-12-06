@@ -90,7 +90,7 @@
       <div class="Search">
         <span> How to&nbsp;</span>
         <input type="text" name="" value="" maxlength="25" />
-        <span id="search_span"><button id="search_button">?</button></span>
+        <span id="search_span"><button id="search_button" disabled>?</button></span>
         <span id="notification"></span>
       </div>
       <div class="Stamps"></div>
@@ -131,6 +131,11 @@
         elements.searchButton = document.getElementById('search_button');
         elements.notification = document.getElementById('notification');
         elements.stamps = document.querySelector('.Stamps');
+
+        // Enable/disable search button based on input value
+        elements.input.addEventListener('input', () => {
+          elements.searchButton.disabled = elements.input.value.trim() === '';
+        });
       });
 
       // UI state management
@@ -154,8 +159,10 @@
 
       socket.on("disconnect", (reason) => {
         console.log("Socket disconnected:", reason);
-        if ((reason === "io server disconnect" || reason === "transport close") && hls_context) {
-          console.log("Server connection lost during streaming.");
+        const connectionLostReasons = ["io server disconnect", "transport close", "ping timeout", "transport error"];
+        
+        if (connectionLostReasons.includes(reason) && (hls_context || is_searching)) {
+          console.log("Server connection lost during streaming/searching.");
           setNotification("Connection to server lost.");
           setTimeout(resetToInitialState, 2000);
         } else if (reason === "io server disconnect") {
@@ -286,8 +293,8 @@
         }
 
         hls_context = new Hls({
-          levelLoadingTimeOut: 10000,
-          manifestLoadingTimeOut: 10000,
+          levelLoadingTimeOut: 50000,
+          manifestLoadingTimeOut: 50000,
           levelLoadingMaxRetryTimeout: 64000,
           levelLoadingMaxRetry: 3,
           manifestLoadingMaxRetry: 3,
