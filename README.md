@@ -22,9 +22,9 @@ How to XXX? (<ID>)
 Example: How to fold? (ByKmsHdhra8)
 ```
 
-## Tools
+## Tools (Order Important)
 
-### ytdl-Download-Tool:<br>
+### 1. ytdl-downloader.py:<br>
 
 Download raw YouTube videos (need to be named in the given pre-convert filename structure):
 
@@ -40,7 +40,7 @@ python ytdl-downloader.py
 
 ---
 
-### Convert-Tool:<br>
+### 2. Convert-Tool:<br>
 
 Convert the raw YouTube video download into folders with m3u8-playlists and ts-stream-segments (these convert-video-folders need to be located later in the `video-data` folder):
 
