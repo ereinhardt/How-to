@@ -1,0 +1,28 @@
+{
+  "name": "howto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start_backend": "tsc && node build/backend/server.js",
+    "convert": "npx ts-node --project tsconfig.json tools/convert.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create_question-index": "npx ts-node --project tsconfig.json tools/create_question_index.ts"
+  },
+  "author": "Erik Anton Reinhardt, Finn Jakob Reinhardt",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3"
+  },
+  "dependencies": {
+    "@google/genai": "^1.48.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.1.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.8.1"
+  }
+}

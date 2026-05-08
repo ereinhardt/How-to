@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>How to?</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.3/hls.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      height: 100dvh;
+      width: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .main {
+      position: absolute;
+      margin: auto;
+      z-index: 1000;
+      max-width: 177.78vh;
+      max-width: 177.78dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      width: 100%;
+      height: calc(100vw / 1.7778);
+    }
+
+    .Video {
+      width: 100%;
+      position: absolute;
+      height: 100%;
+      top: 0;
+      z-index: -9999;
+    }
+
+    .Search {
+      height: 30px;
+      padding-left: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .Search input,
+    .Search button {
+      pointer-events: auto;
+    }
+
+    .Search input {
+      width: 100px;
+      height: 14px;
+    }
+
+    #search_button:enabled {
+      cursor: pointer;
+    }
+
+    .Stamps {
+      height: calc(50% - 31px);
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 8px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      pointer-events: none;
+    }
+
+    .Stamps a,
+    .Stamps .timestamp-item {
+      pointer-events: auto;
+    }
+
+    .Stamps::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    #active {
+      color: red;
+    }
+
+    #notification {
+      margin-left: 10px;
+      color: red;
+      cursor: auto;
+    }
+  </style>
+
+  <body>
+    <div class="main">
+      <div class="Search">
+        <span> How to&nbsp;</span>
+        <input
+          type="text"
+          name="search"
+          value=""
+          maxlength="25"
+          autocomplete="off"
+        />
+        <span><button id="search_button" disabled>?</button></span>
+        <span id="notification"></span>
+      </div>
+      <div class="Stamps"></div>
+      <div class="Video">
+        <video
+          src=""
+          controls
+          controlslist="noplaybackrate nodownload nofullscreen"
+          playsinline
+          style="display: none; width: 100%; height: auto"
+        ></video>
+      </div>
+    </div>
+    <script>
+      // Prevent pinch-zoom
+      document.addEventListener("gesturestart", (e) => e.preventDefault());
+      document.addEventListener("gesturechange", (e) => e.preventDefault());
+      document.addEventListener("gestureend", (e) => e.preventDefault());
+      document.addEventListener(
+        "wheel",
+        (e) => {
+          if (e.ctrlKey) e.preventDefault();
+        },
+        { passive: false },
+      );
+
+      const FRONTEND_DEBUG = "0"; // "1" to enable console logs, "0" to disable
+
+      const _log = console.log,
+        _err = console.error,
+        _warn = console.warn;
+      const _ts = () =>
+        `[${new Date().toISOString().replace("T", " ").slice(0, 23)}]`;
+      console.log = (...a) =>
+        FRONTEND_DEBUG === "1" ? _log(_ts(), ...a) : undefined;
+      console.error = (...a) =>
+        FRONTEND_DEBUG === "1" ? _err(_ts(), ...a) : undefined;
+      console.warn = (...a) =>
+        FRONTEND_DEBUG === "1" ? _warn(_ts(), ...a) : undefined;
+
+      const socket = io();
+      window.addEventListener("beforeunload", () => socket.emit("LEAVE"));
+      const elements = {
+        input: null,
+        video: null,
+        searchButton: null,
+        notification: null,
+        stamps: null,
+      };
+
+      let hls_context;
+      let is_searching = false;
+      let networkErrorCount = 0;
+      let mediaErrorCount = 0;
+      let socketReconnectAttempts = 0;
+      let timeupdateHandler = null;
+      let seekHandler = null;
+      let endedHandler = null;
+      let seekingHandler = null;
+      let streamEndListReceived = false;
+      let streamingUserId = null;
+
+      const MAX_NETWORK_ERRORS = 1;
+      const MAX_MEDIA_ERRORS = 3;
+      const MAX_SOCKET_RECONNECT_ATTEMPTS = 5;
+
+      // Initialize DOM element references
+      document.addEventListener("DOMContentLoaded", () => {
+        elements.input = document.querySelector(".Search input");
+        elements.video = document.querySelector("video");
+        elements.searchButton = document.getElementById("search_button");
+        elements.notification = document.getElementById("notification");
+        elements.stamps = document.querySelector(".Stamps");
+
+        // Enable/disable search button based on input value
+        elements.input.addEventListener("input", () => {
+          elements.searchButton.disabled = elements.input.value.trim() === "";
+        });
+      });
+
+      // UI state management
+      function setSearchingState(searching) {
+        is_searching = searching;
+        elements.input.readOnly = searching;
+        elements.searchButton.disabled = searching;
+        document.body.style.cursor = searching ? "wait" : "auto";
+      }
+
+      function setNotification(message, color = "red") {
+        elements.notification.style.color = color;
+        elements.notification.innerText = `(${message})`;
+        if (color === "red")
+          setTimeout(() => (elements.notification.innerHTML = ""), 3000);
+      }
+
+      function clearNotification() {
+        elements.notification.innerHTML = "";
+        elements.notification.style.color = "red";
+      }
+
+      // Socket event handlers
+      socket.on("connect", () => {
+        console.log("Socket connected with ID:", socket.id);
+        socketReconnectAttempts = 0;
+
+        // If a stream is active, resume with the old user ID
+        if (hls_context && streamingUserId) {
+          console.log(
+            `Socket reconnected with new ID: ${socket.id} during active stream, mapping to old user ID: ${streamingUserId}`,
+          );
+          socket.emit("RESUME_STREAM", streamingUserId);
+        }
+      });
+
+      socket.on("RESUME_SUCCESS", () => {
+        console.log("Stream resume successful.");
+      });
+
+      socket.on("RESUME_FAILED", () => {
+        console.log("Stream resume failed, resetting.");
+        setNotification("Stream connection lost.");
+        resetToInitialState();
+      });
+
+      socket.on("disconnect", (reason, details) => {
+        console.log("Socket disconnected:", reason, details?.description || "");
+        if (details?.context?.status) {
+          console.log("Disconnect HTTP status:", details.context.status);
+        }
+
+        // If actively streaming, let HLS continue — don't reset on transient tunnel drops
+        if (hls_context && reason !== "io server disconnect") {
+          console.log("Socket dropped during stream, HLS continues.");
+          return;
+        }
+
+        const connectionLostReasons = [
+          "io server disconnect",
+          "transport close",
+          "ping timeout",
+          "transport error",
+        ];
+
+        if (connectionLostReasons.includes(reason) && is_searching) {
+          console.log("Server connection lost during searching.");
+          setNotification("Connection to server lost.");
+          setTimeout(resetToInitialState, 2000);
+        } else if (reason === "io server disconnect") {
+          console.log("Server disconnected, reconnecting...");
+          socket.connect();
+        }
+      });
+
+      socket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+        if (++socketReconnectAttempts >= MAX_SOCKET_RECONNECT_ATTEMPTS) {
+          console.log("Max socket reconnection attempts reached.");
+          setNotification("Unable to connect to server.");
+          if (hls_context || is_searching) {
+            setTimeout(() => {
+              resetToInitialState();
+              socketReconnectAttempts = 0;
+            }, 2000);
+          }
+        }
+      });
+
+      // Event listeners
+      document.getElementById("search_button").addEventListener("click", () => {
+        if (!is_searching && !elements.searchButton.disabled) start_search();
+      });
+
+      document
+        .querySelector(".Search input")
+        .addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && !is_searching) start_search();
+        });
+
+      // Handle search errors uniformly
+      function handleSearchError(errorType, message) {
+        console.log(`${errorType} received:`, message);
+        clearNotification();
+        setNotification("Search failed. Please try again.");
+        setSearchingState(false);
+        resetToInitialState();
+      }
+
+      // Start new search and handle server communication
+      async function start_search() {
+        console.log("Starting new search...");
+        await destroy_hls_context();
+        deleteAllTimestamps();
+
+        elements.video.style.display = "none";
+        document.body.style.backgroundColor = "white";
+
+        const search_value = `How to ${elements.input.value}`;
+        setSearchingState(true);
+        setNotification("Loading...", "#00ff00");
+
+        console.log("Disconnecting socket for clean state...");
+        socket.disconnect();
+
+        // Remove old listeners
+        [
+          "START_STREAM",
+          "AI_API_ERROR",
+          "MAX_RETRIES_ERROR",
+          "SEARCH_ERROR",
+          "STREAM_ENDED",
+          "SERVER_BUSY",
+          "AI_LIMIT_REACHED",
+        ].forEach((event) => socket.removeAllListeners(event));
+
+        // Set up listeners BEFORE reconnecting
+        socket.on("START_STREAM", (source_url, user) => {
+          console.log("Starting HLS stream:", source_url);
+          console.log("User data received:", user);
+          clearNotification();
+          setSearchingState(false);
+
+          try {
+            streamingUserId = socket.id;
+            start_hls(source_url);
+            generatingTimestamps(user.questions);
+          } catch (error) {
+            console.error("Error starting stream:", error);
+            setNotification("Failed to start stream.");
+          }
+        });
+
+        socket.on("AI_API_ERROR", (error) =>
+          handleSearchError("AI API Error", error.message),
+        );
+        socket.on("MAX_RETRIES_ERROR", (error) =>
+          handleSearchError("Max Retries Error", error.message),
+        );
+        socket.on("SEARCH_ERROR", (error) =>
+          handleSearchError("Search Error", error.message),
+        );
+        socket.on("SERVER_BUSY", (error) => {
+          console.log("Server busy:", error.message);
+          setNotification("Server is too busy. Please try again later.");
+          setSearchingState(false);
+        });
+
+        socket.on("AI_LIMIT_REACHED", () => {
+          console.log("AI request limit reached.");
+          setNotification("Global question limit reached. Try again tomorrow.");
+          setSearchingState(false);
+        });
+
+        socket.on("STREAM_ENDED", () => {
+          console.log("Stream ended by server.");
+          streamEndListReceived = true;
+          setSearchingState(false);
+          resetToInitialState();
+        });
+
+        // Reconnect and send the search request
+        console.log("Reconnecting socket...");
+        if (socket.disconnected) socket.connect();
+
+        // Wait for connection
+        await new Promise((resolve) => {
+          socket.connected ? resolve() : socket.once("connect", resolve);
+        });
+
+        console.log("Emitting NEW_SEARCH:", search_value);
+        socket.emit("NEW_SEARCH", { search: search_value });
+      }
+
+      // Clean up and destroy HLS streaming context
+      async function destroy_hls_context() {
+        if (!hls_context) return;
+
+        try {
+          hls_context.stopLoad();
+          hls_context.detachMedia();
+          hls_context.destroy();
+          await new Promise((r) => setTimeout(r, 100));
+        } catch (e) {
+          console.error("Error stopping HLS stream:", e);
+        }
+
+        hls_context = null;
+      }
+
+      // Initialize HLS video streaming
+      function start_hls(source_url) {
+        elements.video.style.display = "block";
+        networkErrorCount = 0;
+        mediaErrorCount = 0;
+
+        if (!Hls.isSupported()) {
+          return setNotification("HLS is not supported.");
+        }
+
+        hls_context = new Hls({
+          levelLoadingTimeOut: 60000,
+          manifestLoadingTimeOut: 60000,
+          fragLoadingTimeOut: 60000,
+          levelLoadingMaxRetryTimeout: 60000,
+          levelLoadingMaxRetry: 10,
+          manifestLoadingMaxRetry: 10,
+          fragLoadingMaxRetry: 10,
+          manifestLoadingMaxRetryTimeout: 60000,
+          fragLoadingMaxRetryTimeout: 60000,
+          autoStartLoad: true,
+          debug: false,
+          enableWorker: true,
+          liveDurationInfinity: false,
+          lowLatencyMode: false,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 60,
+          liveSyncDurationCount: 3,
+          backBufferLength: 30,
+          forceKeyFrameOnDiscontinuity: true,
+          maxSeekHole: 2,
+          maxBufferHole: 2,
+          nudgeMaxRetry: 10,
+        });
+
+        hls_context.loadSource(source_url);
+        hls_context.attachMedia(elements.video);
+        document.body.style.backgroundColor = "black";
+
+        // Explicitly start playback once manifest is parsed (required for ManagedMediaSource on iOS)
+        hls_context.on(Hls.Events.MANIFEST_PARSED, () => {
+          console.log("Manifest parsed, starting playback...");
+          // iOS blocks autoplay without user gesture; start muted, then unmute
+          const tryPlay = () =>
+            elements.video.play().catch((e) => {
+              if (e.name === "NotAllowedError" && !elements.video.muted) {
+                console.log("Autoplay blocked, retrying muted...");
+                elements.video.muted = true;
+                return elements.video.play().then(() => {
+                  elements.video.muted = false;
+                });
+              }
+            });
+          tryPlay();
+        });
+
+        // Prevent seeking beyond buffered content (browser resets to 0)
+        let lastValidTime = 0;
+        let restoringSeek = false;
+        elements.video.addEventListener("timeupdate", () => {
+          lastValidTime = elements.video.currentTime;
+        });
+        seekingHandler = () => {
+          const video = elements.video;
+          if (restoringSeek) return;
+          if (video.currentTime === 0 && lastValidTime > 1) {
+            // Browser reset to 0 because seek was past duration
+            restoringSeek = true;
+            video.currentTime = lastValidTime;
+          }
+        };
+        elements.video.addEventListener("seeking", seekingHandler);
+        elements.video.addEventListener("seeked", () => {
+          if (restoringSeek) {
+            restoringSeek = false;
+            elements.video.play().catch(() => {});
+          }
+        });
+
+        hls_context.on(Hls.Events.ERROR, function (event, data) {
+          if (!data.fatal) return;
+          console.log(
+            "HLS Fatal Error:",
+            data.type,
+            data.details,
+            data.reason || "",
+          );
+          if (data.error)
+            console.log("Error detail:", data.error.message || data.error);
+
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              if (++networkErrorCount >= MAX_NETWORK_ERRORS) {
+                console.log("Max network errors reached.");
+                setNotification("Connection to server lost.");
+                resetToInitialState();
+                networkErrorCount = 0;
+                return;
+              }
+
+              console.log(
+                `Network error ${networkErrorCount}/${MAX_NETWORK_ERRORS}, attempting recovery...`,
+              );
+              if (hls_context) hls_context.startLoad(-1);
+
+              setTimeout(() => {
+                if (hls_context?.media?.error) {
+                  console.log("Network recovery failed.");
+                  setNotification("Connection failed. Please try again.");
+                  resetToInitialState();
+                  networkErrorCount = 0;
+                }
+              }, 5000);
+              break;
+
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              if (++mediaErrorCount > MAX_MEDIA_ERRORS) {
+                console.log("Max media errors reached, giving up.");
+                setNotification("Playback failed. Please try again.");
+                resetToInitialState();
+                mediaErrorCount = 0;
+                return;
+              }
+              console.log(
+                `Fatal media error ${mediaErrorCount}/${MAX_MEDIA_ERRORS}, attempting recovery...`,
+              );
+              hls_context.recoverMediaError();
+              break;
+
+            default:
+              console.log("Fatal error type:", data.type);
+              setNotification("Stream error occurred.");
+              resetToInitialState();
+              networkErrorCount = 0;
+          }
+        });
+
+        endedHandler = () => {
+          // Only reset if the stream has truly ended (server sent ENDLIST)
+          // Safari fires 'ended' when seeking past the buffered range
+          if (!streamEndListReceived) {
+            console.log("'ended' fired but no ENDLIST received, ignoring.");
+            elements.video.currentTime = Math.max(
+              0,
+              elements.video.currentTime - 0.5,
+            );
+            elements.video.play().catch(() => {});
+            return;
+          }
+          console.log("Stream ended (#EXT-X-ENDLIST).");
+          resetToInitialState();
+        };
+        elements.video.addEventListener("ended", endedHandler);
+
+        hls_context.on(Hls.Events.LEVEL_UPDATED, (event, data) => {
+          if (data.details?.endOfStream) {
+            console.log("ENDLIST detected via level update.");
+            streamEndListReceived = true;
+          }
+        });
+      }
+
+      // Remove all timestamp elements from the DOM
+      function deleteAllTimestamps() {
+        elements.stamps.innerHTML = "";
+      }
+
+      // Reset application to initial state
+      function resetToInitialState() {
+        console.log("Resetting to initial state...");
+        destroy_hls_context();
+        networkErrorCount = 0;
+        mediaErrorCount = 0;
+        socketReconnectAttempts = 0;
+        streamEndListReceived = false;
+        streamingUserId = null;
+
+        elements.video.style.display = "none";
+        elements.video.src = "";
+        elements.input.value = "";
+        elements.input.readOnly = false;
+        document.body.style.backgroundColor = "white";
+        deleteAllTimestamps();
+
+        if (timeupdateHandler) {
+          elements.video.removeEventListener("timeupdate", timeupdateHandler);
+          timeupdateHandler = null;
+        }
+
+        if (seekHandler) {
+          elements.video.removeEventListener("seeked", seekHandler);
+          seekHandler = null;
+        }
+
+        if (endedHandler) {
+          elements.video.removeEventListener("ended", endedHandler);
+          endedHandler = null;
+        }
+
+        if (seekingHandler) {
+          elements.video.removeEventListener("seeking", seekingHandler);
+          seekingHandler = null;
+        }
+
+        is_searching = false;
+        elements.searchButton.disabled = elements.input.value.trim() === "";
+        document.body.style.cursor = "auto";
+
+        console.log("Reset complete.");
+      }
+
+      // Generate timestamps and handle video time events
+      function generatingTimestamps(questions) {
+        let currentIndex = 1;
+        let lastActiveIndex = -1;
+
+        if (timeupdateHandler) {
+          elements.video.removeEventListener("timeupdate", timeupdateHandler);
+        }
+        if (seekHandler) {
+          elements.video.removeEventListener("seeked", seekHandler);
+        }
+
+        timeupdateHandler = () => {
+          const time = elements.video.currentTime;
+          while (
+            currentIndex < questions.length &&
+            time > questions[currentIndex].startTimeInSec
+          ) {
+            generateTimeStamp(questions[currentIndex]);
+            currentIndex++;
+          }
+          lastActiveIndex = updateActiveTimestamp(
+            time,
+            questions,
+            false,
+            lastActiveIndex,
+          );
+        };
+        elements.video.addEventListener("timeupdate", timeupdateHandler);
+
+        seekHandler = () => {
+          lastActiveIndex = updateActiveTimestamp(
+            elements.video.currentTime,
+            questions,
+            true,
+            lastActiveIndex,
+          );
+        };
+        elements.video.addEventListener("seeked", seekHandler);
+      }
+
+      // Update which timestamp is currently active based on video time
+      // forceScroll: true on seek, false on timeupdate
+      // Returns the new active index for tracking
+      function updateActiveTimestamp(
+        currentTime,
+        questions,
+        forceScroll,
+        lastActiveIndex,
+      ) {
+        let activeQuestionIndex = 0;
+
+        for (let i = questions.length - 1; i >= 0; i--) {
+          if (currentTime >= questions[i].startTimeInSec) {
+            activeQuestionIndex = i;
+            break;
+          }
+        }
+
+        const shouldScroll =
+          forceScroll || activeQuestionIndex !== lastActiveIndex;
+
+        const allLinks = document.querySelectorAll(".Stamps a");
+        allLinks.forEach((link) => (link.id = ""));
+
+        if (
+          activeQuestionIndex === 0 &&
+          currentTime <= questions[0].startTimeInSec
+        ) {
+          if (shouldScroll) {
+            allLinks[0]?.scrollIntoView({ behavior: "smooth", block: "end" });
+          }
+          return activeQuestionIndex;
+        }
+
+        const activeQuestion = questions[activeQuestionIndex];
+        if (activeQuestion) {
+          const displayTitle = formatQuestionTitle(activeQuestion.question);
+          allLinks.forEach((link) => {
+            if (link.innerText === displayTitle) {
+              link.id = "active";
+              if (shouldScroll) {
+                link.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+          });
+        }
+
+        return activeQuestionIndex;
+      }
+
+      // Format question title consistently
+      function formatQuestionTitle(title) {
+        const withQuestion = title.endsWith("?") ? title : title + "?";
+        return (
+          withQuestion.charAt(0).toUpperCase() +
+          withQuestion.slice(1).toLowerCase()
+        );
+      }
+
+      // Generate single timestamp entry
+      function generateTimeStamp(question) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "timestamp-item";
+
+        const link = document.createElement("a");
+        link.href = "#";
+        link.innerText = formatQuestionTitle(question.question);
+        link.onclick = (e) => {
+          e.preventDefault();
+          elements.video.currentTime = question.startTimeInSec;
+          document.querySelectorAll(".Stamps a").forEach((a) => (a.id = ""));
+          link.id = "active";
+        };
+
+        wrapper.appendChild(link);
+        elements.stamps.appendChild(wrapper);
+      }
+    </script>
+  </body>
+</html>
