@@ -13,6 +13,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="prevent.js"></script>
   </head>
   <style>
     body {
@@ -132,18 +133,6 @@
       </div>
     </div>
     <script>
-      // Prevent pinch-zoom
-      document.addEventListener("gesturestart", (e) => e.preventDefault());
-      document.addEventListener("gesturechange", (e) => e.preventDefault());
-      document.addEventListener("gestureend", (e) => e.preventDefault());
-      document.addEventListener(
-        "wheel",
-        (e) => {
-          if (e.ctrlKey) e.preventDefault();
-        },
-        { passive: false },
-      );
-
       const FRONTEND_DEBUG = "0"; // "1" to enable console logs, "0" to disable
 
       const _log = console.log,
@@ -325,7 +314,6 @@
         [
           "START_STREAM",
           "AI_API_ERROR",
-          "MAX_RETRIES_ERROR",
           "SEARCH_ERROR",
           "STREAM_ENDED",
           "SERVER_BUSY",
@@ -351,9 +339,6 @@
 
         socket.on("AI_API_ERROR", (error) =>
           handleSearchError("AI API Error", error.message),
-        );
-        socket.on("MAX_RETRIES_ERROR", (error) =>
-          handleSearchError("Max Retries Error", error.message),
         );
         socket.on("SEARCH_ERROR", (error) =>
           handleSearchError("Search Error", error.message),

@@ -1,4 +1,10 @@
-import { appendFileSync, mkdirSync, rmSync } from "fs";
+import {
+  appendFileSync,
+  mkdirSync,
+  rmSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import { Server } from "socket.io";
 import * as p from "path";
 import {
@@ -14,6 +20,30 @@ import {
 } from "../util/m3u8_operations";
 import User, { get_user_by_id, remove_user_by_id } from "./users";
 
+const REQUEST_COUNT_PATH = p.join(process.cwd(), "backend", "request_count.json");
+
+// Current date as YYYY-MM-DD (server time)
+function getRequestCountDate(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// Read today's AI request count from disk (0 if missing or from a previous day)
+function readAiRequestCount(): number {
+  try {
+    const data = JSON.parse(readFileSync(REQUEST_COUNT_PATH, "utf-8"));
+    if (data.date === getRequestCountDate()) return data.count;
+  } catch {}
+  return 0;
+}
+
+// Persist today's AI request count to disk
+function writeAiRequestCount(count: number): void {
+  writeFileSync(
+    REQUEST_COUNT_PATH,
+    JSON.stringify({ date: getRequestCountDate(), count }),
+  );
+}
+
 // Start socket server and handle client connections
 export default async function start_socket_server(io: Server, users: User[]) {
   const maxUsers = parseInt(save_accesing_env_field("MAX_USERS"));
@@ -21,8 +51,6 @@ export default async function start_socket_server(io: Server, users: User[]) {
   const cleanupTimeouts = new Map<string, NodeJS.Timeout>();
   const socketUserMap = new Map<string, string>();
   let pendingSearches = new Set<string>();
-  let aiRequestCount = 0;
-  let aiRequestDay = new Date().toDateString();
 
   // Handle new client connections
   io.on("connection", (socket) => {
@@ -102,12 +130,8 @@ export default async function start_socket_server(io: Server, users: User[]) {
     socket.on("NEW_SEARCH", async (user_data) => {
       const { search } = user_data;
 
-      // Reset AI request counter at midnight (server time)
-      const today = new Date().toDateString();
-      if (today !== aiRequestDay) {
-        aiRequestCount = 0;
-        aiRequestDay = today;
-      }
+      // Read today's count from disk (auto-resets when the date changes)
+      let aiRequestCount = readAiRequestCount();
 
       if (aiRequestCount >= maxAiRequests) {
         debug_log(`AI request limit (${maxAiRequests}/24h) reached`);
@@ -166,6 +190,7 @@ export default async function start_socket_server(io: Server, users: User[]) {
 
       pendingSearches.add(socket.id);
       aiRequestCount++;
+      writeAiRequestCount(aiRequestCount);
       try {
         await user.generateUpcommingQuestions(search);
         pendingSearches.delete(socket.id);
@@ -198,12 +223,6 @@ export default async function start_socket_server(io: Server, users: User[]) {
           debug_log("Sending AI_API_ERROR to frontend");
           socket.emit("AI_API_ERROR", {
             message: "AI API error occurred. Resetting search.",
-          });
-        } else if (error.message === "MAX_RETRIES_REACHED") {
-          debug_log("Maximum retries reached - resetting search");
-          socket.emit("MAX_RETRIES_ERROR", {
-            message:
-              "Maximum retry attempts reached. Please try a different search.",
           });
         } else {
           socket.emit("SEARCH_ERROR", {

@@ -272,24 +272,14 @@ function generatePrompt(initial_question: string): string {
   `;
 }
 
-// Generate a question chain using AI with retry logic and validation
+// Generate a question chain using AI (single attempt, no retries)
 export default async function generate_question(
   start_question: string,
-  retryCount: number = 0,
 ): Promise<any> {
   start_question = start_question.replace(/[^A-Za-z0-9 _-]/g, "");
 
   // Prefer IPv4 over IPv6 to avoid network issues
   dns.setDefaultResultOrder("ipv4first");
-
-  const MAX_RETRIES = 5; // Set the maximum number of retries here (e.g., 5)
-
-  if (retryCount >= MAX_RETRIES) {
-    debug_log(
-      `Maximum retries (${MAX_RETRIES}) reached for question: "${start_question}"`,
-    );
-    throw new Error("MAX_RETRIES_REACHED");
-  }
 
   const api_key = save_accesing_env_field("GEMINI_API_KEY");
 
@@ -322,68 +312,31 @@ export default async function generate_question(
 
     if (!response.text) {
       debug_log("got no response text!");
-      await ai.caches.delete({ name: cache.name! });
-      debug_log("Delete Cache!");
-      return await generate_question(start_question, retryCount + 1);
+      throw new Error("AI_API_ERROR");
     }
 
     const parsed_response = parse_ai_response(response.text);
 
     if (!parsed_response) {
       debug_log("unvalid parsed_response");
-      await ai.caches.delete({ name: cache.name! });
-      debug_log("Delete Cache!");
-      return await generate_question(start_question, retryCount + 1);
+      throw new Error("AI_API_ERROR");
     }
 
     if (!check_if_ids_exists(parsed_response, users_csv)) {
       debug_log(
-        "Validation failed (missing ID, duplicate ID, or ID not found in CSV) - retrying...",
-      );
-      await ai.caches.delete({ name: cache.name! });
-      debug_log("Delete Cache!");
-      return await generate_question(start_question, retryCount + 1);
-    }
-
-    await ai.caches.delete({ name: cache.name! });
-    debug_log("Delete Cache!");
-    return parsed_response;
-  } catch (error: any) {
-    const errorCode = error.status || error.code;
-    const errorMessage = error.message || "";
-
-    const shouldSilentReset =
-      [
-        400, // INVALID_ARGUMENT or FAILED_PRECONDITION
-        403, // PERMISSION_DENIED
-        404, // NOT_FOUND
-        429, // RESOURCE_EXHAUSTED
-        500, // INTERNAL
-        503, // UNAVAILABLE
-        504, // DEADLINE_EXCEEDED
-      ].includes(errorCode) ||
-      errorMessage.includes("503") ||
-      errorMessage.includes("Service Unavailable") ||
-      errorMessage.includes("INVALID_ARGUMENT") ||
-      errorMessage.includes("FAILED_PRECONDITION") ||
-      errorMessage.includes("PERMISSION_DENIED") ||
-      errorMessage.includes("NOT_FOUND") ||
-      errorMessage.includes("RESOURCE_EXHAUSTED") ||
-      errorMessage.includes("INTERNAL") ||
-      errorMessage.includes("DEADLINE_EXCEEDED");
-
-    if (shouldSilentReset) {
-      debug_log(
-        `Gemini API error (${errorCode}): ${errorMessage} - triggering frontend reset`,
+        "Validation failed (missing ID, duplicate ID, or ID not found in CSV)",
       );
       throw new Error("AI_API_ERROR");
     }
 
-    if (errorMessage === "MAX_RETRIES_REACHED") {
-      throw error;
+    return parsed_response;
+  } catch (error: any) {
+    debug_log("Gemini API error:", error.message || error);
+    throw new Error("AI_API_ERROR");
+  } finally {
+    if (cache?.name) {
+      await ai.caches.delete({ name: cache.name }).catch(() => {});
+      debug_log("Delete Cache!");
     }
-
-    debug_log("Unexpected Gemini API error, retrying:", errorMessage || error);
-    return await generate_question(start_question, retryCount + 1);
   }
 }

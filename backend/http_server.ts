@@ -30,12 +30,18 @@ export default async function start_http_server(
     res.sendFile(p.join(__dirname, `../../${html_name}`));
   });
 
+  // Serve the frontend prevent.js script
+  server.get("/prevent.js", (req, res) => {
+    res.sendFile(p.join(__dirname, "../../frontend/prevent.js"));
+  });
+
   // Serve user-specific files by user ID and filename
   server.get("/:id/:filename", async (req, res) => {
     try {
       debug_log("Requested File:", req.params.filename);
 
-      const { filename, id } = req.params;
+      const id = p.basename(req.params.id);
+      const filename = p.basename(req.params.filename);
 
       const user_exists = check_if_user_exits(id);
       if (!user_exists) {
@@ -69,7 +75,9 @@ export default async function start_http_server(
   // Handle video segment requests and manage streaming playlists
   server.get(`/:video_id/:user_id/:filename`, (req, res) => {
     try {
-      const { video_id, filename, user_id } = req.params;
+      const video_id = p.basename(req.params.video_id);
+      const user_id = p.basename(req.params.user_id);
+      const filename = p.basename(req.params.filename);
       const segment = extract_ts_segment_number(filename);
 
       if (segment === -1) {
