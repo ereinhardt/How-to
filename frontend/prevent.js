@@ -1,5 +1,19 @@
 const prevent = (event) => event.preventDefault();
 
+// Allow only vertical scrolling, no pinch-zoom. touch-action is not inherited, so
+// it must be applied to every element via an injected global stylesheet.
+const style = document.createElement("style");
+style.textContent = "* { touch-action: pan-y; }";
+document.head.appendChild(style);
+
+// Disable browser autocomplete / suggestions, autocorrect and spellcheck on inputs.
+document.querySelectorAll("input").forEach((input) => {
+  input.setAttribute("autocomplete", "off");
+  input.setAttribute("autocorrect", "off");
+  input.setAttribute("autocapitalize", "off");
+  input.setAttribute("spellcheck", "false");
+});
+
 document.addEventListener("contextmenu", prevent);
 
 ["gesturestart", "gesturechange", "gestureend"].forEach((type) => {
@@ -7,9 +21,18 @@ document.addEventListener("contextmenu", prevent);
 });
 
 document.addEventListener(
-  "touchmove",
+  "touchstart",
   (event) => {
     if (event.touches.length > 1) prevent(event);
+  },
+  { passive: false },
+);
+
+document.addEventListener(
+  "touchmove",
+  (event) => {
+    // Multi-touch, or an iOS pinch gesture (scale is iOS-only and 1 while scrolling).
+    if (event.touches.length > 1 || (event.scale && event.scale !== 1)) prevent(event);
   },
   { passive: false },
 );
