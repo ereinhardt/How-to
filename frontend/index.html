@@ -331,6 +331,7 @@
             streamingUserId = socket.id;
             start_hls(source_url);
             generatingTimestamps(user.questions);
+            elements.input.blur();
           } catch (error) {
             console.error("Error starting stream:", error);
             setNotification("Failed to start stream.");
