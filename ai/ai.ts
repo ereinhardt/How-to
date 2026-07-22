@@ -41,7 +41,7 @@ function generatePrompt(initial_question: string): string {
   Create a chain of 50 "How to" questions starting from the initial question, with each question naturally transitioning to the next topic while maintaining a balance between hard skills (technical) and soft skills (interpersonal/personal development).
 
   **REQUIREMENTS**:
-  1. **Question Chain**: Start with "${initial_question}?" and create 29 additional questions
+  1. **Question Chain**: Start with "${initial_question}?" and create 49 additional questions
   2. **Step-Ahead Logic**: Each new question must describe a necessary step that comes BEFORE the previous question (prerequisite)
   3. **Source**: All questions and video IDs must be selected from the provided 'question_index.csv' file
 
