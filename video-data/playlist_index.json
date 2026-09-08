@@ -1,0 +1,5332 @@
+[
+  {
+    "initial_question": "How to build a kitchen",
+    "playlist": [
+      {
+        "video_title_1": "How to build a kitchen",
+        "video_id_1": "isu7eUKyHbA"
+      },
+      {
+        "video_title_2": "How to install a oven",
+        "video_id_2": "IgoPODb66Pk"
+      },
+      {
+        "video_title_3": "How to Seal Granite Countertops",
+        "video_id_3": "ffUcD0erfLs"
+      },
+      {
+        "video_title_4": "How to Tile a Floor",
+        "video_id_4": "h6AABdEfpwI"
+      },
+      {
+        "video_title_5": "How to Paint a Wall",
+        "video_id_5": "bLbUIevOxzY"
+      },
+      {
+        "video_title_6": "How to Repair Drywall",
+        "video_id_6": "Fdy9uRvpI-E"
+      },
+      {
+        "video_title_7": "How to choose the right paint finish",
+        "video_id_7": "o554wrRNsNA"
+      },
+      {
+        "video_title_8": "How to use a Paint Brush",
+        "video_id_8": "6noW8bBBh6I"
+      },
+      {
+        "video_title_9": "How to build a DIY coffee station",
+        "video_id_9": "Oq0eUp-usB8"
+      },
+      {
+        "video_title_10": "How to Sand Wood Properly",
+        "video_id_10": "edulbAmdv-A"
+      },
+      {
+        "video_title_11": "How to saw wood",
+        "video_id_11": "S_2vh8WPgeM"
+      },
+      {
+        "video_title_12": "How to buy the right wood working tools",
+        "video_id_12": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_13": "How to do CAD",
+        "video_id_13": "KhYDvfu95z4"
+      },
+      {
+        "video_title_14": "How to organize your project files",
+        "video_id_14": "gI0eR61cKug"
+      },
+      {
+        "video_title_15": "How to Organize Digital Files",
+        "video_id_15": "MM-MPS57qKA"
+      },
+      {
+        "video_title_16": "How to Use Google Drive",
+        "video_id_16": "gdrxAoqfvbA"
+      },
+      {
+        "video_title_17": "How to Use Google Sheets",
+        "video_id_17": "FIkZ1sPmKNw"
+      },
+      {
+        "video_title_18": "How to Make a Budget Spreadsheet",
+        "video_id_18": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_19": "How to track your expenses",
+        "video_id_19": "4sT2B2SRypo"
+      },
+      {
+        "video_title_20": "How to create a budget",
+        "video_id_20": "3pslPbfpnzk"
+      },
+      {
+        "video_title_21": "How to set financial goals",
+        "video_id_21": "9q-UTjlP3hI"
+      },
+      {
+        "video_title_22": "How to Save Money",
+        "video_id_22": "JP__utZQLb8"
+      },
+      {
+        "video_title_23": "How to Get Out of Debt",
+        "video_id_23": "w4Kbq0VJEhY"
+      },
+      {
+        "video_title_24": "How to Start a Side Hustle",
+        "video_id_24": "kU64fhwbiLE"
+      },
+      {
+        "video_title_25": "How to Make a Business Plan",
+        "video_id_25": "ZEMbKzy7FD8"
+      },
+      {
+        "video_title_26": "How to Write a Business Proposal",
+        "video_id_26": "LCwFmrXSnCs"
+      },
+      {
+        "video_title_27": "How to Write an Essay",
+        "video_id_27": "liyFKUFCQno"
+      },
+      {
+        "video_title_28": "How to take effective notes",
+        "video_id_28": "jBHLC8dff48"
+      },
+      {
+        "video_title_29": "How to Study Smarter",
+        "video_id_29": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_30": "How to improve your memory",
+        "video_id_30": "NrEafQNV9KQ"
+      },
+      {
+        "video_title_31": "How to learn a new skill",
+        "video_id_31": "0eItWeZFVHo"
+      },
+      {
+        "video_title_32": "How to Master Time Blocking",
+        "video_id_32": "x9K80nyTltU"
+      },
+      {
+        "video_title_33": "How to master the Pomodoro Technique",
+        "video_id_33": "mNBmG24djoY"
+      },
+      {
+        "video_title_34": "How to set goals that stick",
+        "video_id_34": "fXyRprdoEoE"
+      },
+      {
+        "video_title_35": "How to start a daily gratitude habit",
+        "video_id_35": "lbAR7pqljDM"
+      },
+      {
+        "video_title_36": "How to write affirmations",
+        "video_id_36": "TeCmHNULJrA"
+      },
+      {
+        "video_title_37": "How to journal for self discovery",
+        "video_id_37": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_38": "How to silence your inner critic",
+        "video_id_38": "l4GJr5Zg14A"
+      },
+      {
+        "video_title_39": "How to develop a growth mindset",
+        "video_id_39": "hiiEeMN7vbQ"
+      },
+      {
+        "video_title_40": "How to build confidence",
+        "video_id_40": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_41": "How to Be More Assertive",
+        "video_id_41": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_42": "How to Set Boundaries with Others",
+        "video_id_42": "KteXMvCev8w"
+      },
+      {
+        "video_title_43": "How to Develop Better Communication Skills",
+        "video_id_43": "7hr60EumwQ4"
+      },
+      {
+        "video_title_44": "How to Master the Art of Listening",
+        "video_id_44": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_45": "How to practice active listening",
+        "video_id_45": "aDMtx5ivKK0"
+      },
+      {
+        "video_title_46": "How to practice mindfulness",
+        "video_id_46": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_47": "How to Meditate",
+        "video_id_47": "JslvBcIVtDg"
+      },
+      {
+        "video_title_48": "How to practice breathwork",
+        "video_id_48": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_49": "How to reduce stress",
+        "video_id_49": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_50": "How to Sleep Better",
+        "video_id_50": "wWYnGuitCVU"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to find friends",
+    "playlist": [
+      {
+        "video_title_1": "How to find friends",
+        "video_id_1": "nm7OMGjbCgc"
+      },
+      {
+        "video_title_2": "How to make friends",
+        "video_id_2": "3pwCqiPCDRw"
+      },
+      {
+        "video_title_3": "How to meet new people",
+        "video_id_3": "rb0G0Uw-2Q8"
+      },
+      {
+        "video_title_4": "How to talk to anyone",
+        "video_id_4": "P2pGXdqI9s4"
+      },
+      {
+        "video_title_5": "How to start a conversation",
+        "video_id_5": "GyROefuUje4"
+      },
+      {
+        "video_title_6": "How to speak",
+        "video_id_6": "eIho2S0ZahI"
+      },
+      {
+        "video_title_7": "How to Learn Public Speaking",
+        "video_id_7": "i5mYphUoOCs"
+      },
+      {
+        "video_title_8": "How to Improve Your English",
+        "video_id_8": "CAU2zx2Ri_M"
+      },
+      {
+        "video_title_9": "How to Learn a New Language Fast",
+        "video_id_9": "qYsHLUAlH_8"
+      },
+      {
+        "video_title_10": "How to learn a new skill",
+        "video_id_10": "0eItWeZFVHo"
+      },
+      {
+        "video_title_11": "How to Learn Faster",
+        "video_id_11": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_12": "How to Study Smarter",
+        "video_id_12": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_13": "How to Take Notes",
+        "video_id_13": "UAhRf3U50lM"
+      },
+      {
+        "video_title_14": "How to hold a pen",
+        "video_id_14": "M-m83y54070"
+      },
+      {
+        "video_title_15": "How to sharpen a pencil",
+        "video_id_15": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_16": "How to sharp a pencil",
+        "video_id_16": "0Q2CLdLoalI"
+      },
+      {
+        "video_title_17": "How to clear desk clutter",
+        "video_id_17": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_18": "How to Organize Desk Cables",
+        "video_id_18": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_19": "How to wrap cables neatly",
+        "video_id_19": "uKlaXb-fLrg"
+      },
+      {
+        "video_title_20": "How to set up an ergonomic desk",
+        "video_id_20": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_21": "How to upgrade your workspace lighting",
+        "video_id_21": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_22": "How to Install a Light Fixture",
+        "video_id_22": "XF4NdfyiDSc"
+      },
+      {
+        "video_title_23": "How to Replace a Light Switch",
+        "video_id_23": "SW2MhGwmWiY"
+      },
+      {
+        "video_title_24": "How to Use a Multimeter",
+        "video_id_24": "TdUK6RPdIrA"
+      },
+      {
+        "video_title_25": "How to organize your tool box",
+        "video_id_25": "9eEfJl0z40g"
+      },
+      {
+        "video_title_26": "How to buy the right wood working tools",
+        "video_id_26": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_27": "How to Save Money",
+        "video_id_27": "JP__utZQLb8"
+      },
+      {
+        "video_title_28": "How to create a personal budget",
+        "video_id_28": "xfPbT7HPkKA"
+      },
+      {
+        "video_title_29": "How to Make a Budget Spreadsheet",
+        "video_id_29": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_30": "How to Use Excel",
+        "video_id_30": "LgXzzu68j7M"
+      },
+      {
+        "video_title_31": "How to build a PC",
+        "video_id_31": "qkr07CutHrU"
+      },
+      {
+        "video_title_32": "How to Install Windows",
+        "video_id_32": "sCl62KLjsAc"
+      },
+      {
+        "video_title_33": "How to Start a Business",
+        "video_id_33": "bXLZ8I7s8tw"
+      },
+      {
+        "video_title_34": "How to Make a Business Plan",
+        "video_id_34": "ZEMbKzy7FD8"
+      },
+      {
+        "video_title_35": "How to Set Goals",
+        "video_id_35": "BQbufwSqxpU"
+      },
+      {
+        "video_title_36": "How to stop procrastinating",
+        "video_id_36": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_37": "How to Master Time Blocking",
+        "video_id_37": "x9K80nyTltU"
+      },
+      {
+        "video_title_38": "How to Use Google Calendar",
+        "video_id_38": "6dyCOXNLp8U"
+      },
+      {
+        "video_title_39": "How to Create a Daily Schedule",
+        "video_id_39": "TieJ7FChhrk"
+      },
+      {
+        "video_title_40": "How to build a morning routine",
+        "video_id_40": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_41": "How to Wake Up",
+        "video_id_41": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_42": "How to set an alarm",
+        "video_id_42": "m2NNDms474A"
+      },
+      {
+        "video_title_43": "How to Get to Sleep",
+        "video_id_43": "JamURLO00IY"
+      },
+      {
+        "video_title_44": "How to build an evening wind down routine",
+        "video_id_44": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_45": "How to Reduce Screen Time",
+        "video_id_45": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_46": "How to Do a Digital Detox",
+        "video_id_46": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_47": "How to detox from social media",
+        "video_id_47": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_48": "How to practice mindfulness",
+        "video_id_48": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_49": "How to practice breathwork",
+        "video_id_49": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_50": "How to Meditate",
+        "video_id_50": "JslvBcIVtDg"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Dry Flowers",
+    "playlist": [
+      {
+        "video_title_1": "How to Dry Flowers",
+        "video_id_1": "lLgpgD_xZzU"
+      },
+      {
+        "video_title_2": "How to preserve herbs with drying",
+        "video_id_2": "WXDoNvWScvo"
+      },
+      {
+        "video_title_3": "How to harvest sunflowers",
+        "video_id_3": "od07AZHzr-g"
+      },
+      {
+        "video_title_4": "How to grow your own herbs",
+        "video_id_4": "5mWH5ajGJF4"
+      },
+      {
+        "video_title_5": "How to care for your garden",
+        "video_id_5": "BO8yuSTc3fo"
+      },
+      {
+        "video_title_6": "How to prepare your garden for spring",
+        "video_id_6": "rjhRJXdPE8E"
+      },
+      {
+        "video_title_7": "How to Sharpen Garden Tools",
+        "video_id_7": "YzpKDkIOkJM"
+      },
+      {
+        "video_title_8": "How to Remove Rust from Metal",
+        "video_id_8": "jGyU5XnX-8k"
+      },
+      {
+        "video_title_9": "How to Organize a Garage",
+        "video_id_9": "HIUrGi89i-U"
+      },
+      {
+        "video_title_10": "How to declutter your digital life",
+        "video_id_10": "LnoKcGrL8HM"
+      },
+      {
+        "video_title_11": "How to Do a Digital Detox",
+        "video_id_11": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_12": "How to Reduce Screen Time",
+        "video_id_12": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_13": "How to stop doomscrolling",
+        "video_id_13": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_14": "How to build better sleep hygiene",
+        "video_id_14": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_15": "How to master your sleep schedule",
+        "video_id_15": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_16": "How to create a bedtime routine",
+        "video_id_16": "gDNDlPejKr4"
+      },
+      {
+        "video_title_17": "How to build an evening wind down routine",
+        "video_id_17": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_18": "How to practice journaling for anxiety relief",
+        "video_id_18": "7CcZ7gyFXv0"
+      },
+      {
+        "video_title_19": "How to journal for self discovery",
+        "video_id_19": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_20": "How to Write a Journal",
+        "video_id_20": "5DqXHg52H1g"
+      },
+      {
+        "video_title_21": "How to choose the best journal for your needs",
+        "video_id_21": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_22": "How to write down notes",
+        "video_id_22": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_23": "How to hold a pen",
+        "video_id_23": "M-m83y54070"
+      },
+      {
+        "video_title_24": "How to sharpen a pencil",
+        "video_id_24": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_25": "How to keep your desk clutter free",
+        "video_id_25": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_26": "How to set up an ergonomic desk",
+        "video_id_26": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_27": "How to Set Up a Home Office",
+        "video_id_27": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_28": "How to create a budget friendly home gym",
+        "video_id_28": "81twIK-lLA8"
+      },
+      {
+        "video_title_29": "How to create a personal budget",
+        "video_id_29": "xfPbT7HPkKA"
+      },
+      {
+        "video_title_30": "How to track your expenses",
+        "video_id_30": "4sT2B2SRypo"
+      },
+      {
+        "video_title_31": "How to Balance a Checkbook",
+        "video_id_31": "vXsavJrK9Ng"
+      },
+      {
+        "video_title_32": "How to Use Excel",
+        "video_id_32": "LgXzzu68j7M"
+      },
+      {
+        "video_title_33": "How to Learn Touch Typing",
+        "video_id_33": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_34": "How to learn a new skill",
+        "video_id_34": "0eItWeZFVHo"
+      },
+      {
+        "video_title_35": "How to master a skill",
+        "video_id_35": "Oq65fZr7wi8"
+      },
+      {
+        "video_title_36": "How to Learn Faster",
+        "video_id_36": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_37": "How to take effective notes",
+        "video_id_37": "jBHLC8dff48"
+      },
+      {
+        "video_title_38": "How to use Notion for Planning",
+        "video_id_38": "FrhFvIsq86g"
+      },
+      {
+        "video_title_39": "How to Create a Daily Schedule",
+        "video_id_39": "TieJ7FChhrk"
+      },
+      {
+        "video_title_40": "How to Master Time Blocking",
+        "video_id_40": "x9K80nyTltU"
+      },
+      {
+        "video_title_41": "How to prioritize tasks",
+        "video_id_41": "czh4rmk75jc"
+      },
+      {
+        "video_title_42": "How to write a better to do list",
+        "video_id_42": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_43": "How to set goals that stick",
+        "video_id_43": "fXyRprdoEoE"
+      },
+      {
+        "video_title_44": "How to Set Goals",
+        "video_id_44": "BQbufwSqxpU"
+      },
+      {
+        "video_title_45": "How to create a vision board",
+        "video_id_45": "-Pe9PlQj62g"
+      },
+      {
+        "video_title_46": "How to Find Your Passion",
+        "video_id_46": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_47": "How to do a life audit",
+        "video_id_47": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_48": "How to reset your mindset",
+        "video_id_48": "6Kq_3xGJAaA"
+      },
+      {
+        "video_title_49": "How to practice mindfulness",
+        "video_id_49": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_50": "How to Meditate",
+        "video_id_50": "JslvBcIVtDg"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to feel love again",
+    "playlist": [
+      {
+        "video_title_1": "How to feel love again",
+        "video_id_1": "MZZf2BqEVQE"
+      },
+      {
+        "video_title_2": "How to Open Your Heart",
+        "video_id_2": "e-I90exkpt0"
+      },
+      {
+        "video_title_3": "How to Get Over a Break Up",
+        "video_id_3": "O_dWZOgdCfs"
+      },
+      {
+        "video_title_4": "How to Gain Control of Your Emotions",
+        "video_id_4": "9TO-U6dtQ34"
+      },
+      {
+        "video_title_5": "How to silence your inner critic",
+        "video_id_5": "l4GJr5Zg14A"
+      },
+      {
+        "video_title_6": "How to journal for self discovery",
+        "video_id_6": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_7": "How to Write a Journal",
+        "video_id_7": "5DqXHg52H1g"
+      },
+      {
+        "video_title_8": "How to make a handmade journal",
+        "video_id_8": "74vzzkdF8o8"
+      },
+      {
+        "video_title_9": "How to make paper",
+        "video_id_9": "H8zkeybyHcI"
+      },
+      {
+        "video_title_10": "How to cut stones",
+        "video_id_10": "nV4Cd8rEDlE"
+      },
+      {
+        "video_title_11": "How to mining ore",
+        "video_id_11": "wsAzlmz5dso"
+      },
+      {
+        "video_title_12": "How to produce a hammer",
+        "video_id_12": "3UNhaBOmLjM"
+      },
+      {
+        "video_title_13": "How to make fire",
+        "video_id_13": "kx-TvlMB1QA"
+      },
+      {
+        "video_title_14": "How to gather fire wood",
+        "video_id_14": "aYUAspWpkcI"
+      },
+      {
+        "video_title_15": "How to saw wood",
+        "video_id_15": "S_2vh8WPgeM"
+      },
+      {
+        "video_title_16": "How to fell a tree",
+        "video_id_16": "3mTd8ZTG_cc"
+      },
+      {
+        "video_title_17": "How to Use a Chainsaw Safely",
+        "video_id_17": "KcoN0mNivaI"
+      },
+      {
+        "video_title_18": "How to Do Basic First Aid",
+        "video_id_18": "5OKFljZ2GQE"
+      },
+      {
+        "video_title_19": "How to stop the bleeding of a wound",
+        "video_id_19": "XieRLnynqhA"
+      },
+      {
+        "video_title_20": "How to disinfect a needle",
+        "video_id_20": "vqN7kxHjGc0"
+      },
+      {
+        "video_title_21": "How to Light a Match",
+        "video_id_21": "_kiLlvCelr0"
+      },
+      {
+        "video_title_22": "How to find Lost Objects",
+        "video_id_22": "WfCBeA77jYE"
+      },
+      {
+        "video_title_23": "How to Clean Your Room",
+        "video_id_23": "b2JempkYUjo"
+      },
+      {
+        "video_title_24": "How to vacuum the floor",
+        "video_id_24": "fbXqklwkJt4"
+      },
+      {
+        "video_title_25": "How to vacuum the carpet",
+        "video_id_25": "16VLGWj-gkQ"
+      },
+      {
+        "video_title_26": "How to wrap cables neatly",
+        "video_id_26": "uKlaXb-fLrg"
+      },
+      {
+        "video_title_27": "How to Organize Desk Cables",
+        "video_id_27": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_28": "How to keep your desk clutter free",
+        "video_id_28": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_29": "How to clean up your desktop clutter",
+        "video_id_29": "gfPujXtQqwc"
+      },
+      {
+        "video_title_30": "How to Organize Digital Files",
+        "video_id_30": "MM-MPS57qKA"
+      },
+      {
+        "video_title_31": "How to organize your project files",
+        "video_id_31": "gI0eR61cKug"
+      },
+      {
+        "video_title_32": "How to Backup Your Computer",
+        "video_id_32": "yIe4r6mBxz8"
+      },
+      {
+        "video_title_33": "How to create a backup system for files",
+        "video_id_33": "ji0SQzpOlBw"
+      },
+      {
+        "video_title_34": "How to use Google Drive for storage",
+        "video_id_34": "jSRSgxMTU_M"
+      },
+      {
+        "video_title_35": "How to Use Google Drive",
+        "video_id_35": "gdrxAoqfvbA"
+      },
+      {
+        "video_title_36": "How to set up your first password manager",
+        "video_id_36": "HH7iiqvqzJk"
+      },
+      {
+        "video_title_37": "How to keep your digital life private",
+        "video_id_37": "c5tNh317sv8"
+      },
+      {
+        "video_title_38": "How to Use a VPN",
+        "video_id_38": "IbMTIvKhcRM"
+      },
+      {
+        "video_title_39": "How to Find Your IP Address on a Mac",
+        "video_id_39": "o_axuzXTZ98"
+      },
+      {
+        "video_title_40": "How to Fix Internet Lag",
+        "video_id_40": "hgzx_86uCxk"
+      },
+      {
+        "video_title_41": "How to build a PC",
+        "video_id_41": "qkr07CutHrU"
+      },
+      {
+        "video_title_42": "How to upgrade your workspace lighting",
+        "video_id_42": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_43": "How to set up an ergonomic desk",
+        "video_id_43": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_44": "How to Set Up a Home Office",
+        "video_id_44": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_45": "How to transition to remote work",
+        "video_id_45": "h760gROXCvA"
+      },
+      {
+        "video_title_46": "How to Get a Job",
+        "video_id_46": "E0b_JENQdYk"
+      },
+      {
+        "video_title_47": "How to Master a Job Interview",
+        "video_id_47": "0siE31sqz0Q"
+      },
+      {
+        "video_title_48": "How to prepare for an interview",
+        "video_id_48": "LCWr-TJrc0k"
+      },
+      {
+        "video_title_49": "How to Write a Cover Letter",
+        "video_id_49": "NUhDP30IRKk"
+      },
+      {
+        "video_title_50": "How to write a resume",
+        "video_id_50": "Y9Pyv-GWbmg"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Make a Peanut Butter and Jelly Sandwich",
+    "playlist": [
+      {
+        "video_title_1": "How to Make a Peanut Butter and Jelly Sandwich",
+        "video_id_1": "-hCYXJHYCW8"
+      },
+      {
+        "video_title_2": "How to use a knife",
+        "video_id_2": "aoqVGdmVlKk"
+      },
+      {
+        "video_title_3": "How to sharpen a knife",
+        "video_id_3": "h6faatE8b9Q"
+      },
+      {
+        "video_title_4": "How to make your own fruit jam",
+        "video_id_4": "KUGjgUA-BWU"
+      },
+      {
+        "video_title_5": "How to make your own peanut butter",
+        "video_id_5": "FOxuf-1Y8rM"
+      },
+      {
+        "video_title_6": "How to Roast Cashews",
+        "video_id_6": "TNV7O7kbm-U"
+      },
+      {
+        "video_title_7": "How to Bake Bread",
+        "video_id_7": "VrUdtzXquWk"
+      },
+      {
+        "video_title_8": "How to make Bread Dough",
+        "video_id_8": "aUtxKeupYFg"
+      },
+      {
+        "video_title_9": "How to kneat dough",
+        "video_id_9": "T8FK5apuL40"
+      },
+      {
+        "video_title_10": "How to Make Sourdough Starter",
+        "video_id_10": "sTAiDki7AQA"
+      },
+      {
+        "video_title_11": "How to make flour",
+        "video_id_11": "fhqWm4OQw18"
+      },
+      {
+        "video_title_12": "How to harvest wheat",
+        "video_id_12": "17el_DnUI8Q"
+      },
+      {
+        "video_title_13": "How to cultivate Wheat",
+        "video_id_13": "AonJkhqCRwk"
+      },
+      {
+        "video_title_14": "How to plowing fields",
+        "video_id_14": "tkimnbvtYpQ"
+      },
+      {
+        "video_title_15": "How to buy the right wood working tools",
+        "video_id_15": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_16": "How to plan a grocery list",
+        "video_id_16": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_17": "How to read a recipe",
+        "video_id_17": "zOeyz25Flzo"
+      },
+      {
+        "video_title_18": "How to clean the kitchen",
+        "video_id_18": "3Vryfeo7rrE"
+      },
+      {
+        "video_title_19": "How to clean a cutting board",
+        "video_id_19": "pgRR05SCsmM"
+      },
+      {
+        "video_title_20": "How to make your own cleaning products",
+        "video_id_20": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_21": "How to organize your pantry",
+        "video_id_21": "AXHJbckCxbQ"
+      },
+      {
+        "video_title_22": "How to label your pantry containers",
+        "video_id_22": "cT1AlxEDg2o"
+      },
+      {
+        "video_title_23": "How to Make Stickers",
+        "video_id_23": "8pvzddP2_j0"
+      },
+      {
+        "video_title_24": "How to Use Canva",
+        "video_id_24": "zJSgUx5K6V0"
+      },
+      {
+        "video_title_25": "How to Learn Touch Typing",
+        "video_id_25": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_26": "How to use a keyboard with household items",
+        "video_id_26": "7-52JsgdvsA"
+      },
+      {
+        "video_title_27": "How to keep your desk clutter free",
+        "video_id_27": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_28": "How to Organize Desk Cables",
+        "video_id_28": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_29": "How to Set Up a Home Office",
+        "video_id_29": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_30": "How to prioritize tasks",
+        "video_id_30": "czh4rmk75jc"
+      },
+      {
+        "video_title_31": "How to Create a Daily Schedule",
+        "video_id_31": "TieJ7FChhrk"
+      },
+      {
+        "video_title_32": "How to Use Google Calendar",
+        "video_id_32": "6dyCOXNLp8U"
+      },
+      {
+        "video_title_33": "How to set goals that stick",
+        "video_id_33": "fXyRprdoEoE"
+      },
+      {
+        "video_title_34": "How to write a personal mission statement",
+        "video_id_34": "LT9IsClSXCI"
+      },
+      {
+        "video_title_35": "How to journal for self discovery",
+        "video_id_35": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_36": "How to practice mindfulness",
+        "video_id_36": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_37": "How to practice breathwork",
+        "video_id_37": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_38": "How to reduce stress",
+        "video_id_38": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_39": "How to get enough sleep",
+        "video_id_39": "1U2qMRGihGg"
+      },
+      {
+        "video_title_40": "How to build an evening wind down routine",
+        "video_id_40": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_41": "How to Reduce Screen Time",
+        "video_id_41": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_42": "How to stop doomscrolling",
+        "video_id_42": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_43": "How to Do a Digital Detox",
+        "video_id_43": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_44": "How to set healthy boundaries",
+        "video_id_44": "csPmD6Vf0QQ"
+      },
+      {
+        "video_title_45": "How to Be More Assertive",
+        "video_id_45": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_46": "How to Stand Up for Yourself",
+        "video_id_46": "Dnia_m898K4"
+      },
+      {
+        "video_title_47": "How to build confidence",
+        "video_id_47": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_48": "How to silence your inner critic",
+        "video_id_48": "l4GJr5Zg14A"
+      },
+      {
+        "video_title_49": "How to Practice Gratitude",
+        "video_id_49": "OLE1kAKQWIQ"
+      },
+      {
+        "video_title_50": "How to start a daily gratitude habit",
+        "video_id_50": "lbAR7pqljDM"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Create a Digital Vision Board",
+    "playlist": [
+      {
+        "video_title_1": "How to Create a Digital Vision Board",
+        "video_id_1": "iKuFQ0-LBgk"
+      },
+      {
+        "video_title_2": "How to Use Canva",
+        "video_id_2": "zJSgUx5K6V0"
+      },
+      {
+        "video_title_3": "How to create a color palette for a project",
+        "video_id_3": "yYwEnLYT55c"
+      },
+      {
+        "video_title_4": "How to use color theory in design",
+        "video_id_4": "AvgCkHrcj90"
+      },
+      {
+        "video_title_5": "How to Make a Mood Board",
+        "video_id_5": "GSBjVedREWE"
+      },
+      {
+        "video_title_6": "How to use Pinterest to plan a project",
+        "video_id_6": "1ZdTH26km2s"
+      },
+      {
+        "video_title_7": "How to set goals that stick",
+        "video_id_7": "fXyRprdoEoE"
+      },
+      {
+        "video_title_8": "How to Set Goals",
+        "video_id_8": "BQbufwSqxpU"
+      },
+      {
+        "video_title_9": "How to Find Your Passion",
+        "video_id_9": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_10": "How to journal for self discovery",
+        "video_id_10": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_11": "How to Write a Journal",
+        "video_id_11": "5DqXHg52H1g"
+      },
+      {
+        "video_title_12": "How to practice productive journaling",
+        "video_id_12": "YXxBFlxma3Q"
+      },
+      {
+        "video_title_13": "How to write down notes",
+        "video_id_13": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_14": "How to hold a pen",
+        "video_id_14": "M-m83y54070"
+      },
+      {
+        "video_title_15": "How to sharpen a pencil",
+        "video_id_15": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_16": "How to sharp a pencil",
+        "video_id_16": "0Q2CLdLoalI"
+      },
+      {
+        "video_title_17": "How to keep your desk clutter free",
+        "video_id_17": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_18": "How to Organize Desk Cables",
+        "video_id_18": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_19": "How to wrap cables neatly",
+        "video_id_19": "uKlaXb-fLrg"
+      },
+      {
+        "video_title_20": "How to set up an ergonomic desk",
+        "video_id_20": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_21": "How to Set Up a Home Office",
+        "video_id_21": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_22": "How to upgrade your workspace lighting",
+        "video_id_22": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_23": "How to Install a Light Fixture",
+        "video_id_23": "XF4NdfyiDSc"
+      },
+      {
+        "video_title_24": "How to Replace a Light Switch",
+        "video_id_24": "SW2MhGwmWiY"
+      },
+      {
+        "video_title_25": "How to Clean Your Room",
+        "video_id_25": "b2JempkYUjo"
+      },
+      {
+        "video_title_26": "How to vacuum the carpet",
+        "video_id_26": "16VLGWj-gkQ"
+      },
+      {
+        "video_title_27": "How to vacuum the floor",
+        "video_id_27": "fbXqklwkJt4"
+      },
+      {
+        "video_title_28": "How to clean your house efficiently",
+        "video_id_28": "TqHX3pTeRdg"
+      },
+      {
+        "video_title_29": "How to make your own cleaning products",
+        "video_id_29": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_30": "How to make your own cleaning spray",
+        "video_id_30": "99XNyAOBm34"
+      },
+      {
+        "video_title_31": "How to use baking soda for cleaning",
+        "video_id_31": "4ciahsfuzXM"
+      },
+      {
+        "video_title_32": "How to Clean a Pan with Baking Soda",
+        "video_id_32": "hzSl681t7UQ"
+      },
+      {
+        "video_title_33": "How to Clean a Scorched Pan",
+        "video_id_33": "mrQ_ONExch4"
+      },
+      {
+        "video_title_34": "How to Clean a Burnt Cast Iron Skillet",
+        "video_id_34": "P4zW-C010oc"
+      },
+      {
+        "video_title_35": "How to Season a Cast Iron Skillet",
+        "video_id_35": "dX8e_OG8LcY"
+      },
+      {
+        "video_title_36": "How to Cure Cast Iron",
+        "video_id_36": "46nRKacPWPs"
+      },
+      {
+        "video_title_37": "How to Clean Cast Iron",
+        "video_id_37": "3sUZod7UvO4"
+      },
+      {
+        "video_title_38": "How to use a pan",
+        "video_id_38": "zRMUGiGtXPE"
+      },
+      {
+        "video_title_39": "How to heat up a pan",
+        "video_id_39": "CB-SCA1reqE"
+      },
+      {
+        "video_title_40": "How to turn on a Gas stove",
+        "video_id_40": "FHgiRv5PbxY"
+      },
+      {
+        "video_title_41": "How to Light a Match",
+        "video_id_41": "_kiLlvCelr0"
+      },
+      {
+        "video_title_42": "How to build a morning routine",
+        "video_id_42": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_43": "How to create a productive morning ritual",
+        "video_id_43": "lC3Hxx28QY8"
+      },
+      {
+        "video_title_44": "How to Wake Up",
+        "video_id_44": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_45": "How to set an alarm",
+        "video_id_45": "m2NNDms474A"
+      },
+      {
+        "video_title_46": "How to master your sleep schedule",
+        "video_id_46": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_47": "How to build better sleep hygiene",
+        "video_id_47": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_48": "How to Get to Sleep",
+        "video_id_48": "JamURLO00IY"
+      },
+      {
+        "video_title_49": "How to create a bedtime routine",
+        "video_id_49": "gDNDlPejKr4"
+      },
+      {
+        "video_title_50": "How to build an evening wind down routine",
+        "video_id_50": "hHZVYIlVGN8"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Set Up a YouTube Banner",
+    "playlist": [
+      {
+        "video_title_1": "How to Set Up a YouTube Banner",
+        "video_id_1": "P8cLMhEjX9k"
+      },
+      {
+        "video_title_2": "How to Create a YouTube Channel",
+        "video_id_2": "Lk_4GUymeOI"
+      },
+      {
+        "video_title_3": "How to Make a YouTube Intro",
+        "video_id_3": "TOHQXdCAo5k"
+      },
+      {
+        "video_title_4": "How to Animate a Logo",
+        "video_id_4": "Dta9tIMbNWo"
+      },
+      {
+        "video_title_5": "How to Design a Logo in Illustrator",
+        "video_id_5": "qSkhaLNKdX0"
+      },
+      {
+        "video_title_6": "How to use Illustrator",
+        "video_id_6": "3NBKRywEbNs"
+      },
+      {
+        "video_title_7": "How to use color theory in design",
+        "video_id_7": "AvgCkHrcj90"
+      },
+      {
+        "video_title_8": "How to create a color palette for a project",
+        "video_id_8": "yYwEnLYT55c"
+      },
+      {
+        "video_title_9": "How to Create a Digital Vision Board",
+        "video_id_9": "iKuFQ0-LBgk"
+      },
+      {
+        "video_title_10": "How to Make a Mood Board",
+        "video_id_10": "GSBjVedREWE"
+      },
+      {
+        "video_title_11": "How to use Pinterest to plan a project",
+        "video_id_11": "1ZdTH26km2s"
+      },
+      {
+        "video_title_12": "How to plan your content with a calendar",
+        "video_id_12": "rl9ZtPKEdRg"
+      },
+      {
+        "video_title_13": "How to Use Notion for Planning",
+        "video_id_13": "FrhFvIsq86g"
+      },
+      {
+        "video_title_14": "How to organize digital notes",
+        "video_id_14": "tPsD_ZhIfQc"
+      },
+      {
+        "video_title_15": "How to Take Notes",
+        "video_id_15": "UAhRf3U50lM"
+      },
+      {
+        "video_title_16": "How to Master the Art of Listening",
+        "video_id_16": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_17": "How to practice active listening",
+        "video_id_17": "aDMtx5ivKK0"
+      },
+      {
+        "video_title_18": "How to Be a Better Listener",
+        "video_id_18": "7wUCyjiyXdg"
+      },
+      {
+        "video_title_19": "How to Develop Better Communication Skills",
+        "video_id_19": "7hr60EumwQ4"
+      },
+      {
+        "video_title_20": "How to talk about feelings",
+        "video_id_20": "iWlcAylOVNU"
+      },
+      {
+        "video_title_21": "How to Gain Control of Your Emotions",
+        "video_id_21": "9TO-U6dtQ34"
+      },
+      {
+        "video_title_22": "How to practice mindfulness",
+        "video_id_22": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_23": "How to Meditate",
+        "video_id_23": "JslvBcIVtDg"
+      },
+      {
+        "video_title_24": "How to Start a Meditation Space",
+        "video_id_24": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_25": "How to Declutter Your Home",
+        "video_id_25": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_26": "How to Clean Your Room",
+        "video_id_26": "b2JempkYUjo"
+      },
+      {
+        "video_title_27": "How to make your own cleaning spray",
+        "video_id_27": "99XNyAOBm34"
+      },
+      {
+        "video_title_28": "How to make your own cleaning products",
+        "video_id_28": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_29": "How to Make Apple Cider Vinegar",
+        "video_id_29": "Z9AeFZ5bFJk"
+      },
+      {
+        "video_title_30": "How to slice an apple",
+        "video_id_30": "H_M5cgWIQZU"
+      },
+      {
+        "video_title_31": "How to sharpen kitchen knives",
+        "video_id_31": "t-_qzsMF8RM"
+      },
+      {
+        "video_title_32": "How to use a knife",
+        "video_id_32": "aoqVGdmVlKk"
+      },
+      {
+        "video_title_33": "How to cook a healthy meal",
+        "video_id_33": "c1EpTfvPc84"
+      },
+      {
+        "video_title_34": "How to read a recipe",
+        "video_id_34": "zOeyz25Flzo"
+      },
+      {
+        "video_title_35": "How to plan a grocery list",
+        "video_id_35": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_36": "How to create a meal plan",
+        "video_id_36": "B5a03YsCgD0"
+      },
+      {
+        "video_title_37": "How to Create a Daily Routine",
+        "video_id_37": "OQIOjug4WC8"
+      },
+      {
+        "video_title_38": "How to Create a Daily Schedule",
+        "video_id_38": "TieJ7FChhrk"
+      },
+      {
+        "video_title_39": "How to prioritize tasks",
+        "video_id_39": "czh4rmk75jc"
+      },
+      {
+        "video_title_40": "How to write a better to do list",
+        "video_id_40": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_41": "How to hold a pen",
+        "video_id_41": "M-m83y54070"
+      },
+      {
+        "video_title_42": "How to Improve Your Posture",
+        "video_id_42": "8gDAd7bBhZ0"
+      },
+      {
+        "video_title_43": "How to Stretch Properly",
+        "video_id_43": "FI51zRzgIe4"
+      },
+      {
+        "video_title_44": "How to Warm Up",
+        "video_id_44": "-p0PA9Zt8zk"
+      },
+      {
+        "video_title_45": "How to Work Out",
+        "video_id_45": "wIynl3at0Rs"
+      },
+      {
+        "video_title_46": "How to Create a Workout Plan",
+        "video_id_46": "5iHQDUvR_vc"
+      },
+      {
+        "video_title_47": "How to set goals that stick",
+        "video_id_47": "fXyRprdoEoE"
+      },
+      {
+        "video_title_48": "How to Set Goals",
+        "video_id_48": "BQbufwSqxpU"
+      },
+      {
+        "video_title_49": "How to do a life audit",
+        "video_id_49": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_50": "How to journal for self discovery",
+        "video_id_50": "4aPEJBRA8AA"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to cook spicy food",
+    "playlist": [
+      {
+        "video_title_1": "How to cook spicy food",
+        "video_id_1": "r88HR0DGd2E"
+      },
+      {
+        "video_title_2": "How to Use Curry Powder",
+        "video_id_2": "kASuAOgnYmE"
+      },
+      {
+        "video_title_3": "How to grind curry",
+        "video_id_3": "ZKiBBWxbYsw"
+      },
+      {
+        "video_title_4": "How to make your own spice mix",
+        "video_id_4": "bBb732v4C7E"
+      },
+      {
+        "video_title_5": "How to Cut a Bell Pepper",
+        "video_id_5": "nZC0opdrqTk"
+      },
+      {
+        "video_title_6": "How to use a chef's knife",
+        "video_id_6": "YrHpeEwk_-U"
+      },
+      {
+        "video_title_7": "How to sharpen kitchen knives",
+        "video_id_7": "t-_qzsMF8RM"
+      },
+      {
+        "video_title_8": "How to clean and oil cutting boards",
+        "video_id_8": "EpY_oGK6Jf4"
+      },
+      {
+        "video_title_9": "How to clean a cutting board",
+        "video_id_9": "pgRR05SCsmM"
+      },
+      {
+        "video_title_10": "How to clean the kitchen",
+        "video_id_10": "3Vryfeo7rrE"
+      },
+      {
+        "video_title_11": "How to do a full kitchen reset",
+        "video_id_11": "jZGG4OfS2XI"
+      },
+      {
+        "video_title_12": "How to label your pantry containers",
+        "video_id_12": "cT1AlxEDg2o"
+      },
+      {
+        "video_title_13": "How to organize your pantry",
+        "video_id_13": "AXHJbckCxbQ"
+      },
+      {
+        "video_title_14": "How to plan a grocery list",
+        "video_id_14": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_15": "How to create a meal plan",
+        "video_id_15": "B5a03YsCgD0"
+      },
+      {
+        "video_title_16": "How to read a recipe",
+        "video_id_16": "zOeyz25Flzo"
+      },
+      {
+        "video_title_17": "How to read a recipe",
+        "video_id_17": "fZTkLYt4SiM"
+      },
+      {
+        "video_title_18": "How to create a family meal plan",
+        "video_id_18": "ToDbJsR5YRI"
+      },
+      {
+        "video_title_19": "How to Create a Daily Routine",
+        "video_id_19": "OQIOjug4WC8"
+      },
+      {
+        "video_title_20": "How to Create a Daily Schedule",
+        "video_id_20": "TieJ7FChhrk"
+      },
+      {
+        "video_title_21": "How to prioritize tasks",
+        "video_id_21": "czh4rmk75jc"
+      },
+      {
+        "video_title_22": "How to write a better to-do list",
+        "video_id_22": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_23": "How to Master Time Blocking",
+        "video_id_23": "x9K80nyTltU"
+      },
+      {
+        "video_title_24": "How to Manage Your Time Effectively",
+        "video_id_24": "lriCkWIHEHs"
+      },
+      {
+        "video_title_25": "How to manage time",
+        "video_id_25": "iDbdXTMnOmE"
+      },
+      {
+        "video_title_26": "How to stop procrastinating",
+        "video_id_26": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_27": "How to stay focused while working from home",
+        "video_id_27": "AgIggrkBFcU"
+      },
+      {
+        "video_title_28": "How to build a morning routine",
+        "video_id_28": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_29": "How to create a productive morning ritual",
+        "video_id_29": "lC3Hxx28QY8"
+      },
+      {
+        "video_title_30": "How to Wake Up",
+        "video_id_30": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_31": "How to set an alarm",
+        "video_id_31": "m2NNDms474A"
+      },
+      {
+        "video_title_32": "How to master your sleep schedule",
+        "video_id_32": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_33": "How to build better sleep hygiene",
+        "video_id_33": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_34": "How to Sleep Better",
+        "video_id_34": "wWYnGuitCVU"
+      },
+      {
+        "video_title_35": "How to Get to Sleep",
+        "video_id_35": "JamURLO00IY"
+      },
+      {
+        "video_title_36": "How to create a bedtime routine",
+        "video_id_36": "gDNDlPejKr4"
+      },
+      {
+        "video_title_37": "How to build an evening wind down routine",
+        "video_id_37": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_38": "How to reduce stress",
+        "video_id_38": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_39": "How to practice breathwork",
+        "video_id_39": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_40": "How to practice mindfulness",
+        "video_id_40": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_41": "How to Meditate",
+        "video_id_41": "JslvBcIVtDg"
+      },
+      {
+        "video_title_42": "How to get started with meditation",
+        "video_id_42": "YE_9BFe6cJk"
+      },
+      {
+        "video_title_43": "How to Start a Meditation Space",
+        "video_id_43": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_44": "How to create a minimalists workspace",
+        "video_id_44": "efrxD0QiRSc"
+      },
+      {
+        "video_title_45": "How to keep your desk clutter-free",
+        "video_id_45": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_46": "How to Declutter Your Home",
+        "video_id_46": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_47": "How to Be a Minimalist",
+        "video_id_47": "DwWu9ZKCSzU"
+      },
+      {
+        "video_title_48": "How to get started with minimalism",
+        "video_id_48": "WU6A_agxaOA"
+      },
+      {
+        "video_title_49": "How to build good habits",
+        "video_id_49": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_50": "How to set goals that stick",
+        "video_id_50": "fXyRprdoEoE"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Use a Fitness Tracker",
+    "playlist": [
+      {
+        "video_title_1": "How to Use a Fitness Tracker",
+        "video_id_1": "oBQqVa3XO00"
+      },
+      {
+        "video_title_2": "How to stay consistent with workouts",
+        "video_id_2": "f_ZTq8AnuNI"
+      },
+      {
+        "video_title_3": "How to create a workout plan at home",
+        "video_id_3": "kq9a4G7FBzY"
+      },
+      {
+        "video_title_4": "How to Create a Workout Plan",
+        "video_id_4": "5iHQDUvR_vc"
+      },
+      {
+        "video_title_5": "How to set goals that stick",
+        "video_id_5": "fXyRprdoEoE"
+      },
+      {
+        "video_title_6": "How to Set Goals",
+        "video_id_6": "BQbufwSqxpU"
+      },
+      {
+        "video_title_7": "How to use a planner for goal setting",
+        "video_id_7": "fhph4TUY80I"
+      },
+      {
+        "video_title_8": "How to Use a Planner",
+        "video_id_8": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_9": "How to pick the right planner for you",
+        "video_id_9": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_10": "How to do a life audit",
+        "video_id_10": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_11": "How to journal for self discovery",
+        "video_id_11": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_12": "How to Write a Journal",
+        "video_id_12": "5DqXHg52H1g"
+      },
+      {
+        "video_title_13": "How to choose the best journal for your needs",
+        "video_id_13": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_14": "How to make a handmade journal",
+        "video_id_14": "74vzzkdF8o8"
+      },
+      {
+        "video_title_15": "How to make paper",
+        "video_id_15": "H8zkeybyHcI"
+      },
+      {
+        "video_title_16": "How to fell a tree",
+        "video_id_16": "3mTd8ZTG_cc"
+      },
+      {
+        "video_title_17": "How to Use a Chainsaw Safely",
+        "video_id_17": "KcoN0mNivaI"
+      },
+      {
+        "video_title_18": "How to Sharpen Garden Tools",
+        "video_id_18": "YzpKDkIOkJM"
+      },
+      {
+        "video_title_19": "How to Remove Rust from Metal",
+        "video_id_19": "jGyU5XnX-8k"
+      },
+      {
+        "video_title_20": "How to use baking soda for cleaning",
+        "video_id_20": "4ciahsfuzXM"
+      },
+      {
+        "video_title_21": "How to clean up your desktop clutter",
+        "video_id_21": "gfPujXtQqwc"
+      },
+      {
+        "video_title_22": "How to set up an ergonomic desk",
+        "video_id_22": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_23": "How to Set Up a Home Office",
+        "video_id_23": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_24": "How to Build a Bookshelf",
+        "video_id_24": "oQrfKnEJA1w"
+      },
+      {
+        "video_title_25": "How to Sand Wood Properly",
+        "video_id_25": "edulbAmdv-A"
+      },
+      {
+        "video_title_26": "How to choose sandpaper",
+        "video_id_26": "jM7RVCYQcrc"
+      },
+      {
+        "video_title_27": "How to buy the right wood working tools",
+        "video_id_27": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_28": "How to manage personal finances",
+        "video_id_28": "VaiqGsot5ws"
+      },
+      {
+        "video_title_29": "How to create a personal budget",
+        "video_id_29": "xfPbT7HPkKA"
+      },
+      {
+        "video_title_30": "How to create a budget",
+        "video_id_30": "3pslPbfpnzk"
+      },
+      {
+        "video_title_31": "How to track your expenses",
+        "video_id_31": "4sT2B2SRypo"
+      },
+      {
+        "video_title_32": "How to Use Google Sheets",
+        "video_id_32": "FIkZ1sPmKNw"
+      },
+      {
+        "video_title_33": "How to Use Google Drive",
+        "video_id_33": "gdrxAoqfvbA"
+      },
+      {
+        "video_title_34": "How to Organize Digital Files",
+        "video_id_34": "MM-MPS57qKA"
+      },
+      {
+        "video_title_35": "How to declutter your digital life",
+        "video_id_35": "LnoKcGrL8HM"
+      },
+      {
+        "video_title_36": "How to Do a Digital Cleanout",
+        "video_id_36": "O9haSJgvFqg"
+      },
+      {
+        "video_title_37": "How to Reduce Screen Time",
+        "video_id_37": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_38": "How to stop doomscrolling",
+        "video_id_38": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_39": "How to detox from social media",
+        "video_id_39": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_40": "How to Do a Digital Detox",
+        "video_id_40": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_41": "How to Practice Gratitude",
+        "video_id_41": "OLE1kAKQWIQ"
+      },
+      {
+        "video_title_42": "How to Start a Gratitude Practice",
+        "video_id_42": "GZghu_xFRM8"
+      },
+      {
+        "video_title_43": "How to start a daily gratitude habit",
+        "video_id_43": "lbAR7pqljDM"
+      },
+      {
+        "video_title_44": "How to build good habits",
+        "video_id_44": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_45": "How to use habit stacking effectively",
+        "video_id_45": "zjBhC4C-9KU"
+      },
+      {
+        "video_title_46": "How to Create a Daily Routine",
+        "video_id_46": "OQIOjug4WC8"
+      },
+      {
+        "video_title_47": "How to Create a Daily Schedule",
+        "video_id_47": "TieJ7FChhrk"
+      },
+      {
+        "video_title_48": "How to prioritize tasks",
+        "video_id_48": "czh4rmk75jc"
+      },
+      {
+        "video_title_49": "How to write a better to do list",
+        "video_id_49": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_50": "How to do a creative brain dump",
+        "video_id_50": "793Non5Jb8A"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to fell a tree",
+    "playlist": [
+      {
+        "video_title_1": "How to fell a tree",
+        "video_id_1": "3mTd8ZTG_cc"
+      },
+      {
+        "video_title_2": "How to Use a Chainsaw Safely",
+        "video_id_2": "KcoN0mNivaI"
+      },
+      {
+        "video_title_3": "How to Sharpen Garden Tools",
+        "video_id_3": "YzpKDkIOkJM"
+      },
+      {
+        "video_title_4": "How to buy the right wood working tools",
+        "video_id_4": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_5": "How to track your expenses",
+        "video_id_5": "4sT2B2SRypo"
+      },
+      {
+        "video_title_6": "How to Make a Budget Spreadsheet",
+        "video_id_6": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_7": "How to Use Excel",
+        "video_id_7": "LgXzzu68j7M"
+      },
+      {
+        "video_title_8": "How to Learn Touch Typing",
+        "video_id_8": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_9": "How to learn new keyboard shortcuts",
+        "video_id_9": "d_rH4uAm9MY"
+      },
+      {
+        "video_title_10": "How to Learn Faster",
+        "video_id_10": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_11": "How to learn faster with mind maps",
+        "video_id_11": "9N35ZDJuGCc"
+      },
+      {
+        "video_title_12": "How to Make a Mind Map",
+        "video_id_12": "g7j_CoKD1Xs"
+      },
+      {
+        "video_title_13": "How to take effective notes",
+        "video_id_13": "jBHLC8dff48"
+      },
+      {
+        "video_title_14": "How to hold a pen",
+        "video_id_14": "M-m83y54070"
+      },
+      {
+        "video_title_15": "How to improve your handwriting",
+        "video_id_15": "4zgoSs73tSo"
+      },
+      {
+        "video_title_16": "How to teach yourself calligraphy",
+        "video_id_16": "6w7rLkIvrvA"
+      },
+      {
+        "video_title_17": "How to be patient",
+        "video_id_17": "KzW84p4bCzA"
+      },
+      {
+        "video_title_18": "How to practice mindfulness",
+        "video_id_18": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_19": "How to practice breathwork",
+        "video_id_19": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_20": "How to reduce stress",
+        "video_id_20": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_21": "How to get enough sleep",
+        "video_id_21": "1U2qMRGihGg"
+      },
+      {
+        "video_title_22": "How to build better sleep hygiene",
+        "video_id_22": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_23": "How to build an evening wind down routine",
+        "video_id_23": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_24": "How to Reduce Screen Time",
+        "video_id_24": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_25": "How to stop doomscrolling",
+        "video_id_25": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_26": "How to detox from social media",
+        "video_id_26": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_27": "How to Do a Digital Detox",
+        "video_id_27": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_28": "How to set healthy boundaries",
+        "video_id_28": "csPmD6Vf0QQ"
+      },
+      {
+        "video_title_29": "How to Be More Assertive",
+        "video_id_29": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_30": "How to Stand Up for Yourself",
+        "video_id_30": "Dnia_m898K4"
+      },
+      {
+        "video_title_31": "How to build confidence",
+        "video_id_31": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_32": "How to develop a growth mindset",
+        "video_id_32": "hiiEeMN7vbQ"
+      },
+      {
+        "video_title_33": "How to reset your mindset",
+        "video_id_33": "6Kq_3xGJAaA"
+      },
+      {
+        "video_title_34": "How to silence your inner critic",
+        "video_id_34": "l4GJr5Zg14A"
+      },
+      {
+        "video_title_35": "How to practice self care",
+        "video_id_35": "cjfofAuxibQ"
+      },
+      {
+        "video_title_36": "How to create a self care calendar",
+        "video_id_36": "FSqlx7beG1I"
+      },
+      {
+        "video_title_37": "How to Create a Daily Schedule",
+        "video_id_37": "TieJ7FChhrk"
+      },
+      {
+        "video_title_38": "How to Master Time Blocking",
+        "video_id_38": "x9K80nyTltU"
+      },
+      {
+        "video_title_39": "How to use time tracking for productivity",
+        "video_id_39": "W8B0KWmv_-Q"
+      },
+      {
+        "video_title_40": "How to stop procrastinating",
+        "video_id_40": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_41": "How to prioritize tasks",
+        "video_id_41": "czh4rmk75jc"
+      },
+      {
+        "video_title_42": "How to write a better to do list",
+        "video_id_42": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_43": "How to set goals that stick",
+        "video_id_43": "fXyRprdoEoE"
+      },
+      {
+        "video_title_44": "How to Set Goals",
+        "video_id_44": "BQbufwSqxpU"
+      },
+      {
+        "video_title_45": "How to use a planner for goal setting",
+        "video_id_45": "fhph4TUY80I"
+      },
+      {
+        "video_title_46": "How to Use a Planner",
+        "video_id_46": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_47": "How to pick the right planner for you",
+        "video_id_47": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_48": "How to do a life audit",
+        "video_id_48": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_49": "How to journal for self discovery",
+        "video_id_49": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_50": "How to Write a Journal",
+        "video_id_50": "5DqXHg52H1g"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Iron a Shirt",
+    "playlist": [
+      {
+        "video_title_1": "How to Iron a Shirt",
+        "video_id_1": "MSr04jhuTes"
+      },
+      {
+        "video_title_2": "How to Wash White Clothes by Hand",
+        "video_id_2": "ELFaJgHzqKk"
+      },
+      {
+        "video_title_3": "How to wash clothes",
+        "video_id_3": "dlteGDtxsqs"
+      },
+      {
+        "video_title_4": "How to use a laundry machine",
+        "video_id_4": "jpyDwYBpiIc"
+      },
+      {
+        "video_title_5": "How to make your own laundry powder",
+        "video_id_5": "YKQScstc0PU"
+      },
+      {
+        "video_title_6": "How to make your own cleaning products",
+        "video_id_6": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_7": "How to plan a grocery list",
+        "video_id_7": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_8": "How to write down notes",
+        "video_id_8": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_9": "How to hold a pen",
+        "video_id_9": "M-m83y54070"
+      },
+      {
+        "video_title_10": "How to sharpen a pencil",
+        "video_id_10": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_11": "How to set up an ergonomic desk",
+        "video_id_11": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_12": "How to style your workspace",
+        "video_id_12": "zop973zc79c"
+      },
+      {
+        "video_title_13": "How to upgrade your workspace lighting",
+        "video_id_13": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_14": "How to Replace a Light Switch",
+        "video_id_14": "SW2MhGwmWiY"
+      },
+      {
+        "video_title_15": "How to Use a Multimeter",
+        "video_id_15": "TdUK6RPdIrA"
+      },
+      {
+        "video_title_16": "How to learn a new skill",
+        "video_id_16": "0eItWeZFVHo"
+      },
+      {
+        "video_title_17": "How to Study Smarter",
+        "video_id_17": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_18": "How to take effective notes",
+        "video_id_18": "jBHLC8dff48"
+      },
+      {
+        "video_title_19": "How to stay focused while working from home",
+        "video_id_19": "AgIggrkBFcU"
+      },
+      {
+        "video_title_20": "How to stop procrastinating",
+        "video_id_20": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_21": "How to Master Time Blocking",
+        "video_id_21": "x9K80nyTltU"
+      },
+      {
+        "video_title_22": "How to prioritize tasks",
+        "video_id_22": "czh4rmk75jc"
+      },
+      {
+        "video_title_23": "How to write a better to-do list",
+        "video_id_23": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_24": "How to Use a To-Do List App",
+        "video_id_24": "uUvp0XgE--s"
+      },
+      {
+        "video_title_25": "How to install apps on phone",
+        "video_id_25": "88ZWvQ6Sj4w"
+      },
+      {
+        "video_title_26": "How to Create a Daily Routine",
+        "video_id_26": "OQIOjug4WC8"
+      },
+      {
+        "video_title_27": "How to build a morning routine",
+        "video_id_27": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_28": "How to Wake Up",
+        "video_id_28": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_29": "How to set an alarm",
+        "video_id_29": "m2NNDms474A"
+      },
+      {
+        "video_title_30": "How to Sleep Better",
+        "video_id_30": "wWYnGuitCVU"
+      },
+      {
+        "video_title_31": "How to build an evening wind down routine",
+        "video_id_31": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_32": "How to Reduce Screen Time",
+        "video_id_32": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_33": "How to stop doomscrolling",
+        "video_id_33": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_34": "How to detox from social media",
+        "video_id_34": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_35": "How to practice mindfulness",
+        "video_id_35": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_36": "How to Meditate",
+        "video_id_36": "JslvBcIVtDg"
+      },
+      {
+        "video_title_37": "How to Start a Meditation Space",
+        "video_id_37": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_38": "How to Declutter Your Home",
+        "video_id_38": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_39": "How to Be a Minimalist",
+        "video_id_39": "DwWu9ZKCSzU"
+      },
+      {
+        "video_title_40": "How to reset your mindset",
+        "video_id_40": "6Kq_3xGJAaA"
+      },
+      {
+        "video_title_41": "How to journal for self discovery",
+        "video_id_41": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_42": "How to Write a Journal",
+        "video_id_42": "5DqXHg52H1g"
+      },
+      {
+        "video_title_43": "How to choose the best journal for your needs",
+        "video_id_43": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_44": "How to set goals that stick",
+        "video_id_44": "fXyRprdoEoE"
+      },
+      {
+        "video_title_45": "How to Set Goals",
+        "video_id_45": "BQbufwSqxpU"
+      },
+      {
+        "video_title_46": "How to write a personal mission statement",
+        "video_id_46": "LT9IsClSXCI"
+      },
+      {
+        "video_title_47": "How to do a life audit",
+        "video_id_47": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_48": "How to Find Your Passion",
+        "video_id_48": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_49": "How to build confidence",
+        "video_id_49": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_50": "How to silence your inner critic",
+        "video_id_50": "l4GJr5Zg14A"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Change a Bike Chain",
+    "playlist": [
+      {
+        "video_title_1": "How to Change a Bike Chain",
+        "video_id_1": "rWchudX-Tqs"
+      },
+      {
+        "video_title_2": "How to Fix a Bike",
+        "video_id_2": "3X7OqTDi8NQ"
+      },
+      {
+        "video_title_3": "How to care of your bike",
+        "video_id_3": "VKBNDzCLzK8"
+      },
+      {
+        "video_title_4": "How to Ride a Bike",
+        "video_id_4": "GyLlw1CgXf8"
+      },
+      {
+        "video_title_5": "How to choose a bicycle",
+        "video_id_5": "QiTMDJ5QMck"
+      },
+      {
+        "video_title_6": "How to Plan a Road Trip",
+        "video_id_6": "ZMtirywlZjU"
+      },
+      {
+        "video_title_7": "How to Pack a Backpack",
+        "video_id_7": "c35foZ3GBFg"
+      },
+      {
+        "video_title_8": "How to Create a Packing List",
+        "video_id_8": "nl6ENNXBJD4"
+      },
+      {
+        "video_title_9": "How to Budget for a Vacation",
+        "video_id_9": "xUWjJExryK8"
+      },
+      {
+        "video_title_10": "How to Create a Budget",
+        "video_id_10": "3pslPbfpnzk"
+      },
+      {
+        "video_title_11": "How to track your expenses",
+        "video_id_11": "4sT2B2SRypo"
+      },
+      {
+        "video_title_12": "How to Get Out of Debt",
+        "video_id_12": "w4Kbq0VJEhY"
+      },
+      {
+        "video_title_13": "How to Save Money",
+        "video_id_13": "JP__utZQLb8"
+      },
+      {
+        "video_title_14": "How to set financial goals",
+        "video_id_14": "9q-UTjlP3hI"
+      },
+      {
+        "video_title_15": "How to Set Goals",
+        "video_id_15": "BQbufwSqxpU"
+      },
+      {
+        "video_title_16": "How to set goals that stick",
+        "video_id_16": "fXyRprdoEoE"
+      },
+      {
+        "video_title_17": "How to Create a Vision Board",
+        "video_id_17": "-Pe9PlQj62g"
+      },
+      {
+        "video_title_18": "How to journal for self discovery",
+        "video_id_18": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_19": "How to Start a Gratitude Practice",
+        "video_id_19": "GZghu_xFRM8"
+      },
+      {
+        "video_title_20": "How to practice mindfulness",
+        "video_id_20": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_21": "How to Meditate",
+        "video_id_21": "JslvBcIVtDg"
+      },
+      {
+        "video_title_22": "How to Start a Meditation Space",
+        "video_id_22": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_23": "How to Declutter Your Home",
+        "video_id_23": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_24": "How to Clean Your Room",
+        "video_id_24": "b2JempkYUjo"
+      },
+      {
+        "video_title_25": "How to Make Your Bed",
+        "video_id_25": "AYNdVlFTbBw"
+      },
+      {
+        "video_title_26": "How to Wake Up",
+        "video_id_26": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_27": "How to Get to Sleep",
+        "video_id_27": "JamURLO00IY"
+      },
+      {
+        "video_title_28": "How to build an evening wind down routine",
+        "video_id_28": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_29": "How to Reduce Screen Time",
+        "video_id_29": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_30": "How to stop doomscrolling",
+        "video_id_30": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_31": "How to master the Pomodoro Technique",
+        "video_id_31": "mNBmG24djoY"
+      },
+      {
+        "video_title_32": "How to Master Time Blocking",
+        "video_id_32": "x9K80nyTltU"
+      },
+      {
+        "video_title_33": "How to prioritize tasks",
+        "video_id_33": "czh4rmk75jc"
+      },
+      {
+        "video_title_34": "How to write a better to do list",
+        "video_id_34": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_35": "How to plan your week on Sunday",
+        "video_id_35": "jozNEpY8iik"
+      },
+      {
+        "video_title_36": "How to Create a Daily Schedule",
+        "video_id_36": "TieJ7FChhrk"
+      },
+      {
+        "video_title_37": "How to Use a Planner",
+        "video_id_37": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_38": "How to pick the right planner for you",
+        "video_id_38": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_39": "How to Start Bullet Journaling",
+        "video_id_39": "fm15cmYU0IM"
+      },
+      {
+        "video_title_40": "How to make a handmade journal",
+        "video_id_40": "74vzzkdF8o8"
+      },
+      {
+        "video_title_41": "How to make paper",
+        "video_id_41": "H8zkeybyHcI"
+      },
+      {
+        "video_title_42": "How to boil water",
+        "video_id_42": "kieGBkOdyMU"
+      },
+      {
+        "video_title_43": "How to turn on a Gas stove",
+        "video_id_43": "FHgiRv5PbxY"
+      },
+      {
+        "video_title_44": "How to Light a Match",
+        "video_id_44": "_kiLlvCelr0"
+      },
+      {
+        "video_title_45": "How to open a bottle",
+        "video_id_45": "cQmcQRHIRs4"
+      },
+      {
+        "video_title_46": "How to Wash Your Hands to Properly with Soap to Protect yourself from Coronavirus",
+        "video_id_46": "tAqnP5JKvPc"
+      },
+      {
+        "video_title_47": "How to Stay Safe during the pandemic",
+        "video_id_47": "OV1Vuv9zfzI"
+      },
+      {
+        "video_title_48": "How to Find Reliable Information About Coronavirus",
+        "video_id_48": "FlDMsiWz8n0"
+      },
+      {
+        "video_title_49": "How to Read Faster",
+        "video_id_49": "KJ2Lvi9kG2Q"
+      },
+      {
+        "video_title_50": "How to Learn Faster",
+        "video_id_50": "9tDkkKDQWlg"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Do Your Own Nails",
+    "playlist": [
+      {
+        "video_title_1": "How to Do Your Own Nails",
+        "video_id_1": "KXbiy4afrog"
+      },
+      {
+        "video_title_2": "How to Whiten Nails",
+        "video_id_2": "Wxx6QFpjV0E"
+      },
+      {
+        "video_title_3": "How to cut nails",
+        "video_id_3": "wJV5OrN10tw"
+      },
+      {
+        "video_title_4": "How to take care of your nails",
+        "video_id_4": "khCcYSErKfs"
+      },
+      {
+        "video_title_5": "How to Open Nail Glue",
+        "video_id_5": "seBvaQF42Oo"
+      },
+      {
+        "video_title_6": "How to Remove Nail Polish Without Using Remover",
+        "video_id_6": "r8ytw8oGbcI"
+      },
+      {
+        "video_title_7": "How to clean your ear",
+        "video_id_7": "ld_8zROYDzw"
+      },
+      {
+        "video_title_8": "How to Take a Shower",
+        "video_id_8": "T0Ah-T96wW0"
+      },
+      {
+        "video_title_9": "How to do a facial at home",
+        "video_id_9": "Hns8JHAn4sQ"
+      },
+      {
+        "video_title_10": "How to steam your face",
+        "video_id_10": "T79cLIUFzhE"
+      },
+      {
+        "video_title_11": "How to simplify your skincare routine",
+        "video_id_11": "sGx9qiihnmY"
+      },
+      {
+        "video_title_12": "How to Make Your Own Skincare",
+        "video_id_12": "GMiAgIGI8cQ"
+      },
+      {
+        "video_title_13": "How to make a DIY face mist",
+        "video_id_13": "GrOAkn_PZfo"
+      },
+      {
+        "video_title_14": "How to Make Lavender Water",
+        "video_id_14": "VW56K1Ywubk"
+      },
+      {
+        "video_title_15": "How to Dry Flowers",
+        "video_id_15": "lLgpgD_xZzU"
+      },
+      {
+        "video_title_16": "How to press flowers",
+        "video_id_16": "eBwvQgLZyZQ"
+      },
+      {
+        "video_title_17": "How to grow your own herbs",
+        "video_id_17": "5mWH5ajGJF4"
+      },
+      {
+        "video_title_18": "How to prepare your garden for spring",
+        "video_id_18": "rjhRJXdPE8E"
+      },
+      {
+        "video_title_19": "How to plowing fields",
+        "video_id_19": "tkimnbvtYpQ"
+      },
+      {
+        "video_title_20": "How to build a compost tumbler",
+        "video_id_20": "nX6lKwf8Y2g"
+      },
+      {
+        "video_title_21": "How to saw wood",
+        "video_id_21": "S_2vh8WPgeM"
+      },
+      {
+        "video_title_22": "How to Plane Wood",
+        "video_id_22": "UTPvcXVzb9A"
+      },
+      {
+        "video_title_23": "How to Sand Wood Properly",
+        "video_id_23": "edulbAmdv-A"
+      },
+      {
+        "video_title_24": "How to choose sandpaper",
+        "video_id_24": "jM7RVCYQcrc"
+      },
+      {
+        "video_title_25": "How to buy the right wood working tools",
+        "video_id_25": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_26": "How to shop efficiently",
+        "video_id_26": "CjBX4L14GaI"
+      },
+      {
+        "video_title_27": "How to track your expenses",
+        "video_id_27": "4sT2B2SRypo"
+      },
+      {
+        "video_title_28": "How to manage a budget",
+        "video_id_28": "N2aODJWw7Xw"
+      },
+      {
+        "video_title_29": "How to create a budget",
+        "video_id_29": "3pslPbfpnzk"
+      },
+      {
+        "video_title_30": "How to Make a Budget Spreadsheet",
+        "video_id_30": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_31": "How to Use Excel",
+        "video_id_31": "LgXzzu68j7M"
+      },
+      {
+        "video_title_32": "How to Learn Touch Typing",
+        "video_id_32": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_33": "How to Clean a Keyboard",
+        "video_id_33": "_M42Ri3dqoc"
+      },
+      {
+        "video_title_34": "How to clean up your desktop clutter",
+        "video_id_34": "gfPujXtQqwc"
+      },
+      {
+        "video_title_35": "How to organize digital notes",
+        "video_id_35": "tPsD_ZhIfQc"
+      },
+      {
+        "video_title_36": "How to write down notes",
+        "video_id_36": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_37": "How to hold a pen",
+        "video_id_37": "M-m83y54070"
+      },
+      {
+        "video_title_38": "How to Improve Your Handwriting",
+        "video_id_38": "4zgoSs73tSo"
+      },
+      {
+        "video_title_39": "How to practice active listening",
+        "video_id_39": "aDMtx5ivKK0"
+      },
+      {
+        "video_title_40": "How to Master the Art of Listening",
+        "video_id_40": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_41": "How to Be a Better Listener",
+        "video_id_41": "7wUCyjiyXdg"
+      },
+      {
+        "video_title_42": "How to improve your communication skills",
+        "video_id_42": "LI57EB_T38c"
+      },
+      {
+        "video_title_43": "How to speak",
+        "video_id_43": "eIho2S0ZahI"
+      },
+      {
+        "video_title_44": "How to talk to anyone",
+        "video_id_44": "P2pGXdqI9s4"
+      },
+      {
+        "video_title_45": "How to meet new people",
+        "video_id_45": "rb0G0Uw-2Q8"
+      },
+      {
+        "video_title_46": "How to make friends",
+        "video_id_46": "3pwCqiPCDRw"
+      },
+      {
+        "video_title_47": "How to find friends",
+        "video_id_47": "nm7OMGjbCgc"
+      },
+      {
+        "video_title_48": "How to Be Confident",
+        "video_id_48": "eVFzbxmKNUw"
+      },
+      {
+        "video_title_49": "How to build confidence",
+        "video_id_49": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_50": "How to Gain Control of Your Emotions",
+        "video_id_50": "9TO-U6dtQ34"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Make Lavender Water",
+    "playlist": [
+      {
+        "video_title_1": "How to Make Lavender Water",
+        "video_id_1": "VW56K1Ywubk"
+      },
+      {
+        "video_title_2": "How to Make Distilled Water",
+        "video_id_2": "VHZitT0-fCY"
+      },
+      {
+        "video_title_3": "How to boil water",
+        "video_id_3": "kieGBkOdyMU"
+      },
+      {
+        "video_title_4": "How to turn on a Gas stove",
+        "video_id_4": "FHgiRv5PbxY"
+      },
+      {
+        "video_title_5": "How to Light a Match",
+        "video_id_5": "_kiLlvCelr0"
+      },
+      {
+        "video_title_6": "How to Dry Flowers",
+        "video_id_6": "lLgpgD_xZzU"
+      },
+      {
+        "video_title_7": "How to distinguish different type of Lavender",
+        "video_id_7": "ULafFi9YuG0"
+      },
+      {
+        "video_title_8": "How to grow lavender from seed",
+        "video_id_8": "dGwpnbx_FQ4"
+      },
+      {
+        "video_title_9": "How to prepare your garden for spring",
+        "video_id_9": "rjhRJXdPE8E"
+      },
+      {
+        "video_title_10": "How to Sharpen Garden Tools",
+        "video_id_10": "YzpKDkIOkJM"
+      },
+      {
+        "video_title_11": "How to Remove Rust from Metal",
+        "video_id_11": "jGyU5XnX-8k"
+      },
+      {
+        "video_title_12": "How to buy the right wood working tools",
+        "video_id_12": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_13": "How to Budget as a Student",
+        "video_id_13": "MXCvtC0HqLE"
+      },
+      {
+        "video_title_14": "How to track your expenses",
+        "video_id_14": "4sT2B2SRypo"
+      },
+      {
+        "video_title_15": "How to Make a Budget Spreadsheet",
+        "video_id_15": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_16": "How to Use Excel",
+        "video_id_16": "LgXzzu68j7M"
+      },
+      {
+        "video_title_17": "How to Learn Touch Typing",
+        "video_id_17": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_18": "How to learn new keyboard shortcuts",
+        "video_id_18": "d_rH4uAm9MY"
+      },
+      {
+        "video_title_19": "How to Learn Faster",
+        "video_id_19": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_20": "How to Study Smarter",
+        "video_id_20": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_21": "How to take effective notes",
+        "video_id_21": "jBHLC8dff48"
+      },
+      {
+        "video_title_22": "How to write down notes",
+        "video_id_22": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_23": "How to sharpen a pencil",
+        "video_id_23": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_24": "How to keep your desk clutter free",
+        "video_id_24": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_25": "How to organize your craft supplies",
+        "video_id_25": "vVR8sPXCY00"
+      },
+      {
+        "video_title_26": "How to make DIY drawer organizers",
+        "video_id_26": "OIz2K-MeLCI"
+      },
+      {
+        "video_title_27": "How to Sand Wood Properly",
+        "video_id_27": "edulbAmdv-A"
+      },
+      {
+        "video_title_28": "How to Plane Wood",
+        "video_id_28": "UTPvcXVzb9A"
+      },
+      {
+        "video_title_29": "How to saw wood",
+        "video_id_29": "S_2vh8WPgeM"
+      },
+      {
+        "video_title_30": "How to fell a tree",
+        "video_id_30": "3mTd8ZTG_cc"
+      },
+      {
+        "video_title_31": "How to Use a Chainsaw Safely",
+        "video_id_31": "KcoN0mNivaI"
+      },
+      {
+        "video_title_32": "How to Do Basic First Aid",
+        "video_id_32": "5OKFljZ2GQE"
+      },
+      {
+        "video_title_33": "How to stop the bleeding of a wound",
+        "video_id_33": "XieRLnynqhA"
+      },
+      {
+        "video_title_34": "How to keep calm and collected",
+        "video_id_34": "5ddI9KWHZ6U"
+      },
+      {
+        "video_title_35": "How to practice breathwork",
+        "video_id_35": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_36": "How to Meditate",
+        "video_id_36": "JslvBcIVtDg"
+      },
+      {
+        "video_title_37": "How to Start a Meditation Space",
+        "video_id_37": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_38": "How to Declutter Your Home",
+        "video_id_38": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_39": "How to Get Rid of Ladybugs",
+        "video_id_39": "OhqZUiKDIgg"
+      },
+      {
+        "video_title_40": "How to Clean Your Room",
+        "video_id_40": "b2JempkYUjo"
+      },
+      {
+        "video_title_41": "How to Make Your Bed",
+        "video_id_41": "AYNdVlFTbBw"
+      },
+      {
+        "video_title_42": "How to Wake Up",
+        "video_id_42": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_43": "How to set an alarm",
+        "video_id_43": "m2NNDms474A"
+      },
+      {
+        "video_title_44": "How to Sleep Better",
+        "video_id_44": "wWYnGuitCVU"
+      },
+      {
+        "video_title_45": "How to master your sleep schedule",
+        "video_id_45": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_46": "How to build an evening wind down routine",
+        "video_id_46": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_47": "How to Reduce Screen Time",
+        "video_id_47": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_48": "How to stop doomscrolling",
+        "video_id_48": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_49": "How to break bad habits",
+        "video_id_49": "-moW9jvvMr4"
+      },
+      {
+        "video_title_50": "How to set goals that stick",
+        "video_id_50": "fXyRprdoEoE"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to find good salmon",
+    "playlist": [
+      {
+        "video_title_1": "How to find good salmon",
+        "video_id_1": "fICWdtRgFFw"
+      },
+      {
+        "video_title_2": "How to plan a grocery list",
+        "video_id_2": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_3": "How to create a meal plan",
+        "video_id_3": "B5a03YsCgD0"
+      },
+      {
+        "video_title_4": "How to read a recipe",
+        "video_id_4": "zOeyz25Flzo"
+      },
+      {
+        "video_title_5": "How to fall in love with cooking",
+        "video_id_5": "LOwUwbosqrk"
+      },
+      {
+        "video_title_6": "How to start a food diary",
+        "video_id_6": "VN0ya6Gf-aI"
+      },
+      {
+        "video_title_7": "How to stay consistent with journaling",
+        "video_id_7": "7D1HBkYhThs"
+      },
+      {
+        "video_title_8": "How to get better at journaling",
+        "video_id_8": "dArgOrm98Bk"
+      },
+      {
+        "video_title_9": "How to choose the best journal for your needs",
+        "video_id_9": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_10": "How to pick the right planner for you",
+        "video_id_10": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_11": "How to Use a Planner",
+        "video_id_11": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_12": "How to use a planner for goal setting",
+        "video_id_12": "fhph4TUY80I"
+      },
+      {
+        "video_title_13": "How to set goals that stick",
+        "video_id_13": "fXyRprdoEoE"
+      },
+      {
+        "video_title_14": "How to Set Goals",
+        "video_id_14": "BQbufwSqxpU"
+      },
+      {
+        "video_title_15": "How to Find Your Passion",
+        "video_id_15": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_16": "How to journal for self discovery",
+        "video_id_16": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_17": "How to do a life audit",
+        "video_id_17": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_18": "How to do a mental clarity reset",
+        "video_id_18": "D6onQw3hWGg"
+      },
+      {
+        "video_title_19": "How to practice mindfulness",
+        "video_id_19": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_20": "How to get started with meditation",
+        "video_id_20": "YE_9BFe6cJk"
+      },
+      {
+        "video_title_21": "How to Start a Meditation Space",
+        "video_id_21": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_22": "How to decorate a small space",
+        "video_id_22": "DZvbKKDu2KA"
+      },
+      {
+        "video_title_23": "How to Declutter Your Home",
+        "video_id_23": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_24": "How to Clean Your Room",
+        "video_id_24": "b2JempkYUjo"
+      },
+      {
+        "video_title_25": "How to build a morning routine",
+        "video_id_25": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_26": "How to Wake Up",
+        "video_id_26": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_27": "How to master your sleep schedule",
+        "video_id_27": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_28": "How to build better sleep hygiene",
+        "video_id_28": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_29": "How to stop doomscrolling",
+        "video_id_29": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_30": "How to Reduce Screen Time",
+        "video_id_30": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_31": "How to Do a Digital Detox",
+        "video_id_31": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_32": "How to declutter your digital life",
+        "video_id_32": "LnoKcGrL8HM"
+      },
+      {
+        "video_title_33": "How to Organize Digital Files",
+        "video_id_33": "MM-MPS57qKA"
+      },
+      {
+        "video_title_34": "How to Backup Your Computer",
+        "video_id_34": "yIe4r6mBxz8"
+      },
+      {
+        "video_title_35": "How to use Google Drive for storage",
+        "video_id_35": "jSRSgxMTU_M"
+      },
+      {
+        "video_title_36": "How to Use Google Drive",
+        "video_id_36": "gdrxAoqfvbA"
+      },
+      {
+        "video_title_37": "How to Master Time Blocking",
+        "video_id_37": "x9K80nyTltU"
+      },
+      {
+        "video_title_38": "How to Create a Daily Schedule",
+        "video_id_38": "TieJ7FChhrk"
+      },
+      {
+        "video_title_39": "How to prioritize tasks",
+        "video_id_39": "czh4rmk75jc"
+      },
+      {
+        "video_title_40": "How to write a better to do list",
+        "video_id_40": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_41": "How to stop procrastinating",
+        "video_id_41": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_42": "How to keep yourself motivated",
+        "video_id_42": "8ZhoeSaPF-k"
+      },
+      {
+        "video_title_43": "How to reset your mindset",
+        "video_id_43": "6Kq_3xGJAaA"
+      },
+      {
+        "video_title_44": "How to develop a growth mindset",
+        "video_id_44": "hiiEeMN7vbQ"
+      },
+      {
+        "video_title_45": "How to silencer your inner critic",
+        "video_id_45": "l4GJr5Zg14A"
+      },
+      {
+        "video_title_46": "How to build confidence",
+        "video_id_46": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_47": "How to Be Confident",
+        "video_id_47": "eVFzbxmKNUw"
+      },
+      {
+        "video_title_48": "How to Be More Assertive",
+        "video_id_48": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_49": "How to Stand Up for Yourself",
+        "video_id_49": "Dnia_m898K4"
+      },
+      {
+        "video_title_50": "How to Set Boundaries with Others",
+        "video_id_50": "KteXMvCev8w"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Cook Eggs",
+    "playlist": [
+      {
+        "video_title_1": "How to Cook Eggs",
+        "video_id_1": "J5_HmfZyhKo"
+      },
+      {
+        "video_title_2": "How to crack an egg",
+        "video_id_2": "06zVBOvH_i0"
+      },
+      {
+        "video_title_3": "How to tell if egg is fresh",
+        "video_id_3": "E2OWXN80NZQ"
+      },
+      {
+        "video_title_4": "How to hallow out a melon",
+        "video_id_4": "vh-Zdc0o_zQ"
+      },
+      {
+        "video_title_5": "How to heat up a pan",
+        "video_id_5": "CB-SCA1reqE"
+      },
+      {
+        "video_title_6": "How to turn on a Gas stove",
+        "video_id_6": "FHgiRv5PbxY"
+      },
+      {
+        "video_title_7": "How to Light a Match",
+        "video_id_7": "_kiLlvCelr0"
+      },
+      {
+        "video_title_8": "How to Clean a Gas Stove Top",
+        "video_id_8": "U5GdB42-rdM"
+      },
+      {
+        "video_title_9": "How to clean the kitchen",
+        "video_id_9": "3Vryfeo7rrE"
+      },
+      {
+        "video_title_10": "How to organize your kitchen",
+        "video_id_10": "iwACzuhZrNI"
+      },
+      {
+        "video_title_11": "How to plan a grocery list",
+        "video_id_11": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_12": "How to create a meal plan",
+        "video_id_12": "B5a03YsCgD0"
+      },
+      {
+        "video_title_13": "How to read a recipe",
+        "video_id_13": "zOeyz25Flzo"
+      },
+      {
+        "video_title_14": "How to fall in love with cooking",
+        "video_id_14": "LOwUwbosqrk"
+      },
+      {
+        "video_title_15": "How to Eat a Banana",
+        "video_id_15": "evI3DEP1FMM"
+      },
+      {
+        "video_title_16": "How to peel a banana",
+        "video_id_16": "Sy23Oy-aS8E"
+      },
+      {
+        "video_title_17": "How to shop efficiently",
+        "video_id_17": "CjBX4L14GaI"
+      },
+      {
+        "video_title_18": "How to drive a car",
+        "video_id_18": "VIVaqt4VhKc"
+      },
+      {
+        "video_title_19": "How to perform a basic car safety check",
+        "video_id_19": "v2OeMjLh170"
+      },
+      {
+        "video_title_20": "How to check tire pressure",
+        "video_id_20": "0Q-Eb7aUyt4"
+      },
+      {
+        "video_title_21": "How to check your car's oil level",
+        "video_id_21": "SlSuCevpArU"
+      },
+      {
+        "video_title_22": "How to Learn Basic Car Maintenance",
+        "video_id_22": "Yeb7zft_79k"
+      },
+      {
+        "video_title_23": "How to study Smarter",
+        "video_id_23": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_24": "How to Take Notes",
+        "video_id_24": "UAhRf3U50lM"
+      },
+      {
+        "video_title_25": "How to hold a pen",
+        "video_id_25": "M-m83y54070"
+      },
+      {
+        "video_title_26": "How to cut nails",
+        "video_id_26": "wJV5OrN10tw"
+      },
+      {
+        "video_title_27": "How to wash clothes",
+        "video_id_27": "dlteGDtxsqs"
+      },
+      {
+        "video_title_28": "How to use a laundry machine",
+        "video_id_28": "jpyDwYBpiIc"
+      },
+      {
+        "video_title_29": "How to clean a laundry machine",
+        "video_id_29": "WxxOtXTiDUY"
+      },
+      {
+        "video_title_30": "How to make your own cleaning products",
+        "video_id_30": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_31": "How to reduce food waste at home",
+        "video_id_31": "8NCm2Q1rZOM"
+      },
+      {
+        "video_title_32": "How to Start a Zero Waste Lifestyle",
+        "video_id_32": "Djo_5rFrx-Y"
+      },
+      {
+        "video_title_33": "How to Be a Minimalist",
+        "video_id_33": "DwWu9ZKCSzU"
+      },
+      {
+        "video_title_34": "How to get started with minimalism",
+        "video_id_34": "WU6A_agxaOA"
+      },
+      {
+        "video_title_35": "How to Declutter Your Home",
+        "video_id_35": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_36": "How to Declutter Your Closet",
+        "video_id_36": "6xJr7nOAEtY"
+      },
+      {
+        "video_title_37": "How to do a closet cleanout",
+        "video_id_37": "UQHYR1M0tpg"
+      },
+      {
+        "video_title_38": "How to plan a minimalist wardrobe",
+        "video_id_38": "dvfD48K1rCg"
+      },
+      {
+        "video_title_39": "How to Build a Capsule Wardrobe",
+        "video_id_39": "DGS78LfSTjM"
+      },
+      {
+        "video_title_40": "How to Match Colors in an Outfit",
+        "video_id_40": "C8Ud8SvVR2c"
+      },
+      {
+        "video_title_41": "How to use color theory in design",
+        "video_id_41": "AvgCkHrcj90"
+      },
+      {
+        "video_title_42": "How to learn a new skill",
+        "video_id_42": "0eItWeZFVHo"
+      },
+      {
+        "video_title_43": "How to Learn Faster",
+        "video_id_43": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_44": "How to improve your memory",
+        "video_id_44": "NrEafQNV9KQ"
+      },
+      {
+        "video_title_45": "How to master your sleep schedule",
+        "video_id_45": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_46": "How to Sleep Better",
+        "video_id_46": "wWYnGuitCVU"
+      },
+      {
+        "video_title_47": "How to create a bedtime routine",
+        "video_id_47": "gDNDlPejKr4"
+      },
+      {
+        "video_title_48": "How to build an evening wind down routine",
+        "video_id_48": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_49": "How to stop doomscrolling",
+        "video_id_49": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_50": "How to Reduce Screen Time",
+        "video_id_50": "3XBVG-yLYBU"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Plan a Road Trip",
+    "playlist": [
+      {
+        "video_title_1": "How to Plan a Road Trip",
+        "video_id_1": "ZMtirywlZjU"
+      },
+      {
+        "video_title_2": "How to pack for a weekend road trip",
+        "video_id_2": "vuM1DvKZMyk"
+      },
+      {
+        "video_title_3": "How to Create a Packing List",
+        "video_id_3": "nl6ENNXBJD4"
+      },
+      {
+        "video_title_4": "How to Pack a Suitcase Efficiently",
+        "video_id_4": "-PcrLWkxZSk"
+      },
+      {
+        "video_title_5": "How to Roll Clothes for Packing Cubes",
+        "video_id_5": "iv68XaedTTw"
+      },
+      {
+        "video_title_6": "How to Fold a Hoodie",
+        "video_id_6": "spga09MsB7M"
+      },
+      {
+        "video_title_7": "How to fold",
+        "video_id_7": "ByKmsHdhra8"
+      },
+      {
+        "video_title_8": "How to wash clothes",
+        "video_id_8": "dlteGDtxsqs"
+      },
+      {
+        "video_title_9": "How to use a laundry machine",
+        "video_id_9": "jpyDwYBpiIc"
+      },
+      {
+        "video_title_10": "How to clean a laundry machine",
+        "video_id_10": "WxxOtXTiDUY"
+      },
+      {
+        "video_title_11": "How to make your own cleaning spray",
+        "video_id_11": "99XNyAOBm34"
+      },
+      {
+        "video_title_12": "How to use baking soda for cleaning",
+        "video_id_12": "4ciahsfuzXM"
+      },
+      {
+        "video_title_13": "How to plan a grocery list",
+        "video_id_13": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_14": "How to shop efficiently",
+        "video_id_14": "CjBX4L14GaI"
+      },
+      {
+        "video_title_15": "How to Budget as a Student",
+        "video_id_15": "MXCvtC0HqLE"
+      },
+      {
+        "video_title_16": "How to create a budget",
+        "video_id_16": "3pslPbfpnzk"
+      },
+      {
+        "video_title_17": "How to Make a Budget Spreadsheet",
+        "video_id_17": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_18": "How to Use Excel",
+        "video_id_18": "LgXzzu68j7M"
+      },
+      {
+        "video_title_19": "How to Learn Touch Typing",
+        "video_id_19": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_20": "How to learn a new skill",
+        "video_id_20": "0eItWeZFVHo"
+      },
+      {
+        "video_title_21": "How to Master Time Blocking",
+        "video_id_21": "x9K80nyTltU"
+      },
+      {
+        "video_title_22": "How to Create a Daily Schedule",
+        "video_id_22": "TieJ7FChhrk"
+      },
+      {
+        "video_title_23": "How to use a planner for goal setting",
+        "video_id_23": "fhph4TUY80I"
+      },
+      {
+        "video_title_24": "How to set goals that stick",
+        "video_id_24": "fXyRprdoEoE"
+      },
+      {
+        "video_title_25": "How to do a life audit",
+        "video_id_25": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_26": "How to journal for self discovery",
+        "video_id_26": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_27": "How to Write a Journal",
+        "video_id_27": "5DqXHg52H1g"
+      },
+      {
+        "video_title_28": "How to hold a pen",
+        "video_id_28": "M-m83y54070"
+      },
+      {
+        "video_title_29": "How to Improve Your Posture",
+        "video_id_29": "8gDAd7bBhZ0"
+      },
+      {
+        "video_title_30": "How to Stretch",
+        "video_id_30": "XhAdwWv5hws"
+      },
+      {
+        "video_title_31": "How to Warm Up",
+        "video_id_31": "-p0PA9Zt8zk"
+      },
+      {
+        "video_title_32": "How to Wake Up",
+        "video_id_32": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_33": "How to set an alarm",
+        "video_id_33": "m2NNDms474A"
+      },
+      {
+        "video_title_34": "How to install apps on phone",
+        "video_id_34": "88ZWvQ6Sj4w"
+      },
+      {
+        "video_title_35": "How to clean your phone screen",
+        "video_id_35": "ctAnLYY1Rp0"
+      },
+      {
+        "video_title_36": "How to Clean Clear Plastic",
+        "video_id_36": "Madz0U8bho8"
+      },
+      {
+        "video_title_37": "How to remove stains naturally",
+        "video_id_37": "UUwdv4QEhTY"
+      },
+      {
+        "video_title_38": "How to make your own cleaning products",
+        "video_id_38": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_39": "How to Kill Mold With Vinegar",
+        "video_id_39": "IZ2P8OLdm2o"
+      },
+      {
+        "video_title_40": "How to prevent mold",
+        "video_id_40": "Y8Vgv06O2rE"
+      },
+      {
+        "video_title_41": "How to clean air vents effectively",
+        "video_id_41": "9QQefAl_q1Q"
+      },
+      {
+        "video_title_42": "How to replace a car air filter",
+        "video_id_42": "RdXVxbd59es"
+      },
+      {
+        "video_title_43": "How to perform a basic car safety check",
+        "video_id_43": "v2OeMjLh170"
+      },
+      {
+        "video_title_44": "How to Learn Basic Car Maintenance",
+        "video_id_44": "Yeb7zft_79k"
+      },
+      {
+        "video_title_45": "How to check tire pressure",
+        "video_id_45": "0Q-Eb7aUyt4"
+      },
+      {
+        "video_title_46": "How to Change a Tire",
+        "video_id_46": "joBmbh0AGSQ"
+      },
+      {
+        "video_title_47": "How to find the right tire for your car",
+        "video_id_47": "pDP4mlSkOa8"
+      },
+      {
+        "video_title_48": "How to drive a car",
+        "video_id_48": "VIVaqt4VhKc"
+      },
+      {
+        "video_title_49": "How to refuel my car",
+        "video_id_49": "Ujsly7RUr7g"
+      },
+      {
+        "video_title_50": "How to Save Money",
+        "video_id_50": "JP__utZQLb8"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to do CAD",
+    "playlist": [
+      {
+        "video_title_1": "How to do CAD",
+        "video_id_1": "KhYDvfu95z4"
+      },
+      {
+        "video_title_2": "How to use Fusion360",
+        "video_id_2": "sCkODJJ9ErI"
+      },
+      {
+        "video_title_3": "How to Set Up Two Monitors",
+        "video_id_3": "elLy-cZV7JE"
+      },
+      {
+        "video_title_4": "How to set up an ergonomic desk",
+        "video_id_4": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_5": "How to Set Up a Home Office",
+        "video_id_5": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_6": "How to upgrade your workspace lighting",
+        "video_id_6": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_7": "How to wrap cables neatly",
+        "video_id_7": "uKlaXb-fLrg"
+      },
+      {
+        "video_title_8": "How to keep your desk clutter free",
+        "video_id_8": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_9": "How to stay focused while working from home",
+        "video_id_9": "AgIggrkBFcU"
+      },
+      {
+        "video_title_10": "How to Master Time Blocking",
+        "video_id_10": "x9K80nyTltU"
+      },
+      {
+        "video_title_11": "How to prioritize tasks",
+        "video_id_11": "czh4rmk75jc"
+      },
+      {
+        "video_title_12": "How to write a better to do list",
+        "video_id_12": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_13": "How to Create a Daily Schedule",
+        "video_id_13": "TieJ7FChhrk"
+      },
+      {
+        "video_title_14": "How to create a productive morning ritual",
+        "video_id_14": "lC3Hxx28QY8"
+      },
+      {
+        "video_title_15": "How to build a morning routine",
+        "video_id_15": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_16": "How to Wake Up",
+        "video_id_16": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_17": "How to set an alarm",
+        "video_id_17": "m2NNDms474A"
+      },
+      {
+        "video_title_18": "How to master your sleep schedule",
+        "video_id_18": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_19": "How to build an evening wind down routine",
+        "video_id_19": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_20": "How to Reduce Screen Time",
+        "video_id_20": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_21": "How to stop doomscrolling",
+        "video_id_21": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_22": "How to create a phone detox routine",
+        "video_id_22": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_23": "How to Practice Gratitude",
+        "video_id_23": "OLE1kAKQWIQ"
+      },
+      {
+        "video_title_24": "How to start a gratitude practice",
+        "video_id_24": "GZghu_xFRM8"
+      },
+      {
+        "video_title_25": "How to start a daily gratitude habit",
+        "video_id_25": "lbAR7pqljDM"
+      },
+      {
+        "video_title_26": "How to set up a gratitude jar",
+        "video_id_26": "svZdWcGUc7s"
+      },
+      {
+        "video_title_27": "How to make a fabric covered notebook",
+        "video_id_27": "JqzqTCAox0Q"
+      },
+      {
+        "video_title_28": "How to Sharpen Scissors",
+        "video_id_28": "6yQp7WYP-E4"
+      },
+      {
+        "video_title_29": "How to Remove Rust and Corrosion",
+        "video_id_29": "knAv9q0gIQM"
+      },
+      {
+        "video_title_30": "How to use baking soda for cleaning",
+        "video_id_30": "4ciahsfuzXM"
+      },
+      {
+        "video_title_31": "How to make your own cleaning products",
+        "video_id_31": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_32": "How to plan a grocery list",
+        "video_id_32": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_33": "How to create a budget",
+        "video_id_33": "3pslPbfpnzk"
+      },
+      {
+        "video_title_34": "How to Make a Budget Spreadsheet",
+        "video_id_34": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_35": "How to Use Excel",
+        "video_id_35": "LgXzzu68j7M"
+      },
+      {
+        "video_title_36": "How to Learn Touch Typing",
+        "video_id_36": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_37": "How to learn new keyboard shortcuts",
+        "video_id_37": "d_rH4uAm9MY"
+      },
+      {
+        "video_title_38": "How to learn a new skill",
+        "video_id_38": "0eItWeZFVHo"
+      },
+      {
+        "video_title_39": "How to master a skill",
+        "video_id_39": "Oq65fZr7wi8"
+      },
+      {
+        "video_title_40": "How to Learn Faster",
+        "video_id_40": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_41": "How to take effective notes",
+        "video_id_41": "jBHLC8dff48"
+      },
+      {
+        "video_title_42": "How to Hold a Pen",
+        "video_id_42": "M-m83y54070"
+      },
+      {
+        "video_title_43": "How to sharpen a pencil",
+        "video_id_43": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_44": "How to use a knife",
+        "video_id_44": "aoqVGdmVlKk"
+      },
+      {
+        "video_title_45": "How to sharpen kitchen knives",
+        "video_id_45": "t-_qzsMF8RM"
+      },
+      {
+        "video_title_46": "How to buy the right wood working tools",
+        "video_id_46": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_47": "How to Save Money",
+        "video_id_47": "JP__utZQLb8"
+      },
+      {
+        "video_title_48": "How to Get Out of Debt",
+        "video_id_48": "w4Kbq0VJEhY"
+      },
+      {
+        "video_title_49": "How to Get a Job",
+        "video_id_49": "E0b_JENQdYk"
+      },
+      {
+        "video_title_50": "How to Master a Job Interview",
+        "video_id_50": "0siE31sqz0Q"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Tie Dye a Shirt",
+    "playlist": [
+      {
+        "video_title_1": "How to Tie Dye a Shirt",
+        "video_id_1": "XBadLUHLe6E"
+      },
+      {
+        "video_title_2": "How to buy a food grade dye",
+        "video_id_2": "Q0dhvWA5iq4"
+      },
+      {
+        "video_title_3": "How to buy clothing",
+        "video_id_3": "_SMgIXwknwA"
+      },
+      {
+        "video_title_4": "How to choose the right foundation",
+        "video_id_4": "CfIwLN2s6vk"
+      },
+      {
+        "video_title_5": "How to Match Colors in an Outfit",
+        "video_id_5": "C8Ud8SvVR2c"
+      },
+      {
+        "video_title_6": "How to use color theory in design",
+        "video_id_6": "AvgCkHrcj90"
+      },
+      {
+        "video_title_7": "How to design clothing",
+        "video_id_7": "ycd6S73aa28"
+      },
+      {
+        "video_title_8": "How to start a capsule wardrobe",
+        "video_id_8": "uxhqi8uNauU"
+      },
+      {
+        "video_title_9": "How to plan a minimalist wardrobe",
+        "video_id_9": "dvfD48K1rCg"
+      },
+      {
+        "video_title_10": "How to Declutter Your Closet",
+        "video_id_10": "6xJr7nOAEtY"
+      },
+      {
+        "video_title_11": "How to do a closet cleanout",
+        "video_id_11": "UQHYR1M0tpg"
+      },
+      {
+        "video_title_12": "How to store seasonal clothes",
+        "video_id_12": "YOlguw_KdtA"
+      },
+      {
+        "video_title_13": "How to keep your closet clutter free",
+        "video_id_13": "KLCGN6lwzC0"
+      },
+      {
+        "video_title_14": "How to Organize a Closet",
+        "video_id_14": "a-TFbunklsQ"
+      },
+      {
+        "video_title_15": "How to Declutter Your Home",
+        "video_id_15": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_16": "How to Clean Your Room",
+        "video_id_16": "b2JempkYUjo"
+      },
+      {
+        "video_title_17": "How to do a Sunday reset routine",
+        "video_id_17": "fwTOycibSXY"
+      },
+      {
+        "video_title_18": "How to plan your week on Sunday",
+        "video_id_18": "jozNEpY8iik"
+      },
+      {
+        "video_title_19": "How to Create a Daily Schedule",
+        "video_id_19": "TieJ7FChhrk"
+      },
+      {
+        "video_title_20": "How to Create a Daily Routine",
+        "video_id_20": "OQIOjug4WC8"
+      },
+      {
+        "video_title_21": "How to prioritize tasks",
+        "video_id_21": "czh4rmk75jc"
+      },
+      {
+        "video_title_22": "How to write a better to do list",
+        "video_id_22": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_23": "How to Use a To Do List App",
+        "video_id_23": "uUvp0XgE--s"
+      },
+      {
+        "video_title_24": "How to Master Time Blocking",
+        "video_id_24": "x9K80nyTltU"
+      },
+      {
+        "video_title_25": "How to use time tracking for productivity",
+        "video_id_25": "W8B0KWmv_-Q"
+      },
+      {
+        "video_title_26": "How to master the Pomodoro Technique",
+        "video_id_26": "mNBmG24djoY"
+      },
+      {
+        "video_title_27": "How to stop procrastinating",
+        "video_id_27": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_28": "How to build good habits",
+        "video_id_28": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_29": "How to use habit stacking effectively",
+        "video_id_29": "zjBhC4C-9KU"
+      },
+      {
+        "video_title_30": "How to set goals that stick",
+        "video_id_30": "fXyRprdoEoE"
+      },
+      {
+        "video_title_31": "How to Set Goals",
+        "video_id_31": "BQbufwSqxpU"
+      },
+      {
+        "video_title_32": "How to use a planner for goal setting",
+        "video_id_32": "fhph4TUY80I"
+      },
+      {
+        "video_title_33": "How to Use a Planner",
+        "video_id_33": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_34": "How to Start Bullet Journaling",
+        "video_id_34": "fm15cmYU0IM"
+      },
+      {
+        "video_title_35": "How to write down notes",
+        "video_id_35": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_36": "How to take effective notes",
+        "video_id_36": "jBHLC8dff48"
+      },
+      {
+        "video_title_37": "How to learn faster with mind maps",
+        "video_id_37": "9N35ZDJuGCc"
+      },
+      {
+        "video_title_38": "How to Make a Mind Map",
+        "video_id_38": "g7j_CoKD1Xs"
+      },
+      {
+        "video_title_39": "How to Be More Creative",
+        "video_id_39": "i5F8MjVXb7o"
+      },
+      {
+        "video_title_40": "How to do a creative brain dump",
+        "video_id_40": "793Non5Jb8A"
+      },
+      {
+        "video_title_41": "How to journal for self discovery",
+        "video_id_41": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_42": "How to do shadow work journaling",
+        "video_id_42": "EReuinO2gr0"
+      },
+      {
+        "video_title_43": "How to claim your feelings",
+        "video_id_43": "UMumIJTxXTI"
+      },
+      {
+        "video_title_44": "How to talk about feelings",
+        "video_id_44": "iWlcAylOVNU"
+      },
+      {
+        "video_title_45": "How to Develop Better Communication Skills",
+        "video_id_45": "7hr60EumwQ4"
+      },
+      {
+        "video_title_46": "How to Master the Art of Listening",
+        "video_id_46": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_47": "How to practice active listening",
+        "video_id_47": "aDMtx5ivKK0"
+      },
+      {
+        "video_title_48": "How to practice mindfulness",
+        "video_id_48": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_49": "How to Meditate",
+        "video_id_49": "JslvBcIVtDg"
+      },
+      {
+        "video_title_50": "How to Start a Meditation Space",
+        "video_id_50": "uB5yRMLSnMk"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to start a food diary",
+    "playlist": [
+      {
+        "video_title_1": "How to start a food diary",
+        "video_id_1": "VN0ya6Gf-aI"
+      },
+      {
+        "video_title_2": "How to eat healthy",
+        "video_id_2": "yTNN_0j5S2Q"
+      },
+      {
+        "video_title_3": "How to create a meal plan",
+        "video_id_3": "B5a03YsCgD0"
+      },
+      {
+        "video_title_4": "How to plan a grocery list",
+        "video_id_4": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_5": "How to write down notes",
+        "video_id_5": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_6": "How to sharp a pencil",
+        "video_id_6": "0Q2CLdLoalI"
+      },
+      {
+        "video_title_7": "How to clean up your desktop clutter",
+        "video_id_7": "gfPujXtQqwc"
+      },
+      {
+        "video_title_8": "How to keep your desk clutter free",
+        "video_id_8": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_9": "How to set up an ergonomic desk",
+        "video_id_9": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_10": "How to upgrade your workspace lighting",
+        "video_id_10": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_11": "How to Install a Light Fixture",
+        "video_id_11": "XF4NdfyiDSc"
+      },
+      {
+        "video_title_12": "How to Replace a Light Switch",
+        "video_id_12": "SW2MhGwmWiY"
+      },
+      {
+        "video_title_13": "How to Use a Multimeter",
+        "video_id_13": "TdUK6RPdIrA"
+      },
+      {
+        "video_title_14": "How to learn a new skill",
+        "video_id_14": "0eItWeZFVHo"
+      },
+      {
+        "video_title_15": "How to take effective notes",
+        "video_id_15": "jBHLC8dff48"
+      },
+      {
+        "video_title_16": "How to hold a pen",
+        "video_id_16": "M-m83y54070"
+      },
+      {
+        "video_title_17": "How to cut nails",
+        "video_id_17": "wJV5OrN10tw"
+      },
+      {
+        "video_title_18": "How to take care of your nails",
+        "video_id_18": "khCcYSErKfs"
+      },
+      {
+        "video_title_19": "How to practice self care",
+        "video_id_19": "cjfofAuxibQ"
+      },
+      {
+        "video_title_20": "How to create a self care calendar",
+        "video_id_20": "FSqlx7beG1I"
+      },
+      {
+        "video_title_21": "How to Use a Planner",
+        "video_id_21": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_22": "How to pick the right planner for you",
+        "video_id_22": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_23": "How to prioritize tasks",
+        "video_id_23": "czh4rmk75jc"
+      },
+      {
+        "video_title_24": "How to stop procrastinating",
+        "video_id_24": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_25": "How to master the Pomodoro Technique",
+        "video_id_25": "mNBmG24djoY"
+      },
+      {
+        "video_title_26": "How to Manage Your Time Effectively",
+        "video_id_26": "lriCkWIHEHs"
+      },
+      {
+        "video_title_27": "How to Create a Daily Schedule",
+        "video_id_27": "TieJ7FChhrk"
+      },
+      {
+        "video_title_28": "How to Set Goals",
+        "video_id_28": "BQbufwSqxpU"
+      },
+      {
+        "video_title_29": "How to set goals that stick",
+        "video_id_29": "fXyRprdoEoE"
+      },
+      {
+        "video_title_30": "How to build good habits",
+        "video_id_30": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_31": "How to build a creative habit",
+        "video_id_31": "FNXuD_yMmQk"
+      },
+      {
+        "video_title_32": "How to Be More Creative",
+        "video_id_32": "i5F8MjVXb7o"
+      },
+      {
+        "video_title_33": "How to do a creative brain dump",
+        "video_id_33": "793Non5Jb8A"
+      },
+      {
+        "video_title_34": "How to do a mental clarity reset",
+        "video_id_34": "D6onQw3hWGg"
+      },
+      {
+        "video_title_35": "How to practice mindfulness",
+        "video_id_35": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_36": "How to Meditate",
+        "video_id_36": "JslvBcIVtDg"
+      },
+      {
+        "video_title_37": "How to Start a Meditation Space",
+        "video_id_37": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_38": "How to Clean Your Room",
+        "video_id_38": "b2JempkYUjo"
+      },
+      {
+        "video_title_39": "How to vacuum the floor",
+        "video_id_39": "fbXqklwkJt4"
+      },
+      {
+        "video_title_40": "How to Declutter Your Home",
+        "video_id_40": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_41": "How to Organize Your Living Space",
+        "video_id_41": "SP-nCMF1tOw"
+      },
+      {
+        "video_title_42": "How to make a vision board with AI",
+        "video_id_42": "1eBEO14peCI"
+      },
+      {
+        "video_title_43": "How to Use ChatGPT",
+        "video_id_43": "jC4v5AS4RIM"
+      },
+      {
+        "video_title_44": "How to start the program",
+        "video_id_44": "bJzb-RuUcMU"
+      },
+      {
+        "video_title_45": "How to build a gaming PC",
+        "video_id_45": "qkr07CutHrU"
+      },
+      {
+        "video_title_46": "How to Save Money",
+        "video_id_46": "JP__utZQLb8"
+      },
+      {
+        "video_title_47": "How to manage personal finances",
+        "video_id_47": "VaiqGsot5ws"
+      },
+      {
+        "video_title_48": "How to track your expenses",
+        "video_id_48": "4sT2B2SRypo"
+      },
+      {
+        "video_title_49": "How to create a budget",
+        "video_id_49": "3pslPbfpnzk"
+      },
+      {
+        "video_title_50": "How to set financial goals",
+        "video_id_50": "9q-UTjlP3hI"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to build strength in arms",
+    "playlist": [
+      {
+        "video_title_1": "How to build strength in arms",
+        "video_id_1": "WvlDMlMx1Ok"
+      },
+      {
+        "video_title_2": "How to Do a Push Up",
+        "video_id_2": "I9fsqKE5XHo"
+      },
+      {
+        "video_title_3": "How to Do a Plank Correctly",
+        "video_id_3": "6LqqeBtFn9M"
+      },
+      {
+        "video_title_4": "How to Warm Up",
+        "video_id_4": "-p0PA9Zt8zk"
+      },
+      {
+        "video_title_5": "How to Stretch Properly",
+        "video_id_5": "FI51zRzgIe4"
+      },
+      {
+        "video_title_6": "How to prevent injuries",
+        "video_id_6": "XAvgSb1bgqE"
+      },
+      {
+        "video_title_7": "How to Create a Workout Plan",
+        "video_id_7": "5iHQDUvR_vc"
+      },
+      {
+        "video_title_8": "How to stay consistent with workouts",
+        "video_id_8": "f_ZTq8AnuNI"
+      },
+      {
+        "video_title_9": "How to build a morning workout habit",
+        "video_id_9": "46s-InC6J4k"
+      },
+      {
+        "video_title_10": "How to build a morning routine",
+        "video_id_10": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_11": "How to Wake Up",
+        "video_id_11": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_12": "How to set an alarm",
+        "video_id_12": "m2NNDms474A"
+      },
+      {
+        "video_title_13": "How to master your sleep schedule",
+        "video_id_13": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_14": "How to build better sleep hygiene",
+        "video_id_14": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_15": "How to build an evening wind down routine",
+        "video_id_15": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_16": "How to Reduce Screen Time",
+        "video_id_16": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_17": "How to stop doomscrolling",
+        "video_id_17": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_18": "How to Do a Digital Detox",
+        "video_id_18": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_19": "How to use habit stacking effectively",
+        "video_id_19": "zjBhC4C-9KU"
+      },
+      {
+        "video_title_20": "How to build good habits",
+        "video_id_20": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_21": "How to break bad habits",
+        "video_id_21": "-moW9jvvMr4"
+      },
+      {
+        "video_title_22": "How to stop procrastinating",
+        "video_id_22": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_23": "How to master the Pomodoro Technique",
+        "video_id_23": "mNBmG24djoY"
+      },
+      {
+        "video_title_24": "How to prioritize tasks",
+        "video_id_24": "czh4rmk75jc"
+      },
+      {
+        "video_title_25": "How to write a better to do list",
+        "video_id_25": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_26": "How to Use a To Do List App",
+        "video_id_26": "uUvp0XgE--s"
+      },
+      {
+        "video_title_27": "How to Master Time Blocking",
+        "video_id_27": "x9K80nyTltU"
+      },
+      {
+        "video_title_28": "How to Create a Daily Schedule",
+        "video_id_28": "TieJ7FChhrk"
+      },
+      {
+        "video_title_29": "How to plan your week on Sunday",
+        "video_id_29": "jozNEpY8iik"
+      },
+      {
+        "video_title_30": "How to do a Sunday reset routine",
+        "video_id_30": "fwTOycibSXY"
+      },
+      {
+        "video_title_31": "How to do a weekly reset",
+        "video_id_31": "bBzGIzvPTuk"
+      },
+      {
+        "video_title_32": "How to start a monthly review ritual",
+        "video_id_32": "J8neGAYEK_Q"
+      },
+      {
+        "video_title_33": "How to track your progress",
+        "video_id_33": "ayHBSkIe8mc"
+      },
+      {
+        "video_title_34": "How to set goals that stick",
+        "video_id_34": "fXyRprdoEoE"
+      },
+      {
+        "video_title_35": "How to Set Goals",
+        "video_id_35": "BQbufwSqxpU"
+      },
+      {
+        "video_title_36": "How to write a personal mission statement",
+        "video_id_36": "LT9IsClSXCI"
+      },
+      {
+        "video_title_37": "How to Find Your Passion",
+        "video_id_37": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_38": "How to journal for self discovery",
+        "video_id_38": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_39": "How to do shadow work journaling",
+        "video_id_39": "EReuinO2gr0"
+      },
+      {
+        "video_title_40": "How to stay consistent with journaling",
+        "video_id_40": "7D1HBkYhThs"
+      },
+      {
+        "video_title_41": "How to get better at journaling",
+        "video_id_41": "dArgOrm98Bk"
+      },
+      {
+        "video_title_42": "How to Write a Journal",
+        "video_id_42": "5DqXHg52H1g"
+      },
+      {
+        "video_title_43": "How to write down notes",
+        "video_id_43": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_44": "How to take effective notes",
+        "video_id_44": "jBHLC8dff48"
+      },
+      {
+        "video_title_45": "How to choose the best journal for your needs",
+        "video_id_45": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_46": "How to hold a pen",
+        "video_id_46": "M-m83y54070"
+      },
+      {
+        "video_title_47": "How to sharpen a pencil",
+        "video_id_47": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_48": "How to keep your desk clutter free",
+        "video_id_48": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_49": "How to clean up your desktop clutter",
+        "video_id_49": "gfPujXtQqwc"
+      },
+      {
+        "video_title_50": "How to declutter your digital life",
+        "video_id_50": "LnoKcGrL8HM"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to learn a new skill",
+    "playlist": [
+      {
+        "video_title_1": "How to learn a new skill",
+        "video_id_1": "0eItWeZFVHo"
+      },
+      {
+        "video_title_2": "How to Learn Faster",
+        "video_id_2": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_3": "How to learn faster with mind maps",
+        "video_id_3": "9N35ZDJuGCc"
+      },
+      {
+        "video_title_4": "How to Make a Mind Map",
+        "video_id_4": "g7j_CoKD1Xs"
+      },
+      {
+        "video_title_5": "How to Take Notes",
+        "video_id_5": "UAhRf3U50lM"
+      },
+      {
+        "video_title_6": "How to take effective notes",
+        "video_id_6": "jBHLC8dff48"
+      },
+      {
+        "video_title_7": "How to Master the Art of Listening",
+        "video_id_7": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_8": "How to Be a Better Listener",
+        "video_id_8": "7wUCyjiyXdg"
+      },
+      {
+        "video_title_9": "How to practice mindfulness",
+        "video_id_9": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_10": "How to Meditate",
+        "video_id_10": "JslvBcIVtDg"
+      },
+      {
+        "video_title_11": "How to Start a Meditation Space",
+        "video_id_11": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_12": "How to create a minimalist workspace",
+        "video_id_12": "efrxD0QiRSc"
+      },
+      {
+        "video_title_13": "How to keep your desk clutter free",
+        "video_id_13": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_14": "How to Organize Desk Cables",
+        "video_id_14": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_15": "How to Set Up a Home Office",
+        "video_id_15": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_16": "How to set up an ergonomic desk",
+        "video_id_16": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_17": "How to stay focused while working from home",
+        "video_id_17": "AgIggrkBFcU"
+      },
+      {
+        "video_title_18": "How to stop procrastinating",
+        "video_id_18": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_19": "How to Master Time Blocking",
+        "video_id_19": "x9K80nyTltU"
+      },
+      {
+        "video_title_20": "How to prioritize tasks",
+        "video_id_20": "czh4rmk75jc"
+      },
+      {
+        "video_title_21": "How to Create a Daily Schedule",
+        "video_id_21": "TieJ7FChhrk"
+      },
+      {
+        "video_title_22": "How to Use a Planner",
+        "video_id_22": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_23": "How to pick the right planner for you",
+        "video_id_23": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_24": "How to use a planner for goal setting",
+        "video_id_24": "fhph4TUY80I"
+      },
+      {
+        "video_title_25": "How to Set Goals",
+        "video_id_25": "BQbufwSqxpU"
+      },
+      {
+        "video_title_26": "How to set goals that stick",
+        "video_id_26": "fXyRprdoEoE"
+      },
+      {
+        "video_title_27": "How to build good habits",
+        "video_id_27": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_28": "How to build a creative habit",
+        "video_id_28": "FNXuD_yMmQk"
+      },
+      {
+        "video_title_29": "How to Be More Creative",
+        "video_id_29": "i5F8MjVXb7o"
+      },
+      {
+        "video_title_30": "How to do a creative brain dump",
+        "video_id_30": "793Non5Jb8A"
+      },
+      {
+        "video_title_31": "How to Write a Journal",
+        "video_id_31": "5DqXHg52H1g"
+      },
+      {
+        "video_title_32": "How to journal for self discovery",
+        "video_id_32": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_33": "How to Find Your Passion",
+        "video_id_33": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_34": "How to do a life audit",
+        "video_id_34": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_35": "How to reset your mindset",
+        "video_id_35": "6Kq_3xGJAaA"
+      },
+      {
+        "video_title_36": "How to develop a growth mindset",
+        "video_id_36": "hiiEeMN7vbQ"
+      },
+      {
+        "video_title_37": "How to be optimistic",
+        "video_id_37": "ynjOQgll5PE"
+      },
+      {
+        "video_title_38": "How to reduce stress",
+        "video_id_38": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_39": "How to practice breathwork",
+        "video_id_39": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_40": "How to relax your face muscles",
+        "video_id_40": "vzLt8VgTkfo"
+      },
+      {
+        "video_title_41": "How to build an evening wind down routine",
+        "video_id_41": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_42": "How to create a bedtime routine",
+        "video_id_42": "gDNDlPejKr4"
+      },
+      {
+        "video_title_43": "How to Reduce Screen Time",
+        "video_id_43": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_44": "How to stop doomscrolling",
+        "video_id_44": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_45": "How to Do a Digital Detox",
+        "video_id_45": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_46": "How to Get to Sleep",
+        "video_id_46": "JamURLO00IY"
+      },
+      {
+        "video_title_47": "How to Sleep Better",
+        "video_id_47": "wWYnGuitCVU"
+      },
+      {
+        "video_title_48": "How to master your sleep schedule",
+        "video_id_48": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_49": "How to build better sleep hygiene",
+        "video_id_49": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_50": "How to set an alarm",
+        "video_id_50": "m2NNDms474A"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to organize your project files",
+    "playlist": [
+      {
+        "video_title_1": "How to organize your project files",
+        "video_id_1": "gI0eR61cKug"
+      },
+      {
+        "video_title_2": "How to Organize Digital Files",
+        "video_id_2": "MM-MPS57qKA"
+      },
+      {
+        "video_title_3": "How to declutter your digital workspace",
+        "video_id_3": "VpQbj-Ab5UA"
+      },
+      {
+        "video_title_4": "How to clean up your desktop clutter",
+        "video_id_4": "gfPujXtQqwc"
+      },
+      {
+        "video_title_5": "How to keep your desk clutter free",
+        "video_id_5": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_6": "How to upgrade your workspace lighting",
+        "video_id_6": "mH8hjFFa_b4"
+      },
+      {
+        "video_title_7": "How to Set Up a Home Office",
+        "video_id_7": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_8": "How to design a minimalist home office",
+        "video_id_8": "VpFcST9t5h8"
+      },
+      {
+        "video_title_9": "How to Clean Your Room",
+        "video_id_9": "b2JempkYUjo"
+      },
+      {
+        "video_title_10": "How to Declutter Your Home",
+        "video_id_10": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_11": "How to Be a Minimalist",
+        "video_id_11": "DwWu9ZKCSzU"
+      },
+      {
+        "video_title_12": "How to do a life audit",
+        "video_id_12": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_13": "How to journal for self discovery",
+        "video_id_13": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_14": "How to Write a Journal",
+        "video_id_14": "5DqXHg52H1g"
+      },
+      {
+        "video_title_15": "How to choose the best journal for your needs",
+        "video_id_15": "8U4RMbMhVb8"
+      },
+      {
+        "video_title_16": "How to sharpen a pencil",
+        "video_id_16": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_17": "How to hold a pen",
+        "video_id_17": "M-m83y54070"
+      },
+      {
+        "video_title_18": "How to Improve Your Handwriting",
+        "video_id_18": "4zgoSs73tSo"
+      },
+      {
+        "video_title_19": "How to Improve Your Posture",
+        "video_id_19": "8gDAd7bBhZ0"
+      },
+      {
+        "video_title_20": "How to Stretch",
+        "video_id_20": "XhAdwWv5hws"
+      },
+      {
+        "video_title_21": "How to Warm Up",
+        "video_id_21": "-p0PA9Zt8zk"
+      },
+      {
+        "video_title_22": "How to build a morning workout habit",
+        "video_id_22": "46s-InC6J4k"
+      },
+      {
+        "video_title_23": "How to build a morning routine",
+        "video_id_23": "ydKYJEuFXsg"
+      },
+      {
+        "video_title_24": "How to Wake Up",
+        "video_id_24": "cfLwgEC0w5g"
+      },
+      {
+        "video_title_25": "How to set an alarm",
+        "video_id_25": "m2NNDms474A"
+      },
+      {
+        "video_title_26": "How to master your sleep schedule",
+        "video_id_26": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_27": "How to build an evening wind down routine",
+        "video_id_27": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_28": "How to Reduce Screen Time",
+        "video_id_28": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_29": "How to Do a Digital Detox",
+        "video_id_29": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_30": "How to practice mindfulness",
+        "video_id_30": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_31": "How to practice breathwork",
+        "video_id_31": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_32": "How to reduce stress",
+        "video_id_32": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_33": "How to practice self care",
+        "video_id_33": "cjfofAuxibQ"
+      },
+      {
+        "video_title_34": "How to set healthy boundaries",
+        "video_id_34": "csPmD6Vf0QQ"
+      },
+      {
+        "video_title_35": "How to Be More Assertive",
+        "video_id_35": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_36": "How to Stand Up for Yourself",
+        "video_id_36": "Dnia_m898K4"
+      },
+      {
+        "video_title_37": "How to build confidence",
+        "video_id_37": "7e6RSGdvHD8"
+      },
+      {
+        "video_title_38": "How to Develop Better Communication Skills",
+        "video_id_38": "7hr60EumwQ4"
+      },
+      {
+        "video_title_39": "How to Master the Art of Listening",
+        "video_id_39": "qpnNsSyDw-g"
+      },
+      {
+        "video_title_40": "How to Be a Better Listener",
+        "video_id_40": "7wUCyjiyXdg"
+      },
+      {
+        "video_title_41": "How to Read Body Language",
+        "video_id_41": "4jwUXV4QaTw"
+      },
+      {
+        "video_title_42": "How to talk to anyone",
+        "video_id_42": "P2pGXdqI9s4"
+      },
+      {
+        "video_title_43": "How to make friends",
+        "video_id_43": "3pwCqiPCDRw"
+      },
+      {
+        "video_title_44": "How to meet new people",
+        "video_id_44": "rb0G0Uw-2Q8"
+      },
+      {
+        "video_title_45": "How to network professionally",
+        "video_id_45": "MqCyTm9YcDQ"
+      },
+      {
+        "video_title_46": "How to Optimize Your LinkedIn",
+        "video_id_46": "ne_othht6nA"
+      },
+      {
+        "video_title_47": "How to Write a LinkedIn Bio",
+        "video_id_47": "5hNsdH6Y2Mg"
+      },
+      {
+        "video_title_48": "How to write a better bio",
+        "video_id_48": "ecw_ugVd81k"
+      },
+      {
+        "video_title_49": "How to build a personal brand",
+        "video_id_49": "5pAQcC9YniM"
+      },
+      {
+        "video_title_50": "How to Find Your Passion",
+        "video_id_50": "6pgaJb2Wwhs"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Figure Out Your CBD Dosage",
+    "playlist": [
+      {
+        "video_title_1": "How to Figure Out Your CBD Dosage",
+        "video_id_1": "ov8VRH-UIik"
+      },
+      {
+        "video_title_2": "How to Try CBD Oil for the First Time",
+        "video_id_2": "3g38CfNUyeA"
+      },
+      {
+        "video_title_3": "How to buy the right CBD oil",
+        "video_id_3": "nc7WJ18_-a0"
+      },
+      {
+        "video_title_4": "How to find out if using CBD oil is safe",
+        "video_id_4": "kHiMYqBe1NQ"
+      },
+      {
+        "video_title_5": "How to Use Cannabidiol (CBD) to Help Sleep",
+        "video_id_5": "mgcW5a6xikY"
+      },
+      {
+        "video_title_6": "How to Get to Sleep",
+        "video_id_6": "JamURLO00IY"
+      },
+      {
+        "video_title_7": "How to build an evening wind down routine",
+        "video_id_7": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_8": "How to create a bedtime routine",
+        "video_id_8": "gDNDlPejKr4"
+      },
+      {
+        "video_title_9": "How to Reduce Screen Time",
+        "video_id_9": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_10": "How to Do a Digital Detox",
+        "video_id_10": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_11": "How to detox from social media",
+        "video_id_11": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_12": "How to stop doomscrolling",
+        "video_id_12": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_13": "How to practice mindfulness",
+        "video_id_13": "NvjRSpIwgLM"
+      },
+      {
+        "video_title_14": "How to Meditate",
+        "video_id_14": "JslvBcIVtDg"
+      },
+      {
+        "video_title_15": "How to Start a Meditation Space",
+        "video_id_15": "uB5yRMLSnMk"
+      },
+      {
+        "video_title_16": "How to reduce visual clutter",
+        "video_id_16": "bgXO47D9Q84"
+      },
+      {
+        "video_title_17": "How to Declutter Your Home",
+        "video_id_17": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_18": "How to Organize Your Living Space",
+        "video_id_18": "SP-nCMF1tOw"
+      },
+      {
+        "video_title_19": "How to Clean Your Room",
+        "video_id_19": "b2JempkYUjo"
+      },
+      {
+        "video_title_20": "How to vacuum the carpet",
+        "video_id_20": "16VLGWj-gkQ"
+      },
+      {
+        "video_title_21": "How to make your own cleaning products",
+        "video_id_21": "ZPZ_PUO_9cY"
+      },
+      {
+        "video_title_22": "How to use baking soda for cleaning",
+        "video_id_22": "4ciahsfuzXM"
+      },
+      {
+        "video_title_23": "How to Clean an Oven",
+        "video_id_23": "RiI4i0lLs3E"
+      },
+      {
+        "video_title_24": "How to preheat the oven",
+        "video_id_24": "6jQHCh8yffI"
+      },
+      {
+        "video_title_25": "How to Bake Bread",
+        "video_id_25": "VrUdtzXquWk"
+      },
+      {
+        "video_title_26": "How to kneat dough",
+        "video_id_26": "T8FK5apuL40"
+      },
+      {
+        "video_title_27": "How to make Bread Dough",
+        "video_id_27": "aUtxKeupYFg"
+      },
+      {
+        "video_title_28": "How to choose the right flour",
+        "video_id_28": "aePCNP30cIE"
+      },
+      {
+        "video_title_29": "How to read a recipe",
+        "video_id_29": "zOeyz25Flzo"
+      },
+      {
+        "video_title_30": "How to fall in love with cooking",
+        "video_id_30": "LOwUwbosqrk"
+      },
+      {
+        "video_title_31": "How to meal prep for the Week",
+        "video_id_31": "NO-EbXMB4gc"
+      },
+      {
+        "video_title_32": "How to plan a grocery list",
+        "video_id_32": "TNwkwEeK9ek"
+      },
+      {
+        "video_title_33": "How to create a meal plan",
+        "video_id_33": "B5a03YsCgD0"
+      },
+      {
+        "video_title_34": "How to Budget as a Student",
+        "video_id_34": "MXCvtC0HqLE"
+      },
+      {
+        "video_title_35": "How to create a personal budget",
+        "video_id_35": "xfPbT7HPkKA"
+      },
+      {
+        "video_title_36": "How to track your expenses",
+        "video_id_36": "4sT2B2SRypo"
+      },
+      {
+        "video_title_37": "How to Make a Budget Spreadsheet",
+        "video_id_37": "UAM1Ia5ZIp8"
+      },
+      {
+        "video_title_38": "How to Use Excel",
+        "video_id_38": "LgXzzu68j7M"
+      },
+      {
+        "video_title_39": "How to Learn Touch Typing",
+        "video_id_39": "6E1AiZEtV5c"
+      },
+      {
+        "video_title_40": "How to learn a new skill",
+        "video_id_40": "0eItWeZFVHo"
+      },
+      {
+        "video_title_41": "How to Learn Faster",
+        "video_id_41": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_42": "How to take effective notes",
+        "video_id_42": "jBHLC8dff48"
+      },
+      {
+        "video_title_43": "How to hold a pen",
+        "video_id_43": "M-m83y54070"
+      },
+      {
+        "video_title_44": "How to sharpen a pencil",
+        "video_id_44": "Rz9x49vG9Rk"
+      },
+      {
+        "video_title_45": "How to start a daily sketchbook habit",
+        "video_id_45": "R3X7oBOFurI"
+      },
+      {
+        "video_title_46": "How to build a creative habit",
+        "video_id_46": "FNXuD_yMmQk"
+      },
+      {
+        "video_title_47": "How to Be More Creative",
+        "video_id_47": "i5F8MjVXb7o"
+      },
+      {
+        "video_title_48": "How to do a creative brain dump",
+        "video_id_48": "793Non5Jb8A"
+      },
+      {
+        "video_title_49": "How to prioritize tasks",
+        "video_id_49": "czh4rmk75jc"
+      },
+      {
+        "video_title_50": "How to Set Goals",
+        "video_id_50": "BQbufwSqxpU"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to Write a LinkedIn Bio",
+    "playlist": [
+      {
+        "video_title_1": "How to Write a LinkedIn Bio",
+        "video_id_1": "5hNsdH6Y2Mg"
+      },
+      {
+        "video_title_2": "How to Optimize Your LinkedIn",
+        "video_id_2": "ne_othht6nA"
+      },
+      {
+        "video_title_3": "How to Use LinkedIn",
+        "video_id_3": "_kwqqtpprrE"
+      },
+      {
+        "video_title_4": "How to build a personal brand",
+        "video_id_4": "5pAQcC9YniM"
+      },
+      {
+        "video_title_5": "How to create a personal brand",
+        "video_id_5": "ozMCb0wOnMU"
+      },
+      {
+        "video_title_6": "How to write a personal mission statement",
+        "video_id_6": "LT9IsClSXCI"
+      },
+      {
+        "video_title_7": "How to journal for self discovery",
+        "video_id_7": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_8": "How to do a life audit",
+        "video_id_8": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_9": "How to Find Your Passion",
+        "video_id_9": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_10": "How to set goals that stick",
+        "video_id_10": "fXyRprdoEoE"
+      },
+      {
+        "video_title_11": "How to Set Goals",
+        "video_id_11": "BQbufwSqxpU"
+      },
+      {
+        "video_title_12": "How to use a planner for goal setting",
+        "video_id_12": "fhph4TUY80I"
+      },
+      {
+        "video_title_13": "How to pick the right planner for you",
+        "video_id_13": "Qge4DrCCjlM"
+      },
+      {
+        "video_title_14": "How to Use a Planner",
+        "video_id_14": "fRTaOqiTq9c"
+      },
+      {
+        "video_title_15": "How to prioritize tasks",
+        "video_id_15": "czh4rmk75jc"
+      },
+      {
+        "video_title_16": "How to write a better to do list",
+        "video_id_16": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_17": "How to Use a To Do List App",
+        "video_id_17": "uUvp0XgE--s"
+      },
+      {
+        "video_title_18": "How to install apps on phone",
+        "video_id_18": "88ZWvQ6Sj4w"
+      },
+      {
+        "video_title_19": "How to declutter your phone storage",
+        "video_id_19": "NnvVgTc3y9A"
+      },
+      {
+        "video_title_20": "How to Do a Digital Cleanout",
+        "video_id_20": "O9haSJgvFqg"
+      },
+      {
+        "video_title_21": "How to declutter your digital life",
+        "video_id_21": "LnoKcGrL8HM"
+      },
+      {
+        "video_title_22": "How to organize your project files",
+        "video_id_22": "gI0eR61cKug"
+      },
+      {
+        "video_title_23": "How to Organize Digital Files",
+        "video_id_23": "MM-MPS57qKA"
+      },
+      {
+        "video_title_24": "How to use Google Drive for storage",
+        "video_id_24": "jSRSgxMTU_M"
+      },
+      {
+        "video_title_25": "How to Use Google Drive",
+        "video_id_25": "gdrxAoqfvbA"
+      },
+      {
+        "video_title_26": "How to Backup Your Computer",
+        "video_id_26": "yIe4r6mBxz8"
+      },
+      {
+        "video_title_27": "How to clean up your desktop clutter",
+        "video_id_27": "gfPujXtQqwc"
+      },
+      {
+        "video_title_28": "How to keep your desk clutter free",
+        "video_id_28": "ZdaIaXuS2Ck"
+      },
+      {
+        "video_title_29": "How to Organize Desk Cables",
+        "video_id_29": "gtCRhTYhokQ"
+      },
+      {
+        "video_title_30": "How to set up an ergonomic desk",
+        "video_id_30": "F8_ME4VwTiw"
+      },
+      {
+        "video_title_31": "How to Set Up a Home Office",
+        "video_id_31": "oi9P_c0JOQo"
+      },
+      {
+        "video_title_32": "How to Clean Your Room",
+        "video_id_32": "b2JempkYUjo"
+      },
+      {
+        "video_title_33": "How to Declutter Your Home",
+        "video_id_33": "Py4GUH-RdQ8"
+      },
+      {
+        "video_title_34": "How to get rid of paper clutter",
+        "video_id_34": "2PCEKXs7XZA"
+      },
+      {
+        "video_title_35": "How to convert paper notes to digital",
+        "video_id_35": "yG05rGyTMeo"
+      },
+      {
+        "video_title_36": "How to organize digital notes",
+        "video_id_36": "tPsD_ZhIfQc"
+      },
+      {
+        "video_title_37": "How to Use Obsidian for Notes",
+        "video_id_37": "QgbLb6QCK88"
+      },
+      {
+        "video_title_38": "How to take effective notes",
+        "video_id_38": "jBHLC8dff48"
+      },
+      {
+        "video_title_39": "How to Take Notes",
+        "video_id_39": "UAhRf3U50lM"
+      },
+      {
+        "video_title_40": "How to write down notes",
+        "video_id_40": "E7CwqNHn_Ns"
+      },
+      {
+        "video_title_41": "How to hold a pen",
+        "video_id_41": "M-m83y54070"
+      },
+      {
+        "video_title_42": "How to Improve Your Handwriting",
+        "video_id_42": "4zgoSs73tSo"
+      },
+      {
+        "video_title_43": "How to learn hand lettering",
+        "video_id_43": "E7axnAC664I"
+      },
+      {
+        "video_title_44": "How to Do Calligraphy",
+        "video_id_44": "07ePW--MQY4"
+      },
+      {
+        "video_title_45": "How to teach yourself calligraphy",
+        "video_id_45": "6w7rLkIvrvA"
+      },
+      {
+        "video_title_46": "How to learn a new skill",
+        "video_id_46": "0eItWeZFVHo"
+      },
+      {
+        "video_title_47": "How to master a skill",
+        "video_id_47": "Oq65fZr7wi8"
+      },
+      {
+        "video_title_48": "How to Learn Faster",
+        "video_id_48": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_49": "How to Study Smarter",
+        "video_id_49": "TjPFZaMe2yw"
+      },
+      {
+        "video_title_50": "How to stay focused while working from home",
+        "video_id_50": "AgIggrkBFcU"
+      }
+    ]
+  },
+  {
+    "initial_question": "How to install a oven",
+    "playlist": [
+      {
+        "video_title_1": "How to install a oven",
+        "video_id_1": "IgoPODb66Pk"
+      },
+      {
+        "video_title_2": "How to build a kitchen",
+        "video_id_2": "isu7eUKyHbA"
+      },
+      {
+        "video_title_3": "How to Tile a Floor",
+        "video_id_3": "h6AABdEfpwI"
+      },
+      {
+        "video_title_4": "How to Repair Drywall",
+        "video_id_4": "Fdy9uRvpI-E"
+      },
+      {
+        "video_title_5": "How to use a ceramic scraper",
+        "video_id_5": "McYu-iV3Els"
+      },
+      {
+        "video_title_6": "How to Paint a Wall",
+        "video_id_6": "bLbUIevOxzY"
+      },
+      {
+        "video_title_7": "How to choose the right paint finish",
+        "video_id_7": "o554wrRNsNA"
+      },
+      {
+        "video_title_8": "How to use a Paint Brush",
+        "video_id_8": "6noW8bBBh6I"
+      },
+      {
+        "video_title_9": "How to make a DIY standing desk",
+        "video_id_9": "Hmvh2wLXzzs"
+      },
+      {
+        "video_title_10": "How to Sand Wood Properly",
+        "video_id_10": "edulbAmdv-A"
+      },
+      {
+        "video_title_11": "How to choose sandpaper",
+        "video_id_11": "jM7RVCYQcrc"
+      },
+      {
+        "video_title_12": "How to Plane Wood",
+        "video_id_12": "UTPvcXVzb9A"
+      },
+      {
+        "video_title_13": "How to saw wood",
+        "video_id_13": "S_2vh8WPgeM"
+      },
+      {
+        "video_title_14": "How to buy the right wood working tools",
+        "video_id_14": "2eFeB2fTiQY"
+      },
+      {
+        "video_title_15": "How to do CAD",
+        "video_id_15": "KhYDvfu95z4"
+      },
+      {
+        "video_title_16": "How to use Fusion360",
+        "video_id_16": "sCkODJJ9ErI"
+      },
+      {
+        "video_title_17": "How to use Blender",
+        "video_id_17": "B0J27sf9N1Y"
+      },
+      {
+        "video_title_18": "How to learn a new skill",
+        "video_id_18": "0eItWeZFVHo"
+      },
+      {
+        "video_title_19": "How to Learn Faster",
+        "video_id_19": "9tDkkKDQWlg"
+      },
+      {
+        "video_title_20": "How to take effective notes",
+        "video_id_20": "jBHLC8dff48"
+      },
+      {
+        "video_title_21": "How to sharp a pencil",
+        "video_id_21": "0Q2CLdLoalI"
+      },
+      {
+        "video_title_22": "How to hold a pen",
+        "video_id_22": "M-m83y54070"
+      },
+      {
+        "video_title_23": "How to improve your handwriting",
+        "video_id_23": "4zgoSs73tSo"
+      },
+      {
+        "video_title_24": "How to Start Bullet Journaling",
+        "video_id_24": "fm15cmYU0IM"
+      },
+      {
+        "video_title_25": "How to write a better to do list",
+        "video_id_25": "lsI1_ElwEY0"
+      },
+      {
+        "video_title_26": "How to prioritize tasks",
+        "video_id_26": "czh4rmk75jc"
+      },
+      {
+        "video_title_27": "How to Manage Your Time Effectively",
+        "video_id_27": "lriCkWIHEHs"
+      },
+      {
+        "video_title_28": "How to master the Pomodoro Technique",
+        "video_id_28": "mNBmG24djoY"
+      },
+      {
+        "video_title_29": "How to stop procrastinating",
+        "video_id_29": "ROK_7zDkQeg"
+      },
+      {
+        "video_title_30": "How to build good habits",
+        "video_id_30": "eu1K9-xE42Q"
+      },
+      {
+        "video_title_31": "How to set goals that stick",
+        "video_id_31": "fXyRprdoEoE"
+      },
+      {
+        "video_title_32": "How to Set Goals",
+        "video_id_32": "BQbufwSqxpU"
+      },
+      {
+        "video_title_33": "How to journal for self discovery",
+        "video_id_33": "4aPEJBRA8AA"
+      },
+      {
+        "video_title_34": "How to Find Your Passion",
+        "video_id_34": "6pgaJb2Wwhs"
+      },
+      {
+        "video_title_35": "How to do a life audit",
+        "video_id_35": "6AvvhTfG5kg"
+      },
+      {
+        "video_title_36": "How to do a mental clarity reset",
+        "video_id_36": "D6onQw3hWGg"
+      },
+      {
+        "video_title_37": "How to Meditate",
+        "video_id_37": "JslvBcIVtDg"
+      },
+      {
+        "video_title_38": "How to practice breathwork",
+        "video_id_38": "f6yAY1oZUOA"
+      },
+      {
+        "video_title_39": "How to reduce stress",
+        "video_id_39": "7DKXLasU4Kg"
+      },
+      {
+        "video_title_40": "How to practice self care",
+        "video_id_40": "cjfofAuxibQ"
+      },
+      {
+        "video_title_41": "How to master your sleep schedule",
+        "video_id_41": "iMfsa7ntJZE"
+      },
+      {
+        "video_title_42": "How to build better sleep hygiene",
+        "video_id_42": "Quw6URDE_Oo"
+      },
+      {
+        "video_title_43": "How to build an evening wind down routine",
+        "video_id_43": "hHZVYIlVGN8"
+      },
+      {
+        "video_title_44": "How to Reduce Screen Time",
+        "video_id_44": "3XBVG-yLYBU"
+      },
+      {
+        "video_title_45": "How to stop doomscrolling",
+        "video_id_45": "zxgxRL4-Bok"
+      },
+      {
+        "video_title_46": "How to Do a Digital Detox",
+        "video_id_46": "-aDV5KMiWPk"
+      },
+      {
+        "video_title_47": "How to detox from social media",
+        "video_id_47": "mcOETU7DxRQ"
+      },
+      {
+        "video_title_48": "How to Set Boundaries with Others",
+        "video_id_48": "KteXMvCev8w"
+      },
+      {
+        "video_title_49": "How to Be More Assertive",
+        "video_id_49": "cFyy_tju8Hg"
+      },
+      {
+        "video_title_50": "How to Stand Up for Yourself",
+        "video_id_50": "Dnia_m898K4"
+      }
+    ]
+  }
+]
