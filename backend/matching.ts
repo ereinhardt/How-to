@@ -38,12 +38,12 @@ export function warmupPlaylistIndexCache(): void {
   getPlaylistIndex();
 }
 
-// Lowercase, drop punctuation and the leading "how to" so questions are comparable
+// Lowercase, drop punctuation and every leading "how to" so questions are comparable
 function normalize(question: string): string {
   return question
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
-    .replace(/^\s*how\s+to\s+/, " ")
+    .replace(/^(?:\s*how\s+to\s+)+/, " ")
     .trim()
     .replace(/\s+/g, " ");
 }

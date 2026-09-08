@@ -168,10 +168,12 @@
       let seekingHandler = null;
       let streamEndListReceived = false;
       let streamingUserId = null;
+      let searchStartedAt = 0;
 
       const MAX_NETWORK_ERRORS = 1;
       const MAX_MEDIA_ERRORS = 3;
       const MAX_SOCKET_RECONNECT_ATTEMPTS = 5;
+      const MIN_LOADING_TIME_MS = 2000;
 
       // Initialize DOM element references
       document.addEventListener("DOMContentLoaded", () => {
@@ -190,9 +192,18 @@
       // UI state management
       function setSearchingState(searching) {
         is_searching = searching;
-        elements.input.readOnly = searching;
+        elements.input.disabled = searching;
         elements.searchButton.disabled = searching;
         document.body.style.cursor = searching ? "wait" : "auto";
+      }
+
+      // Keep the loading state visible for a constant amount of time
+      function waitForMinimumLoadingTime() {
+        const remaining = MIN_LOADING_TIME_MS - (Date.now() - searchStartedAt);
+
+        if (remaining <= 0) return Promise.resolve();
+
+        return new Promise((resolve) => setTimeout(resolve, remaining));
       }
 
       function setNotification(message, color = "red") {
@@ -303,7 +314,11 @@
         elements.video.style.display = "none";
         document.body.style.backgroundColor = "white";
 
-        const search_value = `How to ${elements.input.value}`;
+        const query = elements.input.value
+          .trim()
+          .replace(/^(?:how\s+to\s+)+/i, "");
+        const search_value = `How to ${query}`;
+        searchStartedAt = Date.now();
         setSearchingState(true);
         setNotification("Loading...", "#00ff00");
 
@@ -319,9 +334,12 @@
         ].forEach((event) => socket.removeAllListeners(event));
 
         // Set up listeners BEFORE reconnecting
-        socket.on("START_STREAM", (source_url, user) => {
+        socket.on("START_STREAM", async (source_url, user) => {
           console.log("Starting HLS stream:", source_url);
           console.log("User data received:", user);
+
+          await waitForMinimumLoadingTime();
+
           clearNotification();
           setSearchingState(false);
 
@@ -561,7 +579,7 @@
         elements.video.style.display = "none";
         elements.video.src = "";
         elements.input.value = "";
-        elements.input.readOnly = false;
+        elements.input.disabled = false;
         document.body.style.backgroundColor = "white";
         deleteAllTimestamps();
 
