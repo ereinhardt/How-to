@@ -1,5 +1,5 @@
 import express from "express";
-import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs";
+import { mkdirSync, rmSync } from "fs";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as p from "path";
@@ -11,8 +11,8 @@ import {
   save_accesing_env_field_with_ip_detection,
   warmupVideoMetadataCache,
   debug_error,
-} from "../util/util";
-import { warmupQuestionIndexCache } from "../ai/ai";
+} from "./util";
+import { warmupPlaylistIndexCache } from "./matching";
 import User from "./users";
 import cors from "cors";
 
@@ -24,16 +24,9 @@ function resolveFromRoot(targetPath: string): string {
 
 function ensureStartupPaths(): void {
   const usersFolderPath = resolveFromRoot("users");
-  const userQuestionIndexPath = resolveFromRoot("user_question_index.txt");
 
   rmSync(usersFolderPath, { recursive: true, force: true });
   mkdirSync(usersFolderPath, { recursive: true });
-
-  mkdirSync(p.dirname(userQuestionIndexPath), { recursive: true });
-
-  if (!existsSync(userQuestionIndexPath)) {
-    writeFileSync(userQuestionIndexPath, "", { flag: "wx" });
-  }
 }
 
 // Handle uncaught exceptions to prevent server crashes
@@ -54,7 +47,7 @@ const host = save_accesing_env_field_with_ip_detection("SERVER_HOST");
 
 ensureStartupPaths();
 warmupVideoMetadataCache();
-warmupQuestionIndexCache();
+warmupPlaylistIndexCache();
 
 const app = express();
 app.use(cors());

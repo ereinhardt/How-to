@@ -313,11 +313,9 @@
         // Remove old listeners
         [
           "START_STREAM",
-          "AI_API_ERROR",
           "SEARCH_ERROR",
           "STREAM_ENDED",
           "SERVER_BUSY",
-          "AI_LIMIT_REACHED",
         ].forEach((event) => socket.removeAllListeners(event));
 
         // Set up listeners BEFORE reconnecting
@@ -338,21 +336,12 @@
           }
         });
 
-        socket.on("AI_API_ERROR", (error) =>
-          handleSearchError("AI API Error", error.message),
-        );
         socket.on("SEARCH_ERROR", (error) =>
           handleSearchError("Search Error", error.message),
         );
         socket.on("SERVER_BUSY", (error) => {
           console.log("Server busy:", error.message);
           setNotification("Server is too busy. Please try again later.");
-          setSearchingState(false);
-        });
-
-        socket.on("AI_LIMIT_REACHED", () => {
-          console.log("AI request limit reached.");
-          setNotification("Global question limit reached. Try again tomorrow.");
           setSearchingState(false);
         });
 

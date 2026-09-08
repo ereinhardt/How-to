@@ -7,14 +7,14 @@ import {
   getSegmentDuration,
   debug_log,
   debug_error,
-} from "../util/util";
+} from "./util";
 import {
   add_segment,
   addDiscontinuity,
   addStreamEnding,
   extract_ts_segment_number,
   find_next_segment_path,
-} from "../util/m3u8_operations";
+} from "./m3u8_operations";
 import User, { get_user_by_id, user_allready_saved } from "./users";
 
 const html_name = "frontend/index.html";
