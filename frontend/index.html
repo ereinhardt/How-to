@@ -319,6 +319,7 @@
           .replace(/^(?:how\s+to\s+)+/i, "");
         const search_value = `How to ${query}`;
         searchStartedAt = Date.now();
+        elements.input.blur();
         setSearchingState(true);
         setNotification("Loading...", "#00ff00");
 
@@ -342,12 +343,12 @@
 
           clearNotification();
           setSearchingState(false);
+          elements.input.blur();
 
           try {
             streamingUserId = socket.id;
             start_hls(source_url);
             generatingTimestamps(user.questions);
-            elements.input.blur();
           } catch (error) {
             console.error("Error starting stream:", error);
             setNotification("Failed to start stream.");
