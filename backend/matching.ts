@@ -127,6 +127,8 @@ async function downloadModelFile(
 }
 
 async function ensureModelFiles(modelPath: string): Promise<void> {
+  mkdirSync(modelPath, { recursive: true });
+
   const missing = MODEL_FILES.filter(
     (file) => !existsSync(p.join(modelPath, file)),
   );
