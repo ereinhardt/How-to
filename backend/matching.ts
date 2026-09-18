@@ -1,148 +1,232 @@
 import * as p from "path";
-import { readFileSync } from "fs";
+import {
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+} from "fs";
+import { Readable } from "stream";
+import { pipeline as streamPipeline } from "stream/promises";
+import {
+  env,
+  pipeline,
+  type FeatureExtractionPipeline,
+} from "@huggingface/transformers";
 import { save_accesing_env_field, debug_log } from "./util";
+
+const MODEL_ID = "embeddinggemma-300m";
+const MODEL_REPO = "onnx-community/embeddinggemma-300m-ONNX";
+const MODELS_DIR = p.resolve(process.cwd(), "models");
+const EMBEDDING_BATCH_SIZE = 32;
+const MAX_QUESTION_LENGTH = 512;
+
+// fp32 weights live in the separate .onnx_data file, the .onnx holds only the graph
+const MODEL_FILES = [
+  "config.json",
+  "tokenizer.json",
+  "tokenizer_config.json",
+  "special_tokens_map.json",
+  "onnx/model.onnx",
+  "onnx/model.onnx_data",
+];
+
+// EmbeddingGemma was trained with these task prefixes, retrieval quality drops without them
+const DOCUMENT_PREFIX = "title: none | text: ";
+const QUERY_PREFIX = "task: search result | query: ";
+
+env.allowRemoteModels = false;
+env.localModelPath = MODELS_DIR;
 
 interface PlaylistIndexEntry {
   initial_question: string;
   playlist: any[];
 }
 
-let cachedPlaylistIndexPath = "";
-let cachedPlaylistIndex: PlaylistIndexEntry[] = [];
+let extractor: FeatureExtractionPipeline | null = null;
+let entries: PlaylistIndexEntry[] = [];
+let embeddings = new Float32Array(0);
+let embeddingDimension = 0;
 
-function getPlaylistIndex(): PlaylistIndexEntry[] {
+function loadPlaylistIndex(): PlaylistIndexEntry[] {
   const playlistIndexPath = p.resolve(
     save_accesing_env_field("PLAYLIST_INDEX_PATH"),
   );
 
-  if (
-    cachedPlaylistIndexPath !== playlistIndexPath ||
-    cachedPlaylistIndex.length === 0
-  ) {
-    const parsed = JSON.parse(
-      readFileSync(playlistIndexPath, { encoding: "utf8" }),
-    );
+  const parsed = JSON.parse(
+    readFileSync(playlistIndexPath, { encoding: "utf8" }),
+  );
 
-    if (!Array.isArray(parsed)) {
-      throw new Error("PLAYLIST_INDEX_INVALID");
-    }
-
-    cachedPlaylistIndexPath = playlistIndexPath;
-    cachedPlaylistIndex = parsed;
+  if (!Array.isArray(parsed)) {
+    throw new Error("PLAYLIST_INDEX_INVALID");
   }
 
-  return cachedPlaylistIndex;
+  return parsed.filter(
+    (entry: PlaylistIndexEntry) =>
+      entry &&
+      typeof entry.initial_question === "string" &&
+      entry.initial_question.trim().length > 0 &&
+      Array.isArray(entry.playlist) &&
+      entry.playlist.length > 0,
+  );
 }
 
-export function warmupPlaylistIndexCache(): void {
-  getPlaylistIndex();
+async function embedBatch(texts: string[]): Promise<Float32Array[]> {
+  if (!extractor) throw new Error("EMBEDDING_MODEL_NOT_LOADED");
+
+  const output = await extractor(texts, { pooling: "mean", normalize: true });
+  const [count, dimension] = output.dims;
+  const data = output.data as Float32Array;
+
+  const vectors: Float32Array[] = [];
+  for (let i = 0; i < count; i++) {
+    vectors.push(data.slice(i * dimension, (i + 1) * dimension));
+  }
+
+  return vectors;
 }
 
-// Lowercase, drop punctuation and every leading "how to" so questions are comparable
-function normalize(question: string): string {
+function sanitizeQuestion(question: string): string {
   return question
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .replace(/^(?:\s*how\s+to\s+)+/, " ")
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(/\s+/g, " ")
     .trim()
-    .replace(/\s+/g, " ");
+    .slice(0, MAX_QUESTION_LENGTH);
 }
 
-function levenshteinDistance(a: string, b: string): number {
-  if (a === b) return 0;
-  if (a.length === 0) return b.length;
-  if (b.length === 0) return a.length;
+// Download into a .part file first so an aborted run cannot leave a truncated file behind
+async function downloadModelFile(
+  modelPath: string,
+  file: string,
+): Promise<void> {
+  const target = p.join(modelPath, file);
+  const partialTarget = `${target}.part`;
 
-  let previousRow = Array.from({ length: b.length + 1 }, (_, i) => i);
-  const currentRow = new Array<number>(b.length + 1);
+  mkdirSync(p.dirname(target), { recursive: true });
 
-  for (let i = 1; i <= a.length; i++) {
-    currentRow[0] = i;
+  const response = await fetch(
+    `https://huggingface.co/${MODEL_REPO}/resolve/main/${file}`,
+  );
 
-    for (let j = 1; j <= b.length; j++) {
-      const substitutionCost = a[i - 1] === b[j - 1] ? 0 : 1;
+  if (!response.ok || !response.body) {
+    throw new Error(`download of ${file} failed with status ${response.status}`);
+  }
 
-      currentRow[j] = Math.min(
-        currentRow[j - 1] + 1,
-        previousRow[j] + 1,
-        previousRow[j - 1] + substitutionCost,
-      );
+  try {
+    await streamPipeline(
+      Readable.fromWeb(response.body as any),
+      createWriteStream(partialTarget),
+    );
+  } catch (error) {
+    rmSync(partialTarget, { force: true });
+    throw error;
+  }
+
+  renameSync(partialTarget, target);
+}
+
+async function ensureModelFiles(modelPath: string): Promise<void> {
+  const missing = MODEL_FILES.filter(
+    (file) => !existsSync(p.join(modelPath, file)),
+  );
+
+  if (missing.length === 0) return;
+
+  console.log(
+    `downloading ${missing.length} missing model files from ${MODEL_REPO} (this can take a while) ...`,
+  );
+
+  for (const file of missing) {
+    console.log(`  downloading ${file} ...`);
+    await downloadModelFile(modelPath, file);
+  }
+
+  console.log("model download complete");
+}
+
+// Load the embedding model and embed every initial_question of the playlist index
+export async function initQuestionMatching(): Promise<void> {
+  const modelPath = p.join(MODELS_DIR, MODEL_ID);
+
+  await ensureModelFiles(modelPath);
+
+  entries = loadPlaylistIndex();
+
+  if (entries.length === 0) {
+    throw new Error("PLAYLIST_INDEX_EMPTY");
+  }
+
+  console.log(`loading embedding model from ${modelPath} ...`);
+  extractor = await pipeline("feature-extraction", MODEL_ID, {
+    dtype: "fp32",
+  });
+
+  console.log(`embedding ${entries.length} questions ...`);
+  const startedAt = Date.now();
+  const vectors: Float32Array[] = [];
+
+  for (let i = 0; i < entries.length; i += EMBEDDING_BATCH_SIZE) {
+    const batch = entries
+      .slice(i, i + EMBEDDING_BATCH_SIZE)
+      .map((entry) => DOCUMENT_PREFIX + entry.initial_question);
+
+    for (const vector of await embedBatch(batch)) {
+      vectors.push(vector);
     }
 
-    previousRow = [...currentRow];
+    debug_log(`embedded ${vectors.length}/${entries.length} questions`);
   }
 
-  return previousRow[b.length];
+  embeddingDimension = vectors[0].length;
+  embeddings = new Float32Array(vectors.length * embeddingDimension);
+  vectors.forEach((vector, i) => embeddings.set(vector, i * embeddingDimension));
+
+  console.log(
+    `embedded ${entries.length} questions in ${((Date.now() - startedAt) / 1000).toFixed(1)}s`,
+  );
 }
 
-function levenshteinSimilarity(a: string, b: string): number {
-  const longestLength = Math.max(a.length, b.length);
-
-  if (longestLength === 0) return 1;
-
-  return 1 - levenshteinDistance(a, b) / longestLength;
-}
-
-function wordOverlapSimilarity(a: string, b: string): number {
-  const wordsA = new Set(a.split(" ").filter((w) => w.length > 0));
-  const wordsB = new Set(b.split(" ").filter((w) => w.length > 0));
-
-  if (wordsA.size === 0 || wordsB.size === 0) return 0;
-
-  let shared = 0;
-  for (const word of wordsA) {
-    if (wordsB.has(word)) shared++;
-  }
-
-  return shared / (wordsA.size + wordsB.size - shared);
-}
-
-// Combined score of shared words and character similarity
-function similarity(a: string, b: string): number {
-  return 0.7 * wordOverlapSimilarity(a, b) + 0.3 * levenshteinSimilarity(a, b);
-}
-
-// Find the playlist of the most similar initial question in the playlist index
+// Find the playlist whose initial question is semantically closest to the user input
 export default async function generate_question(
   start_question: string,
 ): Promise<any> {
-  start_question = start_question.replace(/[^A-Za-z0-9 _-]/g, "");
-
-  const playlistIndex = getPlaylistIndex();
-
-  if (playlistIndex.length === 0) {
-    debug_log("playlist index is empty");
-    throw new Error("PLAYLIST_INDEX_ERROR");
+  if (!extractor || embeddingDimension === 0) {
+    throw new Error("MATCHING_NOT_INITIALIZED");
   }
 
-  const normalizedSearch = normalize(start_question);
+  const question = sanitizeQuestion(start_question);
 
-  let bestEntry: PlaylistIndexEntry | null = null;
-  let bestScore = -1;
+  if (question.length === 0) {
+    throw new Error("EMPTY_QUESTION");
+  }
 
-  for (const entry of playlistIndex) {
-    if (!entry || !Array.isArray(entry.playlist) || entry.playlist.length === 0)
-      continue;
+  const [queryVector] = await embedBatch([QUERY_PREFIX + question]);
 
-    const score = similarity(
-      normalizedSearch,
-      normalize(entry.initial_question ?? ""),
-    );
+  let bestIndex = 0;
+  let bestScore = -Infinity;
+
+  // Vectors are normalized, so the dot product is the cosine similarity
+  for (let i = 0; i < entries.length; i++) {
+    const offset = i * embeddingDimension;
+    let score = 0;
+
+    for (let j = 0; j < embeddingDimension; j++) {
+      score += queryVector[j] * embeddings[offset + j];
+    }
 
     if (score > bestScore) {
       bestScore = score;
-      bestEntry = entry;
+      bestIndex = i;
     }
   }
 
-  if (!bestEntry) {
-    debug_log("no usable playlist found in playlist index");
-    throw new Error("PLAYLIST_INDEX_ERROR");
-  }
+  const bestEntry = entries[bestIndex];
 
   debug_log(
-    `Matched "${start_question}" to "${bestEntry.initial_question}" (score ${bestScore.toFixed(3)})`,
+    `Matched "${question}" to "${bestEntry.initial_question}" (score ${bestScore.toFixed(3)})`,
   );
 
   return bestEntry.playlist;
 }
+

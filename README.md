@@ -77,7 +77,28 @@ MAX_USERS="5" // Max number of concurrent active users/streams
 **Note**:
 
 1. Delete all the // comments from the `.env`.
-2. The `playlist_index.json` is created with `tools/create_playlist_index.py`; the server picks the playlist whose `initial_question` is most similar to the user's question.
+2. The `playlist_index.json` is created with `tools/create_playlist_index.py`; the server picks the playlist whose `initial_question` is semantically closest to the user's question.
+
+## Embedding Model
+
+Matching runs locally with EmbeddingGemma. On the first start the server downloads the required model files (~1.25 GB) from `onnx-community/embeddinggemma-300m-ONNX` into `models/embeddinggemma-300m` and reuses them on every following start. No manual setup is needed, but the first start requires an internet connection.
+
+Only the fp32 files are fetched:
+
+```
+models/embeddinggemma-300m/
+├── config.json
+├── tokenizer.json
+├── tokenizer_config.json
+├── special_tokens_map.json
+└── onnx/
+    ├── model.onnx        (graph)
+    └── model.onnx_data   (weights, ~1.2 GB)
+```
+
+Individual files are re-downloaded whenever they are missing, so a deleted or aborted download repairs itself on the next start. To prepare a machine without internet access, copy this folder over from another installation.
+
+On every start the server embeds all `initial_question` entries of the `playlist_index.json` and only then begins to accept requests. If the model cannot be downloaded or loaded, the server exits with an error.
 
 ## Start (How to?) Software
 

@@ -12,7 +12,7 @@ import {
   warmupVideoMetadataCache,
   debug_error,
 } from "./util";
-import { warmupPlaylistIndexCache } from "./matching";
+import { initQuestionMatching } from "./matching";
 import User from "./users";
 import cors from "cors";
 
@@ -47,7 +47,6 @@ const host = save_accesing_env_field_with_ip_detection("SERVER_HOST");
 
 ensureStartupPaths();
 warmupVideoMetadataCache();
-warmupPlaylistIndexCache();
 
 const app = express();
 app.use(cors());
@@ -70,7 +69,17 @@ const io = new Server(server, {
 start_http_server(app, users, io);
 start_socket_server(io, users);
 
-// Start server and log startup message
-server.listen(port, host, async () => {
-  console.log(`server running at http://${host}:${port}`);
-});
+// Embeddings must be ready before the first search arrives, so start listening only afterwards
+initQuestionMatching()
+  .then(() => {
+    server.listen(port, host, () => {
+      console.log(`server running at http://${host}:${port}`);
+    });
+  })
+  .catch((error: any) => {
+    console.error(
+      "FATAL: could not initialize question matching:",
+      error?.message ?? error,
+    );
+    process.exit(1);
+  });
