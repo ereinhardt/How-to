@@ -81,24 +81,11 @@ MAX_USERS="5" // Max number of concurrent active users/streams
 
 ## Embedding Model
 
-Matching runs locally with EmbeddingGemma. On the first start the server downloads the required model files (~1.25 GB) from `onnx-community/embeddinggemma-300m-ONNX` into `models/embeddinggemma-300m` and reuses them on every following start. No manual setup is needed, but the first start requires an internet connection.
+Matching runs locally with EmbeddingGemma. Run the download tool manually once before the first start:
 
-Only the fp32 files are fetched:
-
+```bash
+python tools/model-downloader.py
 ```
-models/embeddinggemma-300m/
-├── config.json
-├── tokenizer.json
-├── tokenizer_config.json
-├── special_tokens_map.json
-└── onnx/
-    ├── model.onnx        (graph)
-    └── model.onnx_data   (weights, ~1.2 GB)
-```
-
-Individual files are re-downloaded whenever they are missing, so a deleted or aborted download repairs itself on the next start. To prepare a machine without internet access, copy this folder over from another installation.
-
-On every start the server embeds all `initial_question` entries of the `playlist_index.json` and only then begins to accept requests. If the model cannot be downloaded or loaded, the server exits with an error.
 
 ## Start (How to?) Software
 

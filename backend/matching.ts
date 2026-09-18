@@ -1,14 +1,5 @@
 import * as p from "path";
-import {
-  createWriteStream,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  renameSync,
-  rmSync,
-} from "fs";
-import { Readable } from "stream";
-import { pipeline as streamPipeline } from "stream/promises";
+import { existsSync, readFileSync } from "fs";
 import {
   env,
   pipeline,
@@ -17,7 +8,6 @@ import {
 import { save_accesing_env_field, debug_log } from "./util";
 
 const MODEL_ID = "embeddinggemma-300m";
-const MODEL_REPO = "onnx-community/embeddinggemma-300m-ONNX";
 const MODELS_DIR = p.resolve(process.cwd(), "models");
 const EMBEDDING_BATCH_SIZE = 32;
 const MAX_QUESTION_LENGTH = 512;
@@ -95,63 +85,24 @@ function sanitizeQuestion(question: string): string {
     .slice(0, MAX_QUESTION_LENGTH);
 }
 
-// Download into a .part file first so an aborted run cannot leave a truncated file behind
-async function downloadModelFile(
-  modelPath: string,
-  file: string,
-): Promise<void> {
-  const target = p.join(modelPath, file);
-  const partialTarget = `${target}.part`;
-
-  mkdirSync(p.dirname(target), { recursive: true });
-
-  const response = await fetch(
-    `https://huggingface.co/${MODEL_REPO}/resolve/main/${file}`,
-  );
-
-  if (!response.ok || !response.body) {
-    throw new Error(`download of ${file} failed with status ${response.status}`);
-  }
-
-  try {
-    await streamPipeline(
-      Readable.fromWeb(response.body as any),
-      createWriteStream(partialTarget),
-    );
-  } catch (error) {
-    rmSync(partialTarget, { force: true });
-    throw error;
-  }
-
-  renameSync(partialTarget, target);
-}
-
-async function ensureModelFiles(modelPath: string): Promise<void> {
-  mkdirSync(modelPath, { recursive: true });
-
+function assertModelFilesExist(modelPath: string): void {
   const missing = MODEL_FILES.filter(
     (file) => !existsSync(p.join(modelPath, file)),
   );
 
   if (missing.length === 0) return;
 
-  console.log(
-    `downloading ${missing.length} missing model files from ${MODEL_REPO} (this can take a while) ...`,
+  throw new Error(
+    `embedding model incomplete in ${modelPath}, missing: ${missing.join(", ")}. ` +
+      `Run "python tools/model-downloader.py" to fetch it.`,
   );
-
-  for (const file of missing) {
-    console.log(`  downloading ${file} ...`);
-    await downloadModelFile(modelPath, file);
-  }
-
-  console.log("model download complete");
 }
 
 // Load the embedding model and embed every initial_question of the playlist index
 export async function initQuestionMatching(): Promise<void> {
   const modelPath = p.join(MODELS_DIR, MODEL_ID);
 
-  await ensureModelFiles(modelPath);
+  assertModelFilesExist(modelPath);
 
   entries = loadPlaylistIndex();
 
@@ -159,12 +110,12 @@ export async function initQuestionMatching(): Promise<void> {
     throw new Error("PLAYLIST_INDEX_EMPTY");
   }
 
-  console.log(`loading embedding model from ${modelPath} ...`);
+  debug_log(`loading embedding model from ${modelPath} ...`);
   extractor = await pipeline("feature-extraction", MODEL_ID, {
     dtype: "fp32",
   });
 
-  console.log(`embedding ${entries.length} questions ...`);
+  debug_log(`embedding ${entries.length} questions ...`);
   const startedAt = Date.now();
   const vectors: Float32Array[] = [];
 
@@ -184,7 +135,7 @@ export async function initQuestionMatching(): Promise<void> {
   embeddings = new Float32Array(vectors.length * embeddingDimension);
   vectors.forEach((vector, i) => embeddings.set(vector, i * embeddingDimension));
 
-  console.log(
+  debug_log(
     `embedded ${entries.length} questions in ${((Date.now() - startedAt) / 1000).toFixed(1)}s`,
   );
 }
