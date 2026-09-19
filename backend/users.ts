@@ -1,6 +1,6 @@
-import generate_question from "../ai/ai";
-import { extractDurationInSec } from "../util/m3u8_operations";
-import { debug_error } from "../util/util";
+import generate_question from "./matching";
+import { extractDurationInSec } from "./m3u8_operations";
+import { debug_error } from "./util";
 
 enum UserState {
   Unset,
