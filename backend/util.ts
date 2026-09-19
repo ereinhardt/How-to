@@ -3,7 +3,6 @@ import * as p from "path";
 import { networkInterfaces } from "os";
 
 export interface VideoMetadata {
-  folderName: string;
   tsFolderPath: string;
   tsFiles: string[];
   segmentDurations: number[];
@@ -13,13 +12,13 @@ let cachedVideosPath: string | null = null;
 let cachedVideoMetadata = new Map<string, VideoMetadata>();
 
 function extractSegmentNumberForSort(filename: string): number {
-  const match = filename.match(/(.+)__(\d+)\.ts/);
+  const match = filename.match(/.+__(\d+)\.ts$/);
 
   if (!match) {
     return Number.MAX_SAFE_INTEGER;
   }
 
-  return Number(match[2]);
+  return Number(match[1]);
 }
 
 function sortTsFiles(files: string[]): string[] {
@@ -82,7 +81,6 @@ function buildVideoMetadataIndex(
     const segmentDurations = parsePlaylistDurations(tsFolderPath);
 
     videoIndex.set(videoId, {
-      folderName: video,
       tsFolderPath,
       tsFiles,
       segmentDurations,
@@ -123,7 +121,7 @@ export function getSegmentDuration(video_id: string, segment: number): number {
 }
 
 // Get local network IP address for server binding
-export function getLocalNetworkIP(): string {
+function getLocalNetworkIP(): string {
   try {
     const interfaces = networkInterfaces();
 
@@ -160,29 +158,18 @@ export function getLocalNetworkIP(): string {
     }
 
     return "localhost";
-  } catch (error) {
+  } catch {
     return "localhost";
   }
 }
 
-// Access environment variable with IP detection for SERVER_HOST
-export function save_accesing_env_field_with_ip_detection(
-  field: string,
-): string {
-  if (field === "SERVER_HOST") {
-    const localhostFlag = process.env.LOCALHOST;
-
-    if (localhostFlag === "1") {
-      return "localhost";
-    } else {
-      const detectedIP = getLocalNetworkIP();
-      return detectedIP;
-    }
+// Resolve SERVER_HOST: localhost when LOCALHOST=1, otherwise the detected LAN IP
+export function save_accesing_env_field_with_ip_detection(): string {
+  if (process.env.LOCALHOST === "1") {
+    return "localhost";
   }
 
-  if (process.env[field]) return process.env[field]!;
-
-  throw Error(`could not found ${field} in .env file!`);
+  return getLocalNetworkIP();
 }
 
 // Access environment variable or throw error if not found

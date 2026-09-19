@@ -20,23 +20,23 @@ import User, { get_user_by_id, user_allready_saved } from "./users";
 const html_name = "frontend/index.html";
 
 // Start HTTP server with routes for serving frontend and video files
-export default async function start_http_server(
+export default function start_http_server(
   server: Express,
   users: User[],
-  io?: any,
+  io: any,
 ) {
   // Serve the main frontend HTML file
-  server.get("/", (req, res) => {
+  server.get("/", (_req, res) => {
     res.sendFile(p.join(__dirname, `../../${html_name}`));
   });
 
   // Serve the frontend prevent.js script
-  server.get("/prevent.js", (req, res) => {
+  server.get("/prevent.js", (_req, res) => {
     res.sendFile(p.join(__dirname, "../../frontend/prevent.js"));
   });
 
   // Serve user-specific files by user ID and filename
-  server.get("/:id/:filename", async (req, res) => {
+  server.get("/:id/:filename", (req, res) => {
     try {
       debug_log("Requested File:", req.params.filename);
 
@@ -130,9 +130,7 @@ export default async function start_http_server(
             debug_log("Stream from ", user_id, "has Ended!");
             addStreamEnding(user_id);
 
-            if (io) {
-              io.to(user_id).emit("STREAM_ENDED");
-            }
+            io.to(user_id).emit("STREAM_ENDED");
 
             rmSync(p.join("users", user_id), { recursive: true, force: true });
             current_user.reset();
@@ -150,11 +148,6 @@ export default async function start_http_server(
 
         const duration = getSegmentDuration(nextVideoId, nextSegmentNumber);
         add_segment(user_id, next_segment, duration);
-      } else if (
-        segment > current_user.highestRequestedFile &&
-        current_user.getCurrentQuestion().id == video_id
-      ) {
-        current_user.highestRequestedFile = segment;
       }
 
       const requested_file = get_ts_file_by_video_id(video_id, segment);

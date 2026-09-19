@@ -16,14 +16,8 @@ import { initQuestionMatching } from "./matching";
 import User from "./users";
 import cors from "cors";
 
-function resolveFromRoot(targetPath: string): string {
-  return p.isAbsolute(targetPath)
-    ? targetPath
-    : p.join(process.cwd(), targetPath);
-}
-
 function ensureStartupPaths(): void {
-  const usersFolderPath = resolveFromRoot("users");
+  const usersFolderPath = p.join(process.cwd(), "users");
 
   rmSync(usersFolderPath, { recursive: true, force: true });
   mkdirSync(usersFolderPath, { recursive: true });
@@ -43,7 +37,7 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 const port = parseInt(save_accesing_env_field("SERVER_PORT"));
-const host = save_accesing_env_field_with_ip_detection("SERVER_HOST");
+const host = save_accesing_env_field_with_ip_detection();
 
 ensureStartupPaths();
 warmupVideoMetadataCache();

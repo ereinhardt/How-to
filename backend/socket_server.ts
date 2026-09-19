@@ -18,7 +18,7 @@ import {
 import User, { get_user_by_id, remove_user_by_id } from "./users";
 
 // Start socket server and handle client connections
-export default async function start_socket_server(io: Server, users: User[]) {
+export default function start_socket_server(io: Server, users: User[]) {
   const maxUsers = parseInt(save_accesing_env_field("MAX_USERS"));
   const cleanupTimeouts = new Map<string, NodeJS.Timeout>();
   const socketUserMap = new Map<string, string>();
@@ -118,10 +118,15 @@ export default async function start_socket_server(io: Server, users: User[]) {
       const { id } = socket;
       const user_folder = p.join(base_path, id);
 
-      if (!get_user_by_id(users, id)) {
-        users.push(new User(id));
+      const existing_user = get_user_by_id(users, id);
+      let user: User;
+
+      if (existing_user) {
+        existing_user.reset();
+        user = existing_user;
       } else {
-        get_user_by_id(users, id)!.reset();
+        user = new User(id);
+        users.push(user);
       }
 
       rmSync(user_folder, { recursive: true, force: true });
@@ -133,18 +138,8 @@ export default async function start_socket_server(io: Server, users: User[]) {
           `ERROR creating directories for user ${id}:`,
           error.message,
         );
-        socket.emit("SETUP_ERROR", {
-          message: "Failed to create user directories",
-        });
-        return;
-      }
-
-      const user = get_user_by_id(users, socket.id);
-
-      if (!user) {
-        debug_error(`CRITICAL: User ${socket.id} not found during NEW_SEARCH`);
         socket.emit("SEARCH_ERROR", {
-          message: "User session not found. Please refresh.",
+          message: "Failed to create user directories",
         });
         return;
       }

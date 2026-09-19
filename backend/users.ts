@@ -2,11 +2,6 @@ import generate_question from "./matching";
 import { extractDurationInSec } from "./m3u8_operations";
 import { debug_error } from "./util";
 
-enum UserState {
-  Unset,
-  generateQuestions,
-}
-
 // Represents a single question with metadata
 class Question {
   public question: string;
@@ -27,7 +22,6 @@ export default class User {
   public highestRequestedFile = 0;
   public highestAddedToPlaylist = -1;
   public generatedFollowingQuestions = false;
-  public state = UserState.Unset;
   public questions: Question[] = [];
   public current_question_index = 0;
 
@@ -41,19 +35,13 @@ export default class User {
     this.highestRequestedFile = 0;
     this.highestAddedToPlaylist = -1;
     this.generatedFollowingQuestions = false;
-    this.state = UserState.Unset;
     this.questions = [];
     this.current_question_index = 0;
   }
 
   // Generate AI-powered question chain from starting question
   async generateUpcommingQuestions(start_question: string) {
-    if (
-      this.state == UserState.generateQuestions ||
-      this.generatedFollowingQuestions
-    )
-      return;
-    this.state = UserState.generateQuestions;
+    if (this.generatedFollowingQuestions) return;
     this.generatedFollowingQuestions = true;
 
     try {
@@ -71,7 +59,6 @@ export default class User {
         i++;
       }
     } catch (error: any) {
-      this.state = UserState.Unset;
       this.generatedFollowingQuestions = false;
       throw error;
     }
