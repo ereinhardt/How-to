@@ -8,6 +8,33 @@ style.textContent =
   "* { touch-action: pan-y; }" + "html, body { overscroll-behavior: none; }";
 document.head.appendChild(style);
 
+// maximum-scale=1 stops iOS from auto-zooming into focused inputs.
+const VIEWPORT =
+  "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+let viewport = document.querySelector('meta[name="viewport"]');
+if (!viewport) {
+  viewport = document.createElement("meta");
+  viewport.name = "viewport";
+  document.head.appendChild(viewport);
+}
+viewport.content = VIEWPORT;
+
+const isField = (el) =>
+  el instanceof HTMLInputElement ||
+  el instanceof HTMLTextAreaElement ||
+  el instanceof HTMLSelectElement;
+
+document.addEventListener("focusin", (event) => {
+  if (isField(event.target)) viewport.content = VIEWPORT;
+});
+
+// Changing the viewport content forces the browser to reset any zoom that slipped through.
+document.addEventListener("focusout", (event) => {
+  if (!isField(event.target)) return;
+  viewport.content = VIEWPORT + ", minimum-scale=1";
+  requestAnimationFrame(() => (viewport.content = VIEWPORT));
+});
+
 // Disable browser autocomplete / suggestions, autocorrect and spellcheck on inputs.
 document.querySelectorAll("input").forEach((input) => {
   input.setAttribute("autocomplete", "off");
